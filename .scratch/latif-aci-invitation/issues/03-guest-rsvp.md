@@ -1,7 +1,7 @@
 ---
 category: enhancement
-state: ready-for-agent
-status: ready-for-agent
+state: done
+status: done
 ---
 
 # 03: Guest RSVP
@@ -10,14 +10,14 @@ status: ready-for-agent
 
 **Blocked by:** 02: Complete Static Invitation Experience
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] RSVP submissions are stored with the `latif-aci` invitation identity, guest name, attendance status, optional guest count, optional message, and timestamps.
-- [ ] The only allowed statuses are attending, not attending, and maybe.
-- [ ] Attending responses require a positive guest count.
-- [ ] Not attending and maybe responses do not require a guest count.
-- [ ] Repeated submissions are retained as separate records rather than rejected as duplicates.
-- [ ] Guests can submit the RSVP without authentication.
-- [ ] The RSVP form provides clear validation errors, success feedback, and recoverable failure feedback.
-- [ ] The public endpoint uses CSRF protection, validation, throttling, and appropriate content-length limits.
-- [ ] Feature tests cover successful responses, all statuses, guest-count rules, repeated submissions, unauthenticated access, and invalid input.
+- [x] RSVP submissions are stored with the `latif-aci` invitation identity, guest name, attendance status, optional guest count, optional message, and timestamps.
+- [x] The only allowed statuses are attending, not attending, and maybe.
+- [x] Attending responses require a positive guest count.
+- [x] Not attending and maybe responses do not require a guest count.
+- [x] Repeated submissions are retained as separate records rather than rejected as duplicates.
+- [x] Guests can submit the RSVP without authentication.
+- [x] The RSVP form provides clear validation errors, success feedback, and recoverable failure feedback.
+- [x] The public endpoint uses CSRF protection, validation, throttling, and appropriate content-length limits.
+- [x] Feature tests cover successful responses, all statuses, guest-count rules, repeated submissions, unauthenticated access, and invalid input.

@@ -1,7 +1,7 @@
 ---
 category: enhancement
-state: ready-for-agent
-status: ready-for-agent
+state: done
+status: done
 ---
 
 # 02: Complete Static Invitation Experience
@@ -10,14 +10,14 @@ status: ready-for-agent
 
 **Blocked by:** 01: Public Invitation Foundation
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] The invitation renders the configured couple profiles, family details, ceremony, reception, dates, times, and map links.
-- [ ] Event times and countdown calculations use Asia/Jakarta.
-- [ ] The countdown shows days, hours, minutes, and seconds and stops at zero after the event begins.
-- [ ] The cover interaction can start audio from a user gesture, and the guest can pause and resume audio using an explicit control.
-- [ ] The supplied cream, terracotta, decorative image, font, photo, and handwritten visual system is applied consistently across sections.
-- [ ] Scroll animations preserve the reference feel without hiding content or preventing interaction.
-- [ ] The gifts section displays the configured account details and provides copy-to-clipboard feedback.
-- [ ] The gallery displays local couple photos and opens a dismissible in-page image viewer.
-- [ ] The experience remains usable at mobile, tablet, and desktop widths with no unintended horizontal overflow.
+- [x] The invitation renders the configured couple profiles, family details, ceremony, reception, dates, times, and map links.
+- [x] Event times and countdown calculations use Asia/Jakarta.
+- [x] The countdown shows days, hours, minutes, and seconds and stops at zero after the event begins.
+- [x] The cover interaction can start audio from a user gesture, and the guest can pause and resume audio using an explicit control.
+- [x] The supplied cream, terracotta, decorative image, font, photo, and handwritten visual system is applied consistently across sections.
+- [x] Scroll animations preserve the reference feel without hiding content or preventing interaction.
+- [x] The gifts section displays the configured account details and provides copy-to-clipboard feedback.
+- [x] The gallery displays local couple photos and opens a dismissible in-page image viewer.
+- [x] The experience remains usable at mobile, tablet, and desktop widths with no unintended horizontal overflow.
