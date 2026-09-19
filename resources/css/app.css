@@ -216,7 +216,7 @@ body:has(.invitation-viewport) {
     color: inherit;
     text-align: center;
     transition:
-        opacity 1600ms ease,
+        opacity 2200ms ease,
         transform 800ms ease;
 }
 
