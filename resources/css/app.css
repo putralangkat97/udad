@@ -181,13 +181,13 @@
 
 body:has(.invitation-viewport) {
     margin: 0;
-    background: var(--invitation-night);
+    background: var(--invitation-cream);
 }
 
 .invitation-viewport {
     min-height: 100svh;
     overflow-x: hidden;
-    background: var(--invitation-night);
+    background: var(--invitation-cream);
 }
 
 .invitation-canvas {
@@ -198,7 +198,6 @@ body:has(.invitation-viewport) {
     overflow: hidden;
     background: var(--invitation-cream);
     color: var(--invitation-terracotta);
-    box-shadow: 0 0 80px rgb(0 0 0 / 28%);
 }
 
 .invitation-cover {
