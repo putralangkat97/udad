@@ -634,6 +634,12 @@ body:has(.invitation-viewport) {
     line-height: 1.55;
 }
 
+.invitation-typing-cursor {
+    display: inline-block;
+    margin-left: 0.08rem;
+    animation: invitation-typing-blink 700ms steps(1, end) infinite;
+}
+
 .invitation-quote-card span {
     display: block;
     margin-top: 0.75rem;
@@ -729,6 +735,20 @@ body:has(.invitation-viewport) {
 
 .invitation-couple-row--groom .invitation-portrait-photo {
     transform: rotate(4deg);
+}
+
+.invitation-reveal--visible
+    .invitation-couple-row--bride
+    .invitation-couple-portrait {
+    animation: invitation-couple-from-right 1500ms 180ms both
+        cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.invitation-reveal--visible
+    .invitation-couple-row--groom
+    .invitation-couple-portrait {
+    animation: invitation-couple-from-left 1500ms 420ms both
+        cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .invitation-event-board {
@@ -1260,6 +1280,36 @@ body:has(.invitation-viewport) {
     }
 }
 
+@keyframes invitation-couple-from-right {
+    from {
+        opacity: 0;
+        transform: translateX(3rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes invitation-couple-from-left {
+    from {
+        opacity: 0;
+        transform: translateX(-3rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes invitation-typing-blink {
+    50% {
+        opacity: 0;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .invitation-cover-card,
     .invitation-reveal {
@@ -1268,6 +1318,7 @@ body:has(.invitation-viewport) {
 
     .invitation-open-button img,
     .invitation-confetti span,
+    .invitation-typing-cursor,
     .invitation-footer img {
         animation: none;
     }
