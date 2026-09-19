@@ -30,6 +30,13 @@ type GalleryImage = {
     alt: string;
 };
 
+type StoryEntry = {
+    period: string;
+    title: string;
+    copy: string;
+    ornament: string;
+};
+
 type PublishedWish = {
     name: string;
     message: string;
@@ -73,6 +80,11 @@ type Invitation = {
         accounts: GiftAccount[];
     };
     gallery: GalleryImage[];
+    story: {
+        title: string;
+        entries: StoryEntry[];
+        credit: string;
+    };
 };
 
 type WelcomeProps = {
@@ -1016,6 +1028,45 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
                                             </button>
                                         ))}
                                     </div>
+                                </section>
+                            </Reveal>
+
+                            <Reveal>
+                                <section
+                                    className="invitation-story-section"
+                                    aria-labelledby="story-heading"
+                                >
+                                    <h2 id="story-heading">
+                                        <span aria-hidden="true">〰</span>{' '}
+                                        {invitation.story.title}{' '}
+                                        <span aria-hidden="true">〰</span>
+                                    </h2>
+                                    <div className="invitation-story-list">
+                                        {invitation.story.entries.map(
+                                            (entry, index) => (
+                                                <article
+                                                    key={entry.period}
+                                                    className={`invitation-story-entry invitation-story-entry--${index % 2 === 0 ? 'art-first' : 'text-first'}`}
+                                                >
+                                                    <img
+                                                        src={entry.ornament}
+                                                        alt=""
+                                                    />
+                                                    <div>
+                                                        <p className="invitation-story-period">
+                                                            {entry.title}
+                                                            <br />
+                                                            {entry.period}
+                                                        </p>
+                                                        <p>{entry.copy}</p>
+                                                    </div>
+                                                </article>
+                                            ),
+                                        )}
+                                    </div>
+                                    <p className="invitation-story-credit">
+                                        {invitation.story.credit}
+                                    </p>
                                 </section>
                             </Reveal>
 

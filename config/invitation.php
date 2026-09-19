@@ -94,4 +94,28 @@ return [
             'alt' => 'Ashri and Latif sharing a moment',
         ],
     ],
+    'story' => [
+        'title' => 'Our Love Story',
+        'entries' => [
+            [
+                'period' => '2023',
+                'title' => 'Berawal dari Tempat Kerja',
+                'copy' => 'Kisah Latif dan Ashri bermula secara sederhana di tengah rutinitas pekerjaan. Berawal dari rekan kerja biasa, kami mulai banyak berinteraksi dan saling mengenal lebih jauh.',
+                'ornament' => '/invitation-assets/temp/image/cherry/9.png',
+            ],
+            [
+                'period' => '2024–2025',
+                'title' => 'Saling Melengkapi',
+                'copy' => 'Seiring berjalannya waktu, kami menyadari sebuah kecocokan yang unik. Perbedaan kami justru menjadi kepingan puzzle yang saling mengisi dan mewarnai hari-hari kami.',
+                'ornament' => '/invitation-assets/temp/image/cherry/8.png',
+            ],
+            [
+                'period' => '2026',
+                'title' => 'Memulai Lembaran Baru',
+                'copy' => 'Setelah tiga tahun bersama, kami yakin bahwa kami adalah rumah bagi satu sama lain. Tahun ini, kami memutuskan untuk mengikat janji suci dan melangkah bersama menuju pernikahan.',
+                'ornament' => '/invitation-assets/temp/image/cherry/7.png',
+            ],
+        ],
+        'credit' => 'Crafted with love for Latif & Aci',
+    ],
 ];

@@ -18,6 +18,11 @@ Build one public invitation for the `latif-aci` invitation identity at the site 
 
 The invitation will include the cover/reveal experience, couple information, event details, countdown, RSVP, moderated wishes, gifts, gallery, music controls, and responsive behavior. RSVP submissions and wishes will be persisted by Laravel. Invitation content will remain configuration-based for v1 rather than requiring a CMS.
 
+The approved screenshot-derived visual source and fidelity priorities are recorded
+in [visual-reference.md](visual-reference.md). That addendum governs the CSS
+recreation pass while this specification remains the source of truth for content,
+behavior, and data contracts.
+
 ## User Stories
 
 1. As an invited guest, I want to open the public invitation without creating an account, so that I can view the wedding information immediately.
