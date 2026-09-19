@@ -520,6 +520,7 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [isOpening, setIsOpening] = useState(false);
     const [isCoverFading, setIsCoverFading] = useState(false);
+    const [isContentRevealing, setIsContentRevealing] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const [audioUnavailable, setAudioUnavailable] = useState(false);
     const [audioPlaybackFailed, setAudioPlaybackFailed] = useState(false);
@@ -647,6 +648,40 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
             });
     }
 
+    function fadeMusicIn() {
+        const audio = audioRef.current;
+
+        if (!audio) {
+            setAudioUnavailable(true);
+            return;
+        }
+
+        audio.volume = 0;
+
+        void audio
+            .play()
+            .then(() => {
+                setIsPlaying(true);
+                setAudioPlaybackFailed(false);
+
+                const startedAt = performance.now();
+                const fade = (now: number) => {
+                    const progress = Math.min(1, (now - startedAt) / 2000);
+                    audio.volume = 0.35 * progress;
+
+                    if (progress < 1) {
+                        window.requestAnimationFrame(fade);
+                    }
+                };
+
+                window.requestAnimationFrame(fade);
+            })
+            .catch(() => {
+                setIsPlaying(false);
+                setAudioPlaybackFailed(true);
+            });
+    }
+
     function openInvitation() {
         if (isOpening || isOpen) {
             return;
@@ -654,21 +689,23 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
 
         setIsOpening(true);
         setIsCoverFading(false);
+        setIsContentRevealing(false);
 
         const audio = audioRef.current;
 
         if (!audio) {
             setAudioUnavailable(true);
-        } else {
-            audio.volume = 0.35;
-            playMusic();
         }
 
-        window.setTimeout(() => setIsCoverFading(true), 300);
+        window.setTimeout(() => {
+            setIsCoverFading(true);
+            setIsContentRevealing(true);
+            fadeMusicIn();
+        }, 350);
         window.setTimeout(() => {
             setIsOpening(false);
             setIsOpen(true);
-        }, 2500);
+        }, 2600);
     }
 
     function toggleMusic() {
@@ -826,7 +863,7 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
                     {(isOpening || isOpen) && (
                         <main
                             ref={mainRef}
-                            className="invitation-opening invitation-content"
+                            className={`invitation-opening invitation-content ${isContentRevealing ? 'invitation-opening--visible' : 'invitation-opening--hidden'}`}
                             aria-label="Wedding invitation"
                             tabIndex={-1}
                         >

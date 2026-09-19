@@ -521,6 +521,16 @@ body:has(.invitation-viewport) {
     min-height: 100svh;
     padding: 0 1.35rem 4rem;
     background: var(--invitation-cream);
+    opacity: 1;
+    transition: opacity 2200ms ease;
+}
+
+.invitation-opening--hidden {
+    opacity: 0;
+}
+
+.invitation-opening--visible {
+    opacity: 1;
 }
 
 .invitation-music-control {
@@ -1253,6 +1263,7 @@ body:has(.invitation-viewport) {
 @media (prefers-reduced-motion: reduce) {
     .invitation-cover,
     .invitation-cover-card,
+    .invitation-opening,
     .invitation-reveal {
         transition: none;
     }
