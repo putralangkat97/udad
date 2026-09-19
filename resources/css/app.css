@@ -1283,7 +1283,7 @@ body:has(.invitation-viewport) {
 @keyframes invitation-couple-from-right {
     from {
         opacity: 0;
-        transform: translateX(3rem);
+        transform: translateX(7rem);
     }
 
     to {
@@ -1295,7 +1295,7 @@ body:has(.invitation-viewport) {
 @keyframes invitation-couple-from-left {
     from {
         opacity: 0;
-        transform: translateX(-3rem);
+        transform: translateX(-7rem);
     }
 
     to {
