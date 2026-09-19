@@ -248,9 +248,18 @@ function RsvpSection() {
                                     autoComplete="name"
                                     placeholder="Full name"
                                     required
+                                    aria-invalid={Boolean(errors.name)}
+                                    aria-describedby={
+                                        errors.name
+                                            ? 'rsvp-name-error'
+                                            : undefined
+                                    }
                                 />
                                 {errors.name && (
-                                    <small className="invitation-form-error">
+                                    <small
+                                        id="rsvp-name-error"
+                                        className="invitation-form-error"
+                                    >
                                         {errors.name}
                                     </small>
                                 )}
@@ -269,6 +278,12 @@ function RsvpSection() {
                                         setAttendance(event.target.value)
                                     }
                                     required
+                                    aria-invalid={Boolean(errors.attendance)}
+                                    aria-describedby={
+                                        errors.attendance
+                                            ? 'rsvp-attendance-error'
+                                            : undefined
+                                    }
                                 >
                                     <option value="attending">
                                         Yes, I will attend
@@ -281,7 +296,10 @@ function RsvpSection() {
                                     </option>
                                 </select>
                                 {errors.attendance && (
-                                    <small className="invitation-form-error">
+                                    <small
+                                        id="rsvp-attendance-error"
+                                        className="invitation-form-error"
+                                    >
                                         {errors.attendance}
                                     </small>
                                 )}
@@ -301,9 +319,20 @@ function RsvpSection() {
                                         min="1"
                                         placeholder="1"
                                         required
+                                        aria-invalid={Boolean(
+                                            errors.guest_count,
+                                        )}
+                                        aria-describedby={
+                                            errors.guest_count
+                                                ? 'rsvp-guest-count-error'
+                                                : undefined
+                                        }
                                     />
                                     {errors.guest_count && (
-                                        <small className="invitation-form-error">
+                                        <small
+                                            id="rsvp-guest-count-error"
+                                            className="invitation-form-error"
+                                        >
                                             {errors.guest_count}
                                         </small>
                                     )}
@@ -323,9 +352,18 @@ function RsvpSection() {
                                     rows={3}
                                     maxLength={2000}
                                     placeholder="Leave a message for the couple"
+                                    aria-invalid={Boolean(errors.message)}
+                                    aria-describedby={
+                                        errors.message
+                                            ? 'rsvp-message-error'
+                                            : undefined
+                                    }
                                 />
                                 {errors.message && (
-                                    <small className="invitation-form-error">
+                                    <small
+                                        id="rsvp-message-error"
+                                        className="invitation-form-error"
+                                    >
                                         {errors.message}
                                     </small>
                                 )}
@@ -404,9 +442,18 @@ function WishesSection({ wishes }: { wishes: PublishedWish[] }) {
                                     autoComplete="name"
                                     placeholder="Full name"
                                     required
+                                    aria-invalid={Boolean(errors.name)}
+                                    aria-describedby={
+                                        errors.name
+                                            ? 'wish-name-error'
+                                            : undefined
+                                    }
                                 />
                                 {errors.name && (
-                                    <small className="invitation-form-error">
+                                    <small
+                                        id="wish-name-error"
+                                        className="invitation-form-error"
+                                    >
                                         {errors.name}
                                     </small>
                                 )}
@@ -424,9 +471,18 @@ function WishesSection({ wishes }: { wishes: PublishedWish[] }) {
                                     maxLength={2000}
                                     placeholder="Write a message for the couple"
                                     required
+                                    aria-invalid={Boolean(errors.message)}
+                                    aria-describedby={
+                                        errors.message
+                                            ? 'wish-message-error'
+                                            : undefined
+                                    }
                                 />
                                 {errors.message && (
-                                    <small className="invitation-form-error">
+                                    <small
+                                        id="wish-message-error"
+                                        className="invitation-form-error"
+                                    >
                                         {errors.message}
                                     </small>
                                 )}
@@ -451,11 +507,18 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
     const [isReady, setIsReady] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
+    const [audioUnavailable, setAudioUnavailable] = useState(false);
     const [copiedNumber, setCopiedNumber] = useState<string | null>(null);
+    const [copyFeedback, setCopyFeedback] = useState<string | null>(null);
+    const [copyFailed, setCopyFailed] = useState(false);
     const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(
         null,
     );
     const audioRef = useRef<HTMLAudioElement>(null);
+    const galleryTriggerRef = useRef<HTMLButtonElement>(null);
+    const lightboxCloseRef = useRef<HTMLButtonElement>(null);
+    const mainRef = useRef<HTMLElement>(null);
+    const musicControlRef = useRef<HTMLButtonElement>(null);
     const { cover } = invitation;
 
     useEffect(() => {
@@ -469,6 +532,12 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
             return;
         }
 
+        const originalOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        const focusFrame = window.requestAnimationFrame(() => {
+            lightboxCloseRef.current?.focus();
+        });
+
         const closeOnEscape = (event: KeyboardEvent) => {
             if (event.key === 'Escape') {
                 setSelectedImage(null);
@@ -477,8 +546,28 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
 
         document.addEventListener('keydown', closeOnEscape);
 
-        return () => document.removeEventListener('keydown', closeOnEscape);
+        return () => {
+            window.cancelAnimationFrame(focusFrame);
+            document.body.style.overflow = originalOverflow;
+            document.removeEventListener('keydown', closeOnEscape);
+            galleryTriggerRef.current?.focus();
+        };
     }, [selectedImage]);
+
+    useEffect(() => {
+        if (!isOpen) {
+            return;
+        }
+
+        const focusFrame = window.requestAnimationFrame(() => {
+            (audioUnavailable
+                ? mainRef.current
+                : musicControlRef.current
+            )?.focus();
+        });
+
+        return () => window.cancelAnimationFrame(focusFrame);
+    }, [audioUnavailable, isOpen]);
 
     function openInvitation() {
         setIsOpen(true);
@@ -517,12 +606,44 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
 
     async function copyAccountNumber(number: string) {
         try {
-            await navigator.clipboard.writeText(number);
+            if (navigator.clipboard?.writeText) {
+                await navigator.clipboard.writeText(number);
+            } else {
+                const textarea = document.createElement('textarea');
+                textarea.value = number;
+                textarea.setAttribute('readonly', '');
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                let copied = false;
+
+                try {
+                    textarea.select();
+                    copied = document.execCommand('copy');
+                } finally {
+                    textarea.remove();
+                }
+
+                if (!copied) {
+                    throw new Error('Clipboard copy failed');
+                }
+            }
+
             setCopiedNumber(number);
+            setCopyFeedback('Account number copied.');
+            setCopyFailed(false);
             window.setTimeout(() => setCopiedNumber(null), 1600);
         } catch {
             setCopiedNumber(null);
+            setCopyFailed(true);
+            setCopyFeedback(
+                'Copy is unavailable. Please select the account number manually.',
+            );
         }
+    }
+
+    function closeLightbox() {
+        setSelectedImage(null);
     }
 
     return (
@@ -535,12 +656,20 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
                         ref={audioRef}
                         preload="metadata"
                         src={invitation.audio}
+                        onEnded={() => setIsPlaying(false)}
+                        onError={() => {
+                            setAudioUnavailable(true);
+                            setIsPlaying(false);
+                        }}
                     />
 
                     <button
                         type="button"
                         className={`invitation-cover ${isOpen ? 'invitation-cover--hidden' : ''}`}
                         aria-label="Open wedding invitation"
+                        aria-hidden={isOpen}
+                        disabled={isOpen}
+                        tabIndex={isOpen ? -1 : 0}
                         onClick={openInvitation}
                     >
                         <span
@@ -598,23 +727,37 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
 
                     {isOpen && (
                         <main
+                            ref={mainRef}
                             className="invitation-opening invitation-content"
                             aria-label="Wedding invitation"
+                            tabIndex={-1}
                         >
                             <div className="invitation-music-bar">
                                 <button
+                                    ref={musicControlRef}
                                     type="button"
                                     className="invitation-music-control"
                                     aria-label={
-                                        isPlaying ? 'Pause music' : 'Play music'
+                                        audioUnavailable
+                                            ? 'Music unavailable'
+                                            : isPlaying
+                                              ? 'Pause music'
+                                              : 'Play music'
                                     }
                                     aria-pressed={isPlaying}
+                                    disabled={audioUnavailable}
                                     onClick={toggleMusic}
                                 >
-                                    <span aria-hidden="true">
-                                        {isPlaying ? '♫' : '♪'}
-                                    </span>
-                                    {isPlaying ? 'Music on' : 'Play music'}
+                                    {!audioUnavailable && (
+                                        <span aria-hidden="true">
+                                            {isPlaying ? '♫' : '♪'}
+                                        </span>
+                                    )}
+                                    {audioUnavailable
+                                        ? 'Music unavailable'
+                                        : isPlaying
+                                          ? 'Music on'
+                                          : 'Play music'}
                                 </button>
                             </div>
 
@@ -753,6 +896,18 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
                                             ),
                                         )}
                                     </div>
+                                    {copyFeedback && (
+                                        <p
+                                            className={
+                                                copyFailed
+                                                    ? 'invitation-form-copy-error'
+                                                    : 'invitation-form-success'
+                                            }
+                                            role="status"
+                                        >
+                                            {copyFeedback}
+                                        </p>
+                                    )}
                                 </section>
                             </Reveal>
 
@@ -771,9 +926,11 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
                                                 type="button"
                                                 key={image.src}
                                                 className="invitation-gallery-item"
-                                                onClick={() =>
-                                                    setSelectedImage(image)
-                                                }
+                                                onClick={(event) => {
+                                                    galleryTriggerRef.current =
+                                                        event.currentTarget;
+                                                    setSelectedImage(image);
+                                                }}
                                             >
                                                 <img
                                                     src={image.src}
@@ -797,18 +954,19 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
                             className="invitation-lightbox"
                             role="dialog"
                             aria-modal="true"
-                            aria-label="Gallery image"
-                            onClick={() => setSelectedImage(null)}
+                            aria-label="Gallery image viewer"
+                            onClick={closeLightbox}
                         >
                             <div
                                 className="invitation-lightbox-content"
                                 onClick={(event) => event.stopPropagation()}
                             >
                                 <button
+                                    ref={lightboxCloseRef}
                                     type="button"
                                     className="invitation-lightbox-close"
                                     aria-label="Close gallery image"
-                                    onClick={() => setSelectedImage(null)}
+                                    onClick={closeLightbox}
                                 >
                                     ×
                                 </button>
