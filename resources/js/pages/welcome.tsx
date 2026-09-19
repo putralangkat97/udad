@@ -518,6 +518,7 @@ function WishesSection({ wishes }: { wishes: PublishedWish[] }) {
 export default function Welcome({ invitation, wishes }: WelcomeProps) {
     const [isReady, setIsReady] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
+    const [isOpening, setIsOpening] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const [audioUnavailable, setAudioUnavailable] = useState(false);
     const [audioPlaybackFailed, setAudioPlaybackFailed] = useState(false);
@@ -646,17 +647,25 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
     }
 
     function openInvitation() {
-        setIsOpen(true);
+        if (isOpening || isOpen) {
+            return;
+        }
+
+        setIsOpening(true);
 
         const audio = audioRef.current;
 
         if (!audio) {
             setAudioUnavailable(true);
-            return;
+        } else {
+            audio.volume = 0.35;
+            playMusic();
         }
 
-        audio.volume = 0.35;
-        playMusic();
+        window.setTimeout(() => {
+            setIsOpening(false);
+            setIsOpen(true);
+        }, 900);
     }
 
     function toggleMusic() {
@@ -739,6 +748,16 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
                         className={`invitation-cover ${isOpen ? 'invitation-cover--hidden' : ''}`}
                         aria-hidden={isOpen}
                     >
+                        {isOpening && (
+                            <div
+                                className="invitation-confetti"
+                                aria-hidden="true"
+                            >
+                                {Array.from({ length: 18 }, (_, index) => (
+                                    <span key={index} />
+                                ))}
+                            </div>
+                        )}
                         {!isReady && (
                             <span className="invitation-loading" role="status">
                                 Loading invitation…
@@ -788,15 +807,14 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
                                     {cover.invitation}
                                 </span>
                             </span>
-
                         </span>
                         <button
                             type="button"
                             className="invitation-open-button"
                             aria-label="Open wedding invitation"
                             onClick={openInvitation}
-                            disabled={isOpen}
-                            tabIndex={isOpen ? -1 : 0}
+                            disabled={isOpening || isOpen}
+                            tabIndex={isOpening || isOpen ? -1 : 0}
                         >
                             <img src={cover.footerOrnament} alt="" />
                         </button>

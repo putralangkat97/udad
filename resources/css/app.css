@@ -241,6 +241,146 @@ body:has(.invitation-viewport) {
     transform: translateY(-100%);
 }
 
+.invitation-confetti {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.invitation-confetti span {
+    position: absolute;
+    top: 44%;
+    left: 50%;
+    width: 0.45rem;
+    height: 0.8rem;
+    background: var(--invitation-terracotta);
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    animation: invitation-confetti-fall 850ms ease-out forwards;
+}
+
+.invitation-confetti span:nth-child(3n) {
+    background: #c47b58;
+}
+
+.invitation-confetti span:nth-child(3n + 1) {
+    background: #d9a96f;
+}
+
+.invitation-confetti span:nth-child(2n) {
+    border-radius: 999px;
+}
+
+.invitation-confetti span:nth-child(1) {
+    --confetti-x: -9rem;
+    --confetti-y: -11rem;
+    --confetti-r: 120deg;
+}
+.invitation-confetti span:nth-child(2) {
+    --confetti-x: -7rem;
+    --confetti-y: -8rem;
+    --confetti-r: -80deg;
+    animation-delay: 30ms;
+}
+.invitation-confetti span:nth-child(3) {
+    --confetti-x: -5rem;
+    --confetti-y: -13rem;
+    --confetti-r: 70deg;
+    animation-delay: 60ms;
+}
+.invitation-confetti span:nth-child(4) {
+    --confetti-x: -3rem;
+    --confetti-y: -9rem;
+    --confetti-r: -120deg;
+    animation-delay: 90ms;
+}
+.invitation-confetti span:nth-child(5) {
+    --confetti-x: -1rem;
+    --confetti-y: -14rem;
+    --confetti-r: 90deg;
+    animation-delay: 120ms;
+}
+.invitation-confetti span:nth-child(6) {
+    --confetti-x: 1rem;
+    --confetti-y: -10rem;
+    --confetti-r: -70deg;
+    animation-delay: 150ms;
+}
+.invitation-confetti span:nth-child(7) {
+    --confetti-x: 3rem;
+    --confetti-y: -13rem;
+    --confetti-r: 140deg;
+    animation-delay: 180ms;
+}
+.invitation-confetti span:nth-child(8) {
+    --confetti-x: 5rem;
+    --confetti-y: -9rem;
+    --confetti-r: -100deg;
+    animation-delay: 210ms;
+}
+.invitation-confetti span:nth-child(9) {
+    --confetti-x: 7rem;
+    --confetti-y: -12rem;
+    --confetti-r: 80deg;
+    animation-delay: 240ms;
+}
+.invitation-confetti span:nth-child(10) {
+    --confetti-x: 9rem;
+    --confetti-y: -8rem;
+    --confetti-r: -140deg;
+    animation-delay: 270ms;
+}
+.invitation-confetti span:nth-child(11) {
+    --confetti-x: -10rem;
+    --confetti-y: -5rem;
+    --confetti-r: 60deg;
+    animation-delay: 300ms;
+}
+.invitation-confetti span:nth-child(12) {
+    --confetti-x: 10rem;
+    --confetti-y: -5rem;
+    --confetti-r: -60deg;
+    animation-delay: 330ms;
+}
+.invitation-confetti span:nth-child(13) {
+    --confetti-x: -6rem;
+    --confetti-y: -4rem;
+    --confetti-r: 110deg;
+    animation-delay: 360ms;
+}
+.invitation-confetti span:nth-child(14) {
+    --confetti-x: 6rem;
+    --confetti-y: -4rem;
+    --confetti-r: -110deg;
+    animation-delay: 390ms;
+}
+.invitation-confetti span:nth-child(15) {
+    --confetti-x: -4rem;
+    --confetti-y: -6rem;
+    --confetti-r: 130deg;
+    animation-delay: 420ms;
+}
+.invitation-confetti span:nth-child(16) {
+    --confetti-x: 4rem;
+    --confetti-y: -6rem;
+    --confetti-r: -130deg;
+    animation-delay: 450ms;
+}
+.invitation-confetti span:nth-child(17) {
+    --confetti-x: -8rem;
+    --confetti-y: -3rem;
+    --confetti-r: 75deg;
+    animation-delay: 480ms;
+}
+.invitation-confetti span:nth-child(18) {
+    --confetti-x: 8rem;
+    --confetti-y: -3rem;
+    --confetti-r: -75deg;
+    animation-delay: 510ms;
+}
+
 .invitation-cover-card {
     position: relative;
     display: flex;
@@ -1094,6 +1234,22 @@ body:has(.invitation-viewport) {
     }
 }
 
+@keyframes invitation-confetti-fall {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(
+                calc(-50% + var(--confetti-x)),
+                calc(-50% + var(--confetti-y))
+            )
+            rotate(var(--confetti-r));
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .invitation-cover,
     .invitation-cover-card,
@@ -1102,6 +1258,7 @@ body:has(.invitation-viewport) {
     }
 
     .invitation-open-button img,
+    .invitation-confetti span,
     .invitation-footer img {
         animation: none;
     }
