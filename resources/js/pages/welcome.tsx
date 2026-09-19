@@ -1,5 +1,6 @@
 import { Form, Head } from '@inertiajs/react';
 import { type ReactNode, useEffect, useRef, useState } from 'react';
+import Confetti from 'react-confetti';
 import RsvpController from '@/actions/App/Http/Controllers/RsvpController';
 import WishController from '@/actions/App/Http/Controllers/WishController';
 
@@ -521,6 +522,7 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
     const [isOpening, setIsOpening] = useState(false);
     const [isCoverFading, setIsCoverFading] = useState(false);
     const [isContentRevealing, setIsContentRevealing] = useState(false);
+    const [hasOpened, setHasOpened] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const [audioUnavailable, setAudioUnavailable] = useState(false);
     const [audioPlaybackFailed, setAudioPlaybackFailed] = useState(false);
@@ -690,6 +692,7 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
         setIsOpening(true);
         setIsCoverFading(false);
         setIsContentRevealing(false);
+        setHasOpened(true);
 
         const audio = audioRef.current;
 
@@ -771,6 +774,21 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
             <Head title={invitation.title} />
 
             <div className="invitation-viewport">
+                {hasOpened && (
+                    <Confetti
+                        recycle
+                        numberOfPieces={isOpening ? 180 : 55}
+                        gravity={0.16}
+                        wind={0.01}
+                        initialVelocityY={{ min: 8, max: 18 }}
+                        colors={['#984a3d', '#c47b58', '#d9a96f', '#fff9ec']}
+                        style={{
+                            pointerEvents: 'none',
+                            position: 'fixed',
+                            zIndex: 20,
+                        }}
+                    />
+                )}
                 <div className="invitation-canvas">
                     <audio
                         ref={audioRef}
@@ -788,16 +806,6 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
                         className={`invitation-cover ${isCoverFading || isOpen ? 'invitation-cover--hidden' : ''}`}
                         aria-hidden={isOpening || isOpen}
                     >
-                        {isOpening && (
-                            <div
-                                className="invitation-confetti"
-                                aria-hidden="true"
-                            >
-                                {Array.from({ length: 18 }, (_, index) => (
-                                    <span key={index} />
-                                ))}
-                            </div>
-                        )}
                         {!isReady && (
                             <span className="invitation-loading" role="status">
                                 Loading invitation…
