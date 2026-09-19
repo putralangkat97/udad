@@ -57,5 +57,9 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('rsvp', function (Request $request): Limit {
             return Limit::perMinute(10)->by('rsvp|'.$request->ip());
         });
+
+        RateLimiter::for('wishes', function (Request $request): Limit {
+            return Limit::perMinute(10)->by('wishes|'.$request->ip());
+        });
     }
 }

@@ -1,6 +1,7 @@
 import { Form, Head } from '@inertiajs/react';
 import { type ReactNode, useEffect, useRef, useState } from 'react';
 import RsvpController from '@/actions/App/Http/Controllers/RsvpController';
+import WishController from '@/actions/App/Http/Controllers/WishController';
 
 type CoupleProfile = {
     role: string;
@@ -27,6 +28,11 @@ type GiftAccount = {
 type GalleryImage = {
     src: string;
     alt: string;
+};
+
+type PublishedWish = {
+    name: string;
+    message: string;
 };
 
 type Invitation = {
@@ -71,6 +77,7 @@ type Invitation = {
 
 type WelcomeProps = {
     invitation: Invitation;
+    wishes: PublishedWish[];
 };
 
 type RemainingTime = {
@@ -339,7 +346,108 @@ function RsvpSection() {
     );
 }
 
-export default function Welcome({ invitation }: WelcomeProps) {
+function WishesSection({ wishes }: { wishes: PublishedWish[] }) {
+    return (
+        <Reveal>
+            <section
+                className="invitation-wishes-section"
+                aria-labelledby="wishes-heading"
+            >
+                <p className="invitation-section-kicker">From our loved ones</p>
+                <h2 id="wishes-heading">Wishes</h2>
+
+                <div className="invitation-wishes-list" aria-live="polite">
+                    {wishes.length === 0 ? (
+                        <p className="invitation-wishes-empty">
+                            Be the first to leave a wish for the couple.
+                        </p>
+                    ) : (
+                        wishes.map((wish, index) => (
+                            <article
+                                key={`${wish.name}-${index}`}
+                                className="invitation-wish-card"
+                            >
+                                <p>{wish.message}</p>
+                                <span>— {wish.name}</span>
+                            </article>
+                        ))
+                    )}
+                </div>
+
+                <Form
+                    {...WishController.store.form()}
+                    resetOnSuccess={['name', 'message']}
+                    disableWhileProcessing
+                    className="invitation-wish-form"
+                >
+                    {({ processing, errors, wasSuccessful }) => (
+                        <>
+                            {wasSuccessful && (
+                                <p
+                                    className="invitation-form-success"
+                                    role="status"
+                                >
+                                    Thank you! Your wish is waiting for
+                                    approval.
+                                </p>
+                            )}
+
+                            <label
+                                className="invitation-form-field"
+                                htmlFor="wish-name"
+                            >
+                                <span>Your name</span>
+                                <input
+                                    id="wish-name"
+                                    name="name"
+                                    type="text"
+                                    autoComplete="name"
+                                    placeholder="Full name"
+                                    required
+                                />
+                                {errors.name && (
+                                    <small className="invitation-form-error">
+                                        {errors.name}
+                                    </small>
+                                )}
+                            </label>
+
+                            <label
+                                className="invitation-form-field"
+                                htmlFor="wish-message"
+                            >
+                                <span>Your wish</span>
+                                <textarea
+                                    id="wish-message"
+                                    name="message"
+                                    rows={3}
+                                    maxLength={2000}
+                                    placeholder="Write a message for the couple"
+                                    required
+                                />
+                                {errors.message && (
+                                    <small className="invitation-form-error">
+                                        {errors.message}
+                                    </small>
+                                )}
+                            </label>
+
+                            <button
+                                type="submit"
+                                className="invitation-rsvp-submit"
+                                disabled={processing}
+                            >
+                                {processing ? 'Sending...' : 'Send Wish'}
+                            </button>
+                        </>
+                    )}
+                </Form>
+            </section>
+        </Reveal>
+    );
+}
+
+export default function Welcome({ invitation, wishes }: WelcomeProps) {
     const [isReady, setIsReady] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -599,6 +707,8 @@ export default function Welcome({ invitation }: WelcomeProps) {
                             </Reveal>
 
                             <RsvpSection />
+
+                            <WishesSection wishes={wishes} />
 
                             <Reveal>
                                 <section
