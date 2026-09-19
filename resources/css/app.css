@@ -1,0 +1,426 @@
+@import 'tailwindcss';
+
+@import 'tw-animate-css';
+
+@font-face {
+    font-family: 'Invitation Cooper';
+    src: url('/invitation-assets/temp/image/cherry/COOPBL.ttf')
+        format('truetype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Invitation MoreSugar';
+    src: url('/invitation-assets/temp/image/undersea/MoreSugar-Regular.ttf')
+        format('truetype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Invitation Kristen';
+    src: url('/invitation-assets/temp/image/cherry/ITCKRIST.TTF')
+        format('truetype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Invitation Pecita';
+    src: url('/invitation-assets/temp/image/cherry/Pecita.otf')
+        format('opentype');
+    font-display: swap;
+}
+
+@source '../views';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+    --font-sans:
+        'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
+        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+        'Noto Color Emoji';
+
+    --radius-lg: var(--radius);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-sm: calc(var(--radius) - 4px);
+
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.145 0 0);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.145 0 0);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.145 0 0);
+    --primary: oklch(0.205 0 0);
+    --primary-foreground: oklch(0.985 0 0);
+    --secondary: oklch(0.97 0 0);
+    --secondary-foreground: oklch(0.205 0 0);
+    --muted: oklch(0.97 0 0);
+    --muted-foreground: oklch(0.556 0 0);
+    --accent: oklch(0.97 0 0);
+    --accent-foreground: oklch(0.205 0 0);
+    --destructive: oklch(0.577 0.245 27.325);
+    --destructive-foreground: oklch(0.577 0.245 27.325);
+    --border: oklch(0.922 0 0);
+    --input: oklch(0.922 0 0);
+    --ring: oklch(0.87 0 0);
+    --chart-1: oklch(0.646 0.222 41.116);
+    --chart-2: oklch(0.6 0.118 184.704);
+    --chart-3: oklch(0.398 0.07 227.392);
+    --chart-4: oklch(0.828 0.189 84.429);
+    --chart-5: oklch(0.769 0.188 70.08);
+    --radius: 0.625rem;
+    --sidebar: oklch(0.985 0 0);
+    --sidebar-foreground: oklch(0.145 0 0);
+    --sidebar-primary: oklch(0.205 0 0);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.97 0 0);
+    --sidebar-accent-foreground: oklch(0.205 0 0);
+    --sidebar-border: oklch(0.922 0 0);
+    --sidebar-ring: oklch(0.87 0 0);
+}
+
+.dark {
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.145 0 0);
+    --card-foreground: oklch(0.985 0 0);
+    --popover: oklch(0.145 0 0);
+    --popover-foreground: oklch(0.985 0 0);
+    --primary: oklch(0.985 0 0);
+    --primary-foreground: oklch(0.205 0 0);
+    --secondary: oklch(0.269 0 0);
+    --secondary-foreground: oklch(0.985 0 0);
+    --muted: oklch(0.269 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+    --accent: oklch(0.269 0 0);
+    --accent-foreground: oklch(0.985 0 0);
+    --destructive: oklch(0.396 0.141 25.723);
+    --destructive-foreground: oklch(0.637 0.237 25.331);
+    --border: oklch(0.269 0 0);
+    --input: oklch(0.269 0 0);
+    --ring: oklch(0.439 0 0);
+    --chart-1: oklch(0.488 0.243 264.376);
+    --chart-2: oklch(0.696 0.17 162.48);
+    --chart-3: oklch(0.769 0.188 70.08);
+    --chart-4: oklch(0.627 0.265 303.9);
+    --chart-5: oklch(0.645 0.246 16.439);
+    --sidebar: oklch(0.205 0 0);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(0.985 0 0);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(0.269 0 0);
+    --sidebar-ring: oklch(0.439 0 0);
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
+}
+
+:root {
+    --invitation-cream: #fcf1dd;
+    --invitation-terracotta: #97463c;
+    --invitation-ink: #3f1f1a;
+    --invitation-night: #1d1211;
+}
+
+body:has(.invitation-viewport) {
+    margin: 0;
+    background: var(--invitation-night);
+}
+
+.invitation-viewport {
+    min-height: 100svh;
+    overflow-x: hidden;
+    background: var(--invitation-night);
+}
+
+.invitation-canvas {
+    position: relative;
+    width: min(100%, 440px);
+    min-height: 100svh;
+    overflow: hidden;
+    background: var(--invitation-cream);
+    color: var(--invitation-terracotta);
+    box-shadow: 0 0 80px rgb(0 0 0 / 30%);
+}
+
+.invitation-cover {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    width: 100%;
+    min-height: 100svh;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    padding: 0;
+    background: var(--invitation-cream);
+    color: inherit;
+    text-align: center;
+    transition:
+        opacity 800ms ease,
+        transform 800ms ease;
+}
+
+.invitation-cover:focus-visible,
+.invitation-music-control:focus-visible {
+    outline: 3px solid #d99b61;
+    outline-offset: -6px;
+}
+
+.invitation-cover--hidden {
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(-100%);
+}
+
+.invitation-cover-card {
+    position: relative;
+    display: flex;
+    width: calc(100% - 2.5rem);
+    min-height: min(760px, calc(100svh - 2.5rem));
+    align-items: center;
+    justify-content: center;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+        opacity 600ms ease,
+        transform 600ms ease;
+}
+
+.invitation-cover-card--ready {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.invitation-cover-content {
+    display: flex;
+    width: 66%;
+    flex-direction: column;
+    align-items: center;
+    padding: 3.5rem 0 2rem;
+}
+
+.invitation-eyebrow,
+.invitation-date,
+.invitation-invitation {
+    font-family: 'Invitation MoreSugar', Georgia, serif;
+}
+
+.invitation-eyebrow {
+    font-size: clamp(0.95rem, 4vw, 1.15rem);
+}
+
+.invitation-cover-title {
+    margin-top: -0.35rem;
+    font-family: 'Invitation Kristen', Georgia, serif;
+    font-size: clamp(1.7rem, 9vw, 2.4rem);
+    line-height: 1;
+}
+
+.invitation-cover-portraits {
+    position: relative;
+    display: block;
+    width: 100%;
+    margin: 1rem 0 0.25rem;
+}
+
+.invitation-cover-ornament {
+    display: block;
+    width: 100%;
+}
+
+.invitation-cover-photo {
+    position: absolute;
+    top: 12%;
+    width: 23%;
+    border: 3px solid #fff9ec;
+    box-shadow: 0 4px 10px rgb(63 31 26 / 20%);
+}
+
+.invitation-cover-photo--bride {
+    left: 24%;
+    transform: rotate(2deg);
+}
+
+.invitation-cover-photo--groom {
+    left: 56%;
+    width: 27%;
+    transform: rotate(-3.4deg);
+}
+
+.invitation-names {
+    margin-top: 0.25rem;
+    font-family: 'Invitation Pecita', cursive;
+    font-size: clamp(2.15rem, 12vw, 3.25rem);
+    line-height: 1;
+}
+
+.invitation-date {
+    margin-top: 0.35rem;
+    font-size: 1.05rem;
+}
+
+.invitation-guest {
+    margin-top: 1rem;
+    font-family: 'Invitation Kristen', Georgia, serif;
+    font-size: 1.05rem;
+    line-height: 1;
+}
+
+.invitation-guest span {
+    font-family: 'Invitation MoreSugar', Georgia, serif;
+}
+
+.invitation-invitation {
+    margin-top: 0.3rem;
+    font-size: 1rem;
+}
+
+.invitation-cover-footer {
+    position: absolute;
+    bottom: 6%;
+    left: 45%;
+    width: 10%;
+    animation: invitation-swing 3s ease-in-out infinite;
+}
+
+.invitation-opening {
+    min-height: 100svh;
+    padding: 1rem 1rem 3rem;
+    background: var(--invitation-cream);
+}
+
+.invitation-music-control {
+    display: inline-flex;
+    min-height: 2.25rem;
+    cursor: pointer;
+    align-items: center;
+    gap: 0.4rem;
+    border: 1px solid var(--invitation-terracotta);
+    border-radius: 999px;
+    padding: 0.3rem 0.8rem;
+    background: var(--invitation-cream);
+    color: var(--invitation-terracotta);
+    font-family: 'Invitation MoreSugar', Georgia, serif;
+    font-size: 0.75rem;
+}
+
+.invitation-music-control span {
+    font-size: 1.1rem;
+    line-height: 1;
+}
+
+.invitation-opening-card {
+    display: flex;
+    min-height: calc(100svh - 6rem);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.invitation-opening-kicker {
+    font-family: 'Invitation MoreSugar', Georgia, serif;
+    font-size: 0.95rem;
+}
+
+.invitation-opening-card h1 {
+    margin: 0.25rem 0;
+    font-family: 'Invitation Pecita', cursive;
+    font-size: clamp(2.75rem, 15vw, 4rem);
+    font-weight: 400;
+    line-height: 1;
+}
+
+.invitation-opening-card p:not(.invitation-opening-kicker) {
+    max-width: 18rem;
+    font-family: 'Invitation Kristen', Georgia, serif;
+    font-size: 1rem;
+}
+
+.invitation-opening-card img {
+    width: 3rem;
+    margin-top: 1.5rem;
+}
+
+@keyframes invitation-swing {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(0.4rem);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .invitation-cover,
+    .invitation-cover-card {
+        transition: none;
+    }
+
+    .invitation-cover-footer {
+        animation: none;
+    }
+}
