@@ -746,7 +746,7 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
 
                     <div
                         className={`invitation-cover ${isOpen ? 'invitation-cover--hidden' : ''}`}
-                        aria-hidden={isOpen}
+                        aria-hidden={isOpening || isOpen}
                     >
                         {isOpening && (
                             <div
@@ -820,7 +820,7 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
                         </button>
                     </div>
 
-                    {isOpen && (
+                    {(isOpening || isOpen) && (
                         <main
                             ref={mainRef}
                             className="invitation-opening invitation-content"
