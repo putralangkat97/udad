@@ -353,26 +353,24 @@ body:has(.invitation-viewport) {
     font-size: 1rem;
 }
 
-.invitation-cover-footer {
-    position: absolute;
-    bottom: 6%;
-    left: 45%;
-    width: 10%;
-    animation: invitation-swing 3s ease-in-out infinite;
-}
-
 .invitation-open-button {
     position: absolute;
-    bottom: 1.75rem;
+    bottom: 1.5rem;
+    left: 50%;
     z-index: 1;
+    display: block;
+    width: 3.5rem;
     cursor: pointer;
     border: 0;
-    border-radius: 999px;
-    padding: 0.7rem 1.35rem;
-    background: var(--invitation-terracotta);
-    color: var(--invitation-paper);
-    font-family: 'Invitation MoreSugar', Georgia, serif;
-    font-size: 0.78rem;
+    padding: 0;
+    background: transparent;
+    transform: translateX(-50%);
+}
+
+.invitation-open-button img {
+    display: block;
+    width: 100%;
+    animation: invitation-swing 3s ease-in-out infinite;
 }
 
 .invitation-open-button:disabled {
@@ -1103,7 +1101,7 @@ body:has(.invitation-viewport) {
         transition: none;
     }
 
-    .invitation-cover-footer,
+    .invitation-open-button img,
     .invitation-footer img {
         animation: none;
     }

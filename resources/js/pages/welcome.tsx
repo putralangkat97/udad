@@ -789,20 +789,16 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
                                 </span>
                             </span>
 
-                            <img
-                                src={cover.footerOrnament}
-                                alt=""
-                                className="invitation-cover-footer"
-                            />
                         </span>
                         <button
                             type="button"
                             className="invitation-open-button"
+                            aria-label="Open wedding invitation"
                             onClick={openInvitation}
                             disabled={isOpen}
                             tabIndex={isOpen ? -1 : 0}
                         >
-                            Open invitation
+                            <img src={cover.footerOrnament} alt="" />
                         </button>
                     </div>
 
