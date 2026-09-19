@@ -1,0 +1,32 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('rsvps', function (Blueprint $table) {
+            $table->id();
+            $table->string('invitation_key', 100)->index();
+            $table->string('name');
+            $table->string('attendance', 30);
+            $table->unsignedInteger('guest_count')->nullable();
+            $table->text('message')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('rsvps');
+    }
+};

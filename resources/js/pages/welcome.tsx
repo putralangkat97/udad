@@ -1,5 +1,6 @@
-import { Head } from '@inertiajs/react';
+import { Form, Head } from '@inertiajs/react';
 import { type ReactNode, useEffect, useRef, useState } from 'react';
+import RsvpController from '@/actions/App/Http/Controllers/RsvpController';
 
 type CoupleProfile = {
     role: string;
@@ -191,6 +192,150 @@ function ProfileCard({
                 />
             </div>
         </div>
+    );
+}
+
+function RsvpSection() {
+    const [attendance, setAttendance] = useState('attending');
+
+    return (
+        <Reveal>
+            <section
+                className="invitation-rsvp-section"
+                aria-labelledby="rsvp-heading"
+            >
+                <p className="invitation-section-kicker">
+                    We would love to hear from you
+                </p>
+                <h2 id="rsvp-heading">RSVP</h2>
+                <p className="invitation-rsvp-intro">
+                    Please let us know if you can join our celebration.
+                </p>
+
+                <Form
+                    {...RsvpController.store.form()}
+                    resetOnSuccess={['name', 'guest_count', 'message']}
+                    disableWhileProcessing
+                    className="invitation-rsvp-form"
+                >
+                    {({ processing, errors, wasSuccessful }) => (
+                        <>
+                            {wasSuccessful && (
+                                <p
+                                    className="invitation-form-success"
+                                    role="status"
+                                >
+                                    Thank you! Your RSVP has been received.
+                                </p>
+                            )}
+
+                            <label
+                                className="invitation-form-field"
+                                htmlFor="rsvp-name"
+                            >
+                                <span>Your name</span>
+                                <input
+                                    id="rsvp-name"
+                                    name="name"
+                                    type="text"
+                                    autoComplete="name"
+                                    placeholder="Full name"
+                                    required
+                                />
+                                {errors.name && (
+                                    <small className="invitation-form-error">
+                                        {errors.name}
+                                    </small>
+                                )}
+                            </label>
+
+                            <label
+                                className="invitation-form-field"
+                                htmlFor="rsvp-attendance"
+                            >
+                                <span>Will you attend?</span>
+                                <select
+                                    id="rsvp-attendance"
+                                    name="attendance"
+                                    value={attendance}
+                                    onChange={(event) =>
+                                        setAttendance(event.target.value)
+                                    }
+                                    required
+                                >
+                                    <option value="attending">
+                                        Yes, I will attend
+                                    </option>
+                                    <option value="not_attending">
+                                        Sorry, I cannot attend
+                                    </option>
+                                    <option value="maybe">
+                                        I am not sure yet
+                                    </option>
+                                </select>
+                                {errors.attendance && (
+                                    <small className="invitation-form-error">
+                                        {errors.attendance}
+                                    </small>
+                                )}
+                            </label>
+
+                            {attendance === 'attending' && (
+                                <label
+                                    className="invitation-form-field"
+                                    htmlFor="rsvp-guest-count"
+                                >
+                                    <span>Number of guests</span>
+                                    <input
+                                        id="rsvp-guest-count"
+                                        name="guest_count"
+                                        type="number"
+                                        inputMode="numeric"
+                                        min="1"
+                                        placeholder="1"
+                                        required
+                                    />
+                                    {errors.guest_count && (
+                                        <small className="invitation-form-error">
+                                            {errors.guest_count}
+                                        </small>
+                                    )}
+                                </label>
+                            )}
+
+                            <label
+                                className="invitation-form-field"
+                                htmlFor="rsvp-message"
+                            >
+                                <span>
+                                    Message <em>(optional)</em>
+                                </span>
+                                <textarea
+                                    id="rsvp-message"
+                                    name="message"
+                                    rows={3}
+                                    maxLength={2000}
+                                    placeholder="Leave a message for the couple"
+                                />
+                                {errors.message && (
+                                    <small className="invitation-form-error">
+                                        {errors.message}
+                                    </small>
+                                )}
+                            </label>
+
+                            <button
+                                type="submit"
+                                className="invitation-rsvp-submit"
+                                disabled={processing}
+                            >
+                                {processing ? 'Sending...' : 'Send RSVP'}
+                            </button>
+                        </>
+                    )}
+                </Form>
+            </section>
+        </Reveal>
     );
 }
 
@@ -452,6 +597,8 @@ export default function Welcome({ invitation }: WelcomeProps) {
                                     </div>
                                 </section>
                             </Reveal>
+
+                            <RsvpSection />
 
                             <Reveal>
                                 <section
