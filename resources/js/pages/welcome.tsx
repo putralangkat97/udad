@@ -508,6 +508,7 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const [audioUnavailable, setAudioUnavailable] = useState(false);
+    const [audioPlaybackFailed, setAudioPlaybackFailed] = useState(false);
     const [copiedNumber, setCopiedNumber] = useState<string | null>(null);
     const [copyFeedback, setCopyFeedback] = useState<string | null>(null);
     const [copyFailed, setCopyFailed] = useState(false);
@@ -517,39 +518,82 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
     const audioRef = useRef<HTMLAudioElement>(null);
     const galleryTriggerRef = useRef<HTMLButtonElement>(null);
     const lightboxCloseRef = useRef<HTMLButtonElement>(null);
+    const lightboxRef = useRef<HTMLDialogElement>(null);
     const mainRef = useRef<HTMLElement>(null);
     const musicControlRef = useRef<HTMLButtonElement>(null);
     const { cover } = invitation;
 
     useEffect(() => {
-        const readyTimer = window.setTimeout(() => setIsReady(true), 350);
+        const sources = [
+            cover.frame,
+            cover.ornament,
+            cover.bridePhoto,
+            cover.groomPhoto,
+            cover.footerOrnament,
+        ];
+        const images = sources.map(() => new window.Image());
+        let pending = sources.length;
+        let cancelled = false;
 
-        return () => window.clearTimeout(readyTimer);
-    }, []);
+        setIsReady(false);
+
+        const markReady = () => {
+            pending -= 1;
+
+            if (pending <= 0 && !cancelled) {
+                setIsReady(true);
+            }
+        };
+
+        images.forEach((image, index) => {
+            image.onload = markReady;
+            image.onerror = markReady;
+            image.src = sources[index];
+        });
+
+        const fallbackTimer = window.setTimeout(() => {
+            if (!cancelled) {
+                setIsReady(true);
+            }
+        }, 1200);
+
+        return () => {
+            cancelled = true;
+            window.clearTimeout(fallbackTimer);
+            images.forEach((image) => {
+                image.onload = null;
+                image.onerror = null;
+            });
+        };
+    }, [
+        cover.bridePhoto,
+        cover.footerOrnament,
+        cover.frame,
+        cover.groomPhoto,
+        cover.ornament,
+    ]);
 
     useEffect(() => {
         if (!selectedImage) {
             return;
         }
 
+        const dialog = lightboxRef.current;
         const originalOverflow = document.body.style.overflow;
         document.body.style.overflow = 'hidden';
+
+        dialog?.showModal();
+
         const focusFrame = window.requestAnimationFrame(() => {
             lightboxCloseRef.current?.focus();
         });
 
-        const closeOnEscape = (event: KeyboardEvent) => {
-            if (event.key === 'Escape') {
-                setSelectedImage(null);
-            }
-        };
-
-        document.addEventListener('keydown', closeOnEscape);
-
         return () => {
             window.cancelAnimationFrame(focusFrame);
+            if (dialog?.open) {
+                dialog.close();
+            }
             document.body.style.overflow = originalOverflow;
-            document.removeEventListener('keydown', closeOnEscape);
             galleryTriggerRef.current?.focus();
         };
     }, [selectedImage]);
@@ -569,20 +613,38 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
         return () => window.cancelAnimationFrame(focusFrame);
     }, [audioUnavailable, isOpen]);
 
+    function playMusic() {
+        const audio = audioRef.current;
+
+        if (!audio) {
+            setAudioUnavailable(true);
+            return;
+        }
+
+        void audio
+            .play()
+            .then(() => {
+                setIsPlaying(true);
+                setAudioPlaybackFailed(false);
+            })
+            .catch(() => {
+                setIsPlaying(false);
+                setAudioPlaybackFailed(true);
+            });
+    }
+
     function openInvitation() {
         setIsOpen(true);
 
         const audio = audioRef.current;
 
         if (!audio) {
+            setAudioUnavailable(true);
             return;
         }
 
         audio.volume = 0.35;
-        void audio
-            .play()
-            .then(() => setIsPlaying(true))
-            .catch(() => setIsPlaying(false));
+        playMusic();
     }
 
     function toggleMusic() {
@@ -598,10 +660,7 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
             return;
         }
 
-        void audio
-            .play()
-            .then(() => setIsPlaying(true))
-            .catch(() => setIsPlaying(false));
+        playMusic();
     }
 
     async function copyAccountNumber(number: string) {
@@ -659,6 +718,7 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
                         onEnded={() => setIsPlaying(false)}
                         onError={() => {
                             setAudioUnavailable(true);
+                            setAudioPlaybackFailed(false);
                             setIsPlaying(false);
                         }}
                     />
@@ -672,6 +732,11 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
                         tabIndex={isOpen ? -1 : 0}
                         onClick={openInvitation}
                     >
+                        {!isReady && (
+                            <span className="invitation-loading" role="status">
+                                Loading invitation…
+                            </span>
+                        )}
                         <span
                             className={`invitation-cover-card ${isReady ? 'invitation-cover-card--ready' : ''}`}
                             style={{ backgroundImage: `url("${cover.frame}")` }}
@@ -740,24 +805,29 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
                                     aria-label={
                                         audioUnavailable
                                             ? 'Music unavailable'
-                                            : isPlaying
-                                              ? 'Pause music'
-                                              : 'Play music'
+                                            : audioPlaybackFailed
+                                              ? 'Try music again'
+                                              : isPlaying
+                                                ? 'Pause music'
+                                                : 'Play music'
                                     }
                                     aria-pressed={isPlaying}
                                     disabled={audioUnavailable}
                                     onClick={toggleMusic}
                                 >
-                                    {!audioUnavailable && (
-                                        <span aria-hidden="true">
-                                            {isPlaying ? '♫' : '♪'}
-                                        </span>
-                                    )}
+                                    {!audioUnavailable &&
+                                        !audioPlaybackFailed && (
+                                            <span aria-hidden="true">
+                                                {isPlaying ? '♫' : '♪'}
+                                            </span>
+                                        )}
                                     {audioUnavailable
                                         ? 'Music unavailable'
-                                        : isPlaying
-                                          ? 'Music on'
-                                          : 'Play music'}
+                                        : audioPlaybackFailed
+                                          ? 'Try music again'
+                                          : isPlaying
+                                            ? 'Music on'
+                                            : 'Play music'}
                                 </button>
                             </div>
 
@@ -814,6 +884,7 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
                                                 href={event.maps}
                                                 target="_blank"
                                                 rel="noreferrer"
+                                                aria-label={`Open map for ${event.name}`}
                                             >
                                                 Location
                                             </a>
@@ -881,6 +952,12 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
                                                     </small>
                                                     <button
                                                         type="button"
+                                                        aria-label={
+                                                            copiedNumber ===
+                                                            account.number
+                                                                ? `Copied ${account.bank} account number`
+                                                                : `Copy ${account.bank} account number`
+                                                        }
                                                         onClick={() =>
                                                             void copyAccountNumber(
                                                                 account.number,
@@ -950,17 +1027,23 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
                     )}
 
                     {selectedImage && (
-                        <div
+                        <dialog
+                            ref={lightboxRef}
                             className="invitation-lightbox"
                             role="dialog"
                             aria-modal="true"
                             aria-label="Gallery image viewer"
-                            onClick={closeLightbox}
+                            onCancel={(event) => {
+                                event.preventDefault();
+                                closeLightbox();
+                            }}
+                            onClick={(event) => {
+                                if (event.target === event.currentTarget) {
+                                    closeLightbox();
+                                }
+                            }}
                         >
-                            <div
-                                className="invitation-lightbox-content"
-                                onClick={(event) => event.stopPropagation()}
-                            >
+                            <div className="invitation-lightbox-content">
                                 <button
                                     ref={lightboxCloseRef}
                                     type="button"
@@ -975,7 +1058,7 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
                                     alt={selectedImage.alt}
                                 />
                             </div>
-                        </div>
+                        </dialog>
                     )}
                 </div>
             </div>

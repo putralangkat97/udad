@@ -224,9 +224,13 @@ body:has(.invitation-viewport) {
 .invitation-rsvp-submit:focus-visible,
 .invitation-gift-card button:focus-visible,
 .invitation-gallery-item:focus-visible,
-.invitation-event-card a:focus-visible,
+.invitation-event-card a:focus-visible {
+    outline: 3px solid var(--invitation-terracotta);
+    outline-offset: 2px;
+}
+
 .invitation-lightbox-close:focus-visible {
-    outline: 3px solid #d99b61;
+    outline: 3px solid #fff9ec;
     outline-offset: 2px;
 }
 
@@ -251,6 +255,12 @@ body:has(.invitation-viewport) {
     transition:
         opacity 600ms ease,
         transform 600ms ease;
+}
+
+.invitation-loading {
+    position: absolute;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
+    font-size: 0.78rem;
 }
 
 .invitation-cover-card--ready {
@@ -700,7 +710,7 @@ body:has(.invitation-viewport) {
 .invitation-form-field input:focus,
 .invitation-form-field select:focus,
 .invitation-form-field textarea:focus {
-    outline: 2px solid #d99b61;
+    outline: 2px solid var(--invitation-terracotta);
     outline-offset: 2px;
 }
 
@@ -915,10 +925,20 @@ body:has(.invitation-viewport) {
     inset: 0;
     z-index: 10;
     display: grid;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    border: 0;
     place-items: center;
     padding: 1rem;
     background: rgb(29 18 17 / 88%);
     overscroll-behavior: contain;
+}
+
+.invitation-lightbox::backdrop {
+    background: transparent;
 }
 
 .invitation-lightbox-content {

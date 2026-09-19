@@ -35,6 +35,33 @@ test('the public invitation exposes only published wishes', function () {
     });
 });
 
+test('published wish content is not emitted as executable html', function () {
+    Wish::create([
+        'invitation_key' => 'latif-aci',
+        'name' => '<img src=x onerror=alert(1)>',
+        'message' => '<script>alert(1)</script>',
+        'status' => Wish::STATUS_PUBLISHED,
+    ]);
+
+    $this->get(route('home'))
+        ->assertDontSeeHtml('<img src=x onerror=alert(1)>')
+        ->assertDontSeeHtml('<script>alert(1)</script>');
+});
+
+test('pending wish content is not emitted as executable moderation html', function () {
+    Wish::create([
+        'invitation_key' => 'latif-aci',
+        'name' => '<img src=x onerror=alert(2)>',
+        'message' => '<script>alert(2)</script>',
+        'status' => Wish::STATUS_PENDING,
+    ]);
+
+    $this->actingAs(User::factory()->create())
+        ->get(route('moderation.wishes.index'))
+        ->assertDontSeeHtml('<img src=x onerror=alert(2)>')
+        ->assertDontSeeHtml('<script>alert(2)</script>');
+});
+
 test('guests can submit a wish without authentication', function () {
     $response = $this
         ->from(route('home'))
