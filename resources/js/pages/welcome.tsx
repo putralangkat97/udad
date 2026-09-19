@@ -519,6 +519,7 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
     const [isReady, setIsReady] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [isOpening, setIsOpening] = useState(false);
+    const [isCoverFading, setIsCoverFading] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const [audioUnavailable, setAudioUnavailable] = useState(false);
     const [audioPlaybackFailed, setAudioPlaybackFailed] = useState(false);
@@ -652,6 +653,7 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
         }
 
         setIsOpening(true);
+        setIsCoverFading(false);
 
         const audio = audioRef.current;
 
@@ -662,10 +664,11 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
             playMusic();
         }
 
+        window.setTimeout(() => setIsCoverFading(true), 300);
         window.setTimeout(() => {
             setIsOpening(false);
             setIsOpen(true);
-        }, 900);
+        }, 2500);
     }
 
     function toggleMusic() {
@@ -745,7 +748,7 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
                     />
 
                     <div
-                        className={`invitation-cover ${isOpening || isOpen ? 'invitation-cover--hidden' : ''}`}
+                        className={`invitation-cover ${isCoverFading || isOpen ? 'invitation-cover--hidden' : ''}`}
                         aria-hidden={isOpening || isOpen}
                     >
                         {isOpening && (
