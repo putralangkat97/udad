@@ -220,7 +220,7 @@ body:has(.invitation-viewport) {
         transform 800ms ease;
 }
 
-.invitation-cover:focus-visible,
+.invitation-open-button:focus-visible,
 .invitation-music-control:focus-visible,
 .invitation-rsvp-submit:focus-visible,
 .invitation-gift-card button:focus-visible,
@@ -359,6 +359,24 @@ body:has(.invitation-viewport) {
     left: 45%;
     width: 10%;
     animation: invitation-swing 3s ease-in-out infinite;
+}
+
+.invitation-open-button {
+    position: absolute;
+    bottom: 1.75rem;
+    z-index: 1;
+    cursor: pointer;
+    border: 0;
+    border-radius: 999px;
+    padding: 0.7rem 1.35rem;
+    background: var(--invitation-terracotta);
+    color: var(--invitation-paper);
+    font-family: 'Invitation MoreSugar', Georgia, serif;
+    font-size: 0.78rem;
+}
+
+.invitation-open-button:disabled {
+    cursor: default;
 }
 
 .invitation-opening {

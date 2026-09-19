@@ -735,14 +735,9 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
                         }}
                     />
 
-                    <button
-                        type="button"
+                    <div
                         className={`invitation-cover ${isOpen ? 'invitation-cover--hidden' : ''}`}
-                        aria-label="Open wedding invitation"
                         aria-hidden={isOpen}
-                        disabled={isOpen}
-                        tabIndex={isOpen ? -1 : 0}
-                        onClick={openInvitation}
                     >
                         {!isReady && (
                             <span className="invitation-loading" role="status">
@@ -800,7 +795,16 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
                                 className="invitation-cover-footer"
                             />
                         </span>
-                    </button>
+                        <button
+                            type="button"
+                            className="invitation-open-button"
+                            onClick={openInvitation}
+                            disabled={isOpen}
+                            tabIndex={isOpen ? -1 : 0}
+                        >
+                            Open invitation
+                        </button>
+                    </div>
 
                     {isOpen && (
                         <main
