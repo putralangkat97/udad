@@ -740,14 +740,14 @@ body:has(.invitation-viewport) {
 .invitation-reveal--visible
     .invitation-couple-row--bride
     .invitation-couple-portrait {
-    animation: invitation-couple-from-right 1500ms 180ms both
+    animation: invitation-couple-from-right 2500ms 180ms both
         cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .invitation-reveal--visible
     .invitation-couple-row--groom
     .invitation-couple-portrait {
-    animation: invitation-couple-from-left 1500ms 420ms both
+    animation: invitation-couple-from-left 2500ms 420ms both
         cubic-bezier(0.22, 1, 0.36, 1);
 }
 
