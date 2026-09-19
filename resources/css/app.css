@@ -238,7 +238,7 @@ body:has(.invitation-viewport) {
 .invitation-cover--hidden {
     pointer-events: none;
     opacity: 0;
-    transform: translateY(-100%);
+    transform: none;
 }
 
 .invitation-confetti {
