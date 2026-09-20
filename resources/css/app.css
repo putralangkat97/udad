@@ -827,6 +827,7 @@ body:has(.invitation-viewport) {
 }
 
 .invitation-countdown-board {
+    position: relative;
     aspect-ratio: 1361 / 524;
     background-position: center;
     background-repeat: no-repeat;
@@ -834,20 +835,44 @@ body:has(.invitation-viewport) {
 }
 
 .invitation-countdown-values {
-    display: grid;
-    height: 100%;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    align-items: center;
-    gap: 0.25rem;
-    padding: 11% 8% 4%;
+    position: absolute;
+    inset: 0;
 }
 
 .invitation-countdown-item {
     display: flex;
+    position: absolute;
+    width: 13%;
     flex-direction: column;
     justify-content: center;
-    border-radius: 0.9rem;
+    align-items: center;
     color: var(--invitation-ink);
+    text-align: center;
+    transform-origin: center center;
+}
+
+.invitation-countdown-item:nth-child(1) {
+    top: 32%;
+    left: 11.5%;
+    transform: rotate(20deg);
+}
+
+.invitation-countdown-item:nth-child(2) {
+    top: 45%;
+    left: 34%;
+    transform: rotate(10deg);
+}
+
+.invitation-countdown-item:nth-child(3) {
+    top: 45%;
+    left: 56%;
+    transform: rotate(-12deg);
+}
+
+.invitation-countdown-item:nth-child(4) {
+    top: 34%;
+    left: 80%;
+    transform: rotate(-13deg);
 }
 
 .invitation-countdown-item strong {
