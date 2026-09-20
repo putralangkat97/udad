@@ -781,6 +781,7 @@ body:has(.invitation-viewport) {
 .invitation-reveal--visible .invitation-event-card > *,
 .invitation-reveal--visible .invitation-countdown-section > *,
 .invitation-reveal--visible .invitation-rsvp-section > *,
+.invitation-reveal--visible .invitation-rsvp-form > .invitation-form-field,
 .invitation-reveal--visible .invitation-gifts-section > *,
 .invitation-reveal--visible .invitation-gift-card,
 .invitation-reveal--visible .invitation-gallery-section > *,
@@ -1436,6 +1437,11 @@ body:has(.invitation-viewport) {
     }
 
     .invitation-reveal > * > * {
+        transition: none;
+        translate: none;
+    }
+
+    .invitation-reveal .invitation-rsvp-form > .invitation-form-field {
         transition: none;
         translate: none;
     }
