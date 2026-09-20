@@ -630,15 +630,11 @@ body:has(.invitation-viewport) {
 }
 
 .invitation-reveal {
-    opacity: 0;
-    transform: translateY(1.25rem);
-    transition:
-        opacity 700ms ease,
-        transform 700ms ease;
+    transform: translateY(10rem);
+    transition: transform 1200ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .invitation-reveal--visible {
-    opacity: 1;
     transform: translateY(0);
 }
 
@@ -662,6 +658,27 @@ body:has(.invitation-viewport) {
 .invitation-reveal--visible .invitation-quote-card p {
     animation: invitation-quote-from-top 1800ms cubic-bezier(0.22, 1, 0.36, 1)
         both;
+}
+
+.invitation-reveal > * > * {
+    transform: translateY(5rem);
+    transition: transform 1200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.invitation-reveal--visible > * > * {
+    transform: translateY(0);
+}
+
+.invitation-reveal--visible > * > :nth-child(2) {
+    transition-delay: 120ms;
+}
+
+.invitation-reveal--visible > * > :nth-child(3) {
+    transition-delay: 240ms;
+}
+
+.invitation-reveal--visible > * > :nth-child(4) {
+    transition-delay: 360ms;
 }
 
 .invitation-quote-card span {
@@ -1267,24 +1284,20 @@ body:has(.invitation-viewport) {
 
 @keyframes invitation-couple-from-right {
     from {
-        opacity: 0;
         transform: translateX(7rem);
     }
 
     to {
-        opacity: 1;
         transform: translateX(0);
     }
 }
 
 @keyframes invitation-couple-from-left {
     from {
-        opacity: 0;
         transform: translateX(-7rem);
     }
 
     to {
-        opacity: 1;
         transform: translateX(0);
     }
 }
@@ -1297,12 +1310,10 @@ body:has(.invitation-viewport) {
 
 @keyframes invitation-quote-from-top {
     from {
-        opacity: 0;
-        transform: translateY(-2.5rem);
+        transform: translateY(-5rem);
     }
 
     to {
-        opacity: 1;
         transform: translateY(0);
     }
 }
@@ -1325,7 +1336,11 @@ body:has(.invitation-viewport) {
     }
 
     .invitation-reveal {
-        opacity: 1;
+        transform: none;
+    }
+
+    .invitation-reveal > * > * {
+        transition: none;
         transform: none;
     }
 }
