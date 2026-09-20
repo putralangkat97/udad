@@ -2,14 +2,14 @@
 
 return [
     'key' => 'latif-aci',
-    'title' => 'The Wedding of Latif & Aci',
+    'title' => 'The Wedding of Anggit & Rahmadani',
     'timezone' => 'Asia/Jakarta',
-    'audio' => '/invitation-assets/temp/audio/You%27re%20Still%20The%20One%20-%20Shania%20Twain%20%5BBROOKLYN%20DUO%5D.mp3',
+    'audio' => '/invitation-assets/temp/audio/lee-hi-only.mp3',
     'cover' => [
         'eyebrow' => 'We’re Getting Married!',
         'title' => 'SAVE THE DATE',
-        'names' => 'Latif & Aci',
-        'date' => '29.08.2026',
+        'names' => 'Anggit & Rahmadani',
+        'date' => '04.10.2026',
         'guest' => 'Dear, WB',
         'invitation' => 'You’re Invited !',
         'frame' => '/invitation-assets/temp/image/cherry/25.png',
@@ -27,15 +27,15 @@ return [
     'couple' => [
         'bride' => [
             'role' => 'The Bride',
-            'name' => 'Ashri Muztahidah',
-            'family' => '(Alm.) Bapak Heri Haidir Syam & Ibu Yuli Andriyanti',
+            'name' => 'Rahmadani Adistia',
+            'family' => 'Bapak Suwardi & Ibu Erni',
             'photo' => '/invitation-assets/latif-acii/acicewe2.jpeg',
             'frame' => '/invitation-assets/temp/image/cherry/27.png',
         ],
         'groom' => [
             'role' => 'The Groom',
-            'name' => 'Latif Anchori',
-            'family' => 'Bapak R. Sulaeman & Ibu Multinah',
+            'name' => 'Anggit Ari Utomo, S.T.',
+            'family' => 'Bapak Jumadi & Ibu Neneng Salmiah',
             'photo' => '/invitation-assets/latif-acii/acicowo2.jpeg',
             'frame' => '/invitation-assets/temp/image/cherry/28.png',
         ],
@@ -43,21 +43,21 @@ return [
     'events' => [
         [
             'name' => 'Akad',
-            'date' => 'Saturday, 29 August 2026',
-            'time' => '08.00 WIB - done',
+            'date' => 'Sunday, 4 October 2026',
+            'time' => '08.00 WIB',
             'venue' => 'Tirta Aira Sagita',
             'maps' => 'https://maps.app.goo.gl/4Ye6NB3HTYXeY2bk9',
         ],
         [
             'name' => 'Reception',
-            'date' => 'Saturday, 29 August 2026',
-            'time' => '11.00 - 15.00 WIB',
+            'date' => 'Sunday, 4 October 2026',
+            'time' => '09.00 WIB - selesai',
             'venue' => 'Tirta Aira Sagita',
             'maps' => 'https://maps.app.goo.gl/4Ye6NB3HTYXeY2bk9',
         ],
     ],
     'countdown' => [
-        'target' => '2026-08-29T00:00:00+07:00',
+        'target' => '2026-10-04T08:00:00+07:00',
         'label' => 'TOWARDS OUR HAPPY DAY',
         'frame' => '/invitation-assets/temp/image/cherry/19.png',
     ],
@@ -67,31 +67,31 @@ return [
             [
                 'bank' => 'BCA',
                 'number' => '6821612010',
-                'holder' => 'ASHRI MUZTAHIDAH',
+                'holder' => 'RAHMADANI ADISTIA',
             ],
             [
                 'bank' => 'Bank Sinarmas',
                 'number' => '0046671578',
-                'holder' => 'LATIF ANCHORI',
+                'holder' => 'ANGGIT ARI UTOMO, S.T.',
             ],
         ],
     ],
     'gallery' => [
         [
             'src' => '/invitation-assets/latif-acii/aci1.jpeg',
-            'alt' => 'Ashri and Latif together',
+            'alt' => 'Rahmadani and Anggit together',
         ],
         [
             'src' => '/invitation-assets/latif-acii/aci2.jpeg',
-            'alt' => 'Ashri and Latif celebrating',
+            'alt' => 'Rahmadani and Anggit celebrating',
         ],
         [
             'src' => '/invitation-assets/latif-acii/aci3.jpeg',
-            'alt' => 'Ashri and Latif smiling',
+            'alt' => 'Rahmadani and Anggit smiling',
         ],
         [
             'src' => '/invitation-assets/latif-acii/aci4.jpeg',
-            'alt' => 'Ashri and Latif sharing a moment',
+            'alt' => 'Rahmadani and Anggit sharing a moment',
         ],
     ],
     'story' => [
@@ -100,7 +100,7 @@ return [
             [
                 'period' => '2023',
                 'title' => 'Berawal dari Tempat Kerja',
-                'copy' => 'Kisah Latif dan Ashri bermula secara sederhana di tengah rutinitas pekerjaan. Berawal dari rekan kerja biasa, kami mulai banyak berinteraksi dan saling mengenal lebih jauh.',
+                'copy' => 'Kisah Anggit dan Rahmadani bermula secara sederhana di tengah rutinitas pekerjaan. Berawal dari rekan kerja biasa, kami mulai banyak berinteraksi dan saling mengenal lebih jauh.',
                 'ornament' => '/invitation-assets/temp/image/cherry/9.png',
             ],
             [
@@ -112,10 +112,10 @@ return [
             [
                 'period' => '2026',
                 'title' => 'Memulai Lembaran Baru',
-                'copy' => 'Setelah tiga tahun bersama, kami yakin bahwa kami adalah rumah bagi satu sama lain. Tahun ini, kami memutuskan untuk mengikat janji suci dan melangkah bersama menuju pernikahan.',
+                'copy' => 'Setelah melewati banyak cerita bersama, kami yakin bahwa kami adalah rumah bagi satu sama lain. Tahun ini, kami memutuskan untuk mengikat janji suci dan melangkah bersama menuju pernikahan.',
                 'ornament' => '/invitation-assets/temp/image/cherry/7.png',
             ],
         ],
-        'credit' => 'Crafted with love for Latif & Aci',
+        'credit' => 'Crafted with love for Anggit & Rahmadani',
     ],
 ];
