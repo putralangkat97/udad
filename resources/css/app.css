@@ -700,14 +700,6 @@ body:has(.invitation-viewport) {
     translate: 0 5rem;
 }
 
-.invitation-couple-copy > p:first-of-type {
-    translate: -5rem 0;
-}
-
-.invitation-couple-copy > p:last-of-type {
-    translate: 5rem 0;
-}
-
 .invitation-event-card:nth-child(1) {
     translate: -8rem 0;
 }
