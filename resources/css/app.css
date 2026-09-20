@@ -12,21 +12,21 @@
 }
 
 @font-face {
-    font-family: 'Rubik';
+    font-family: 'Invitation MoreSugar';
     src: url('/invitation-assets/temp/image/undersea/MoreSugar-Regular.ttf')
         format('truetype');
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'Rubik';
+    font-family: 'Invitation Kristen';
     src: url('/invitation-assets/temp/image/cherry/ITCKRIST.TTF')
         format('truetype');
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'Sacramento';
+    font-family: 'Invitation Pecita';
     src: url('/invitation-assets/temp/image/cherry/Pecita.otf')
         format('opentype');
     font-display: swap;
@@ -175,8 +175,13 @@
 :root {
     --invitation-cream: #fff3df;
     --invitation-paper: #fff9ec;
-    --invitation-terracotta: #984a3d;
-    --invitation-ink: #7d342d;
+    --invitation-maroon: #984a3d;
+    --invitation-forest-green: #2f6b35;
+    --invitation-forest-green-soft: #e0f2e1;
+    --invitation-dark-ink: #3f3029;
+    --invitation-error: #8b2e25;
+    --invitation-terracotta: var(--invitation-maroon);
+    --invitation-ink: var(--invitation-dark-ink);
     --invitation-night: #1d1211;
     --invitation-line: rgb(152 74 61 / 80%);
 }
@@ -233,7 +238,7 @@ body:has(.invitation-viewport) {
 }
 
 .invitation-lightbox-close:focus-visible {
-    outline: 3px solid #fff9ec;
+    outline: 3px solid var(--invitation-paper);
     outline-offset: 2px;
 }
 
@@ -264,11 +269,11 @@ body:has(.invitation-viewport) {
 }
 
 .invitation-confetti span:nth-child(3n) {
-    background: #c47b58;
+    background: var(--invitation-forest-green);
 }
 
 .invitation-confetti span:nth-child(3n + 1) {
-    background: #d9a96f;
+    background: var(--invitation-maroon);
 }
 
 .invitation-confetti span:nth-child(2n) {
@@ -429,10 +434,10 @@ body:has(.invitation-viewport) {
     width: min(78%, 20rem);
     flex-direction: column;
     align-items: center;
-    border: 1px solid rgb(152 74 61 / 25%);
+    border: 1px solid color-mix(in srgb, var(--invitation-maroon) 25%, transparent);
     border-radius: 1rem;
     padding: 1.5rem 1rem 1.75rem;
-    background: rgb(255 249 236 / 76%);
+    background: color-mix(in srgb, var(--invitation-paper) 76%, transparent);
     backdrop-filter: blur(10px);
     transform: translateY(5rem);
 }
@@ -470,8 +475,8 @@ body:has(.invitation-viewport) {
     position: absolute;
     top: 12%;
     width: 23%;
-    border: 3px solid #fff9ec;
-    box-shadow: 0 4px 10px rgb(63 31 26 / 20%);
+    border: 3px solid var(--invitation-paper);
+    box-shadow: 0 4px 10px color-mix(in srgb, var(--invitation-dark-ink) 20%, transparent);
 }
 
 .invitation-cover-photo--bride {
@@ -746,7 +751,7 @@ body:has(.invitation-viewport) {
     left: 30%;
     width: 40%;
     aspect-ratio: 1;
-    border: 0.2rem solid #fff9ec;
+    border: 0.2rem solid var(--invitation-paper);
     border-radius: 50%;
     object-fit: cover;
     transform: rotate(-4deg);
@@ -940,7 +945,7 @@ body:has(.invitation-viewport) {
     border: 2px solid var(--invitation-line);
     border-radius: 0;
     padding: 0.75rem 0.8rem;
-    background: rgb(255 249 236 / 35%);
+    background: color-mix(in srgb, var(--invitation-paper) 35%, transparent);
     color: var(--invitation-ink);
     font: inherit;
     font-family: 'Rubik', Georgia, serif;
@@ -965,18 +970,18 @@ body:has(.invitation-viewport) {
 }
 
 .invitation-form-error {
-    color: #8b2e25;
+    color: var(--invitation-error);
     font-family: 'Rubik', Georgia, serif;
     font-size: 0.68rem;
 }
 
 .invitation-form-success {
     margin: 0;
-    border: 1px solid rgb(65 112 67 / 35%);
+    border: 1px solid color-mix(in srgb, var(--invitation-forest-green) 35%, transparent);
     border-radius: 0.35rem;
     padding: 0.65rem 0.75rem;
-    background: rgb(224 242 225 / 70%);
-    color: #2f6b35;
+    background: color-mix(in srgb, var(--invitation-forest-green-soft) 70%, transparent);
+    color: var(--invitation-forest-green);
     font-family: 'Rubik', Georgia, serif;
     font-size: 0.78rem;
     text-align: center;
@@ -984,7 +989,7 @@ body:has(.invitation-viewport) {
 
 .invitation-form-copy-error {
     margin: 0;
-    color: #8b2e25;
+    color: var(--invitation-error);
     font-family: 'Rubik', Georgia, serif;
     font-size: 0.72rem;
     text-align: center;
@@ -998,7 +1003,7 @@ body:has(.invitation-viewport) {
     min-width: 9rem;
     padding: 0.7rem 1.3rem;
     background: var(--invitation-terracotta);
-    color: #fff9ec;
+    color: var(--invitation-paper);
     font-family: 'Rubik', Georgia, serif;
     font-size: 0.78rem;
 }
@@ -1008,9 +1013,16 @@ body:has(.invitation-viewport) {
     opacity: 0.6;
 }
 
+.invitation-rsvp-submit:hover:not(:disabled),
+.invitation-rsvp-submit:focus-visible,
+.invitation-event-card a:hover,
+.invitation-event-card a:focus-visible {
+    background: var(--invitation-forest-green);
+}
+
 .invitation-wishes-section {
     padding: 4rem 0 3.5rem;
-    color: var(--invitation-terracotta);
+    color: var(--invitation-forest-green);
     text-align: center;
 }
 
@@ -1029,16 +1041,16 @@ body:has(.invitation-viewport) {
     overflow-y: auto;
     margin-bottom: 1.25rem;
     padding: 1.25rem 1.05rem 1.4rem;
-    border: 3px solid var(--invitation-line);
+    border: 3px solid color-mix(in srgb, var(--invitation-forest-green) 70%, transparent);
     border-radius: 1.3rem;
-    background: rgb(255 249 236 / 20%);
+    background: color-mix(in srgb, var(--invitation-paper) 20%, transparent);
     overscroll-behavior: contain;
     text-align: left;
 }
 
 .invitation-wish-card {
     border: 0;
-    border-bottom: 2px solid rgb(152 74 61 / 25%);
+    border-bottom: 2px solid color-mix(in srgb, var(--invitation-maroon) 25%, transparent);
     border-radius: 0;
     padding: 0.9rem 0.5rem 1.1rem;
     background: transparent;
@@ -1065,7 +1077,7 @@ body:has(.invitation-viewport) {
 
 .invitation-wishes-empty {
     margin: 0;
-    border: 1px dashed rgb(151 70 60 / 35%);
+    border: 1px dashed color-mix(in srgb, var(--invitation-maroon) 35%, transparent);
     padding: 1rem;
     font-family: 'Rubik', Georgia, serif;
     font-size: 0.78rem;
@@ -1084,6 +1096,10 @@ body:has(.invitation-viewport) {
     padding: 4rem 0 3rem;
     color: var(--invitation-terracotta);
     text-align: center;
+}
+
+.invitation-gifts-section {
+    color: var(--invitation-forest-green);
 }
 
 .invitation-gifts-section h2,
@@ -1112,10 +1128,10 @@ body:has(.invitation-viewport) {
     position: relative;
     display: grid;
     gap: 0.2rem;
-    border: 2px solid var(--invitation-line);
+    border: 2px solid color-mix(in srgb, var(--invitation-forest-green) 70%, transparent);
     border-radius: 0;
     padding: 2.5rem 2rem;
-    background: rgb(255 249 236 / 28%);
+    background: color-mix(in srgb, var(--invitation-paper) 28%, transparent);
     text-align: center;
 }
 
@@ -1138,10 +1154,15 @@ body:has(.invitation-viewport) {
     border: 0;
     border-radius: 999px;
     padding: 0.55rem 1.5rem;
-    background: var(--invitation-terracotta);
-    color: #fff9ec;
+    background: var(--invitation-forest-green);
+    color: var(--invitation-paper);
     font-family: 'Rubik', Georgia, serif;
     font-size: 0.68rem;
+}
+
+.invitation-gift-card button:hover,
+.invitation-gift-card button:focus-visible {
+    background: var(--invitation-maroon);
 }
 
 .invitation-gallery-grid {
@@ -1166,7 +1187,7 @@ body:has(.invitation-viewport) {
     overflow: hidden;
     border: 0.2rem solid var(--invitation-paper);
     padding: 0;
-    background: #fff9ec;
+    background: var(--invitation-paper);
     box-shadow: none;
 }
 
@@ -1193,7 +1214,7 @@ body:has(.invitation-viewport) {
     border: 0;
     place-items: center;
     padding: 1rem;
-    background: rgb(29 18 17 / 88%);
+    background: color-mix(in srgb, var(--invitation-night) 88%, transparent);
     overscroll-behavior: contain;
 }
 
@@ -1220,7 +1241,7 @@ body:has(.invitation-viewport) {
     cursor: pointer;
     border: 0;
     background: transparent;
-    color: #fff9ec;
+    color: var(--invitation-paper);
     font-size: 2rem;
     line-height: 1;
 }
