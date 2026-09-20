@@ -432,6 +432,7 @@ body:has(.invitation-viewport) {
     padding: 1.5rem 1rem 1.75rem;
     background: rgb(255 249 236 / 76%);
     backdrop-filter: blur(10px);
+    transform: translateY(5rem);
 }
 
 .invitation-eyebrow,
