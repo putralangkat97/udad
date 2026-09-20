@@ -762,10 +762,11 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
                 {hasOpened && (
                     <Confetti
                         recycle
-                        numberOfPieces={isOpening ? 180 : 55}
-                        gravity={0.16}
-                        wind={0.01}
-                        initialVelocityY={{ min: 8, max: 18 }}
+                        numberOfPieces={isOpening ? 120 : 32}
+                        gravity={0.035}
+                        wind={0.02}
+                        friction={0.995}
+                        initialVelocityY={{ min: 1, max: 4 }}
                         colors={['#984a3d', '#c47b58', '#d9a96f', '#fff9ec']}
                         style={{
                             pointerEvents: 'none',
