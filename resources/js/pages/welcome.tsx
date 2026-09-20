@@ -2,7 +2,6 @@ import { Form, Head } from "@inertiajs/react";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import Confetti from "react-confetti";
 import RsvpController from "@/actions/App/Http/Controllers/RsvpController";
-import WishController from "@/actions/App/Http/Controllers/WishController";
 
 type CoupleProfile = {
     role: string;
@@ -36,11 +35,6 @@ type StoryEntry = {
     title: string;
     copy: string;
     ornament: string;
-};
-
-type PublishedWish = {
-    name: string;
-    message: string;
 };
 
 type Invitation = {
@@ -87,7 +81,6 @@ type Invitation = {
 
 type WelcomeProps = {
     invitation: Invitation;
-    wishes: PublishedWish[];
 };
 
 type RemainingTime = {
@@ -394,126 +387,7 @@ function RsvpSection() {
     );
 }
 
-function WishesSection({ wishes }: { wishes: PublishedWish[] }) {
-    return (
-        <Reveal>
-            <section
-                className="invitation-wishes-section"
-                aria-labelledby="wishes-heading"
-            >
-                <p className="invitation-section-kicker">From our loved ones</p>
-                <h2 id="wishes-heading">Wishes</h2>
-
-                <div className="invitation-wishes-list" aria-live="polite">
-                    {wishes.length === 0 ? (
-                        <p className="invitation-wishes-empty">
-                            Be the first to leave a wish for the couple.
-                        </p>
-                    ) : (
-                        wishes.map((wish, index) => (
-                            <article
-                                key={`${wish.name}-${index}`}
-                                className="invitation-wish-card"
-                            >
-                                <p>{wish.message}</p>
-                                <span>— {wish.name}</span>
-                            </article>
-                        ))
-                    )}
-                </div>
-
-                <Form
-                    {...WishController.store.form()}
-                    resetOnSuccess={["name", "message"]}
-                    disableWhileProcessing
-                    className="invitation-wish-form"
-                >
-                    {({ processing, errors, wasSuccessful }) => (
-                        <>
-                            {wasSuccessful && (
-                                <p
-                                    className="invitation-form-success"
-                                    role="status"
-                                >
-                                    Thank you! Your wish is waiting for
-                                    approval.
-                                </p>
-                            )}
-
-                            <label
-                                className="invitation-form-field"
-                                htmlFor="wish-name"
-                            >
-                                <span>Your name</span>
-                                <input
-                                    id="wish-name"
-                                    name="name"
-                                    type="text"
-                                    autoComplete="name"
-                                    placeholder="Full name"
-                                    required
-                                    aria-invalid={Boolean(errors.name)}
-                                    aria-describedby={
-                                        errors.name
-                                            ? "wish-name-error"
-                                            : undefined
-                                    }
-                                />
-                                {errors.name && (
-                                    <small
-                                        id="wish-name-error"
-                                        className="invitation-form-error"
-                                    >
-                                        {errors.name}
-                                    </small>
-                                )}
-                            </label>
-
-                            <label
-                                className="invitation-form-field"
-                                htmlFor="wish-message"
-                            >
-                                <span>Your wish</span>
-                                <textarea
-                                    id="wish-message"
-                                    name="message"
-                                    rows={3}
-                                    maxLength={2000}
-                                    placeholder="Write a message for the couple"
-                                    required
-                                    aria-invalid={Boolean(errors.message)}
-                                    aria-describedby={
-                                        errors.message
-                                            ? "wish-message-error"
-                                            : undefined
-                                    }
-                                />
-                                {errors.message && (
-                                    <small
-                                        id="wish-message-error"
-                                        className="invitation-form-error"
-                                    >
-                                        {errors.message}
-                                    </small>
-                                )}
-                            </label>
-
-                            <button
-                                type="submit"
-                                className="invitation-rsvp-submit"
-                                disabled={processing}
-                            >
-                                {processing ? "Sending..." : "Send Wish"}
-                            </button>
-                        </>
-                    )}
-                </Form>
-            </section>
-        </Reveal>
-    );
-}
-
-export default function Welcome({ invitation, wishes }: WelcomeProps) {
+export default function Welcome({ invitation }: WelcomeProps) {
     const [isReady, setIsReady] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [isOpening, setIsOpening] = useState(false);
@@ -971,8 +845,6 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
                             </Reveal>
 
                             <RsvpSection />
-
-                            <WishesSection wishes={wishes} />
 
                             <Reveal>
                                 <section
