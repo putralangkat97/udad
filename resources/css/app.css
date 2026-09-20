@@ -424,10 +424,14 @@ body:has(.invitation-viewport) {
     position: relative;
     z-index: 1;
     display: flex;
-    width: 66%;
+    width: min(78%, 20rem);
     flex-direction: column;
     align-items: center;
-    padding: 3.5rem 0 2rem;
+    border: 1px solid rgb(152 74 61 / 25%);
+    border-radius: 1rem;
+    padding: 1.5rem 1rem 1.75rem;
+    background: rgb(255 249 236 / 76%);
+    backdrop-filter: blur(10px);
 }
 
 .invitation-eyebrow,
