@@ -388,6 +388,8 @@ body:has(.invitation-viewport) {
     min-height: min(760px, calc(100svh - 2.5rem));
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+    background: var(--invitation-paper);
     background-position: center;
     background-repeat: no-repeat;
     background-size: 100% 100%;
@@ -396,6 +398,15 @@ body:has(.invitation-viewport) {
     transition:
         opacity 600ms ease,
         transform 600ms ease;
+}
+
+.invitation-cover-art {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
 .invitation-loading {
@@ -410,6 +421,8 @@ body:has(.invitation-viewport) {
 }
 
 .invitation-cover-content {
+    position: relative;
+    z-index: 1;
     display: flex;
     width: 66%;
     flex-direction: column;

@@ -12,10 +12,7 @@ return [
         'date' => '04.10.2026',
         'guest' => 'Dear, WB',
         'invitation' => 'You’re Invited !',
-        'frame' => '/invitation-assets/temp/image/cherry/25.png',
-        'ornament' => '/invitation-assets/temp/image/cherry/30.png',
-        'bridePhoto' => '/invitation-assets/latif-acii/acicewe1.jpeg',
-        'groomPhoto' => '/invitation-assets/latif-acii/acicowo1.jpeg',
+        'image' => '/invitation-assets/anggit-adis/anggit-adis-cover.png',
         'footerOrnament' => '/invitation-assets/temp/image/cherry/symbolatas.png',
     ],
     'opening' => [

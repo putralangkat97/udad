@@ -55,10 +55,7 @@ type Invitation = {
         date: string;
         guest: string;
         invitation: string;
-        frame: string;
-        ornament: string;
-        bridePhoto: string;
-        groomPhoto: string;
+        image: string;
         footerOrnament: string;
     };
     opening: {
@@ -541,13 +538,7 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
     const { cover } = invitation;
 
     useEffect(() => {
-        const sources = [
-            cover.frame,
-            cover.ornament,
-            cover.bridePhoto,
-            cover.groomPhoto,
-            cover.footerOrnament,
-        ];
+        const sources = [cover.image, cover.footerOrnament];
         const images = sources.map(() => new window.Image());
         let pending = sources.length;
         let cancelled = false;
@@ -582,13 +573,7 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
                 image.onerror = null;
             });
         };
-    }, [
-        cover.bridePhoto,
-        cover.footerOrnament,
-        cover.frame,
-        cover.groomPhoto,
-        cover.ornament,
-    ]);
+    }, [cover.footerOrnament, cover.image]);
 
     useEffect(() => {
         if (!selectedImage) {
@@ -813,32 +798,18 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
                         )}
                         <span
                             className={`invitation-cover-card ${isReady ? 'invitation-cover-card--ready' : ''}`}
-                            style={{ backgroundImage: `url("${cover.frame}")` }}
                         >
+                            <img
+                                src={cover.image}
+                                alt="Anggit and Rahmadani"
+                                className="invitation-cover-art"
+                            />
                             <span className="invitation-cover-content">
                                 <span className="invitation-eyebrow">
                                     {cover.eyebrow}
                                 </span>
                                 <span className="invitation-cover-title">
                                     {cover.title}
-                                </span>
-
-                                <span className="invitation-cover-portraits">
-                                    <img
-                                        src={cover.ornament}
-                                        alt=""
-                                        className="invitation-cover-ornament"
-                                    />
-                                    <img
-                                        src={cover.bridePhoto}
-                                        alt=""
-                                        className="invitation-cover-photo invitation-cover-photo--bride"
-                                    />
-                                    <img
-                                        src={cover.groomPhoto}
-                                        alt=""
-                                        className="invitation-cover-photo invitation-cover-photo--groom"
-                                    />
                                 </span>
 
                                 <span className="invitation-names">
