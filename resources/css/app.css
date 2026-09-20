@@ -706,7 +706,7 @@ body:has(.invitation-viewport) {
 .invitation-couple-copy h2 {
     margin: 0.2rem 0 0.35rem;
     font-family: 'Invitation Pecita', cursive;
-    font-size: clamp(1.95rem, 10vw, 2.7rem);
+    font-size: clamp(1.7rem, 8vw, 2.25rem);
     font-weight: 400;
     line-height: 0.95;
 }
@@ -793,7 +793,7 @@ body:has(.invitation-viewport) {
 .invitation-event-card h3 {
     margin: 0 0 0.5rem;
     font-family: 'Invitation Pecita', cursive;
-    font-size: 2.35rem;
+    font-size: 2rem;
     font-weight: 400;
 }
 
@@ -983,7 +983,7 @@ body:has(.invitation-viewport) {
 .invitation-wishes-section h2 {
     margin: 0.25rem 0 1rem;
     font-family: 'Invitation Pecita', cursive;
-    font-size: 2.9rem;
+    font-size: 2.45rem;
     font-weight: 400;
     line-height: 1;
 }
@@ -1056,7 +1056,7 @@ body:has(.invitation-viewport) {
 .invitation-gallery-section h2 {
     margin: 0.25rem 0 0.5rem;
     font-family: 'Invitation Pecita', cursive;
-    font-size: 2.9rem;
+    font-size: 2.45rem;
     font-weight: 400;
     line-height: 1;
 }
@@ -1200,7 +1200,7 @@ body:has(.invitation-viewport) {
 .invitation-story-section h2 {
     margin: 0 0 2.75rem;
     font-family: 'Invitation Pecita', cursive;
-    font-size: clamp(2.2rem, 12vw, 3.1rem);
+    font-size: clamp(1.75rem, 10vw, 2.55rem);
     font-weight: 400;
     line-height: 1;
 }
