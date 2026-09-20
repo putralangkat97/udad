@@ -756,6 +756,12 @@ body:has(.invitation-viewport) {
     transform: rotate(4deg);
 }
 
+.invitation-couple-row--bride .invitation-portrait-photo {
+    top: 23%;
+    left: 27%;
+    width: 46%;
+}
+
 .invitation-reveal--visible
     .invitation-couple-row--bride
     .invitation-couple-portrait {
