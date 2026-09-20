@@ -655,18 +655,13 @@ body:has(.invitation-viewport) {
     line-height: 1.55;
 }
 
-.invitation-reveal--visible .invitation-quote-card p {
-    animation: invitation-quote-from-top 1800ms cubic-bezier(0.22, 1, 0.36, 1)
-        both;
-}
-
 .invitation-reveal > * > * {
-    transform: translateY(5rem);
-    transition: transform 1200ms cubic-bezier(0.22, 1, 0.36, 1);
+    translate: 0 5rem;
+    transition: translate 1200ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .invitation-reveal--visible > * > * {
-    transform: translateY(0);
+    translate: 0;
 }
 
 .invitation-reveal--visible > * > :nth-child(2) {
@@ -679,6 +674,121 @@ body:has(.invitation-viewport) {
 
 .invitation-reveal--visible > * > :nth-child(4) {
     transition-delay: 360ms;
+}
+
+.invitation-quote-card > p {
+    translate: 0 -6rem;
+}
+
+.invitation-quote-card > span {
+    translate: 0 6rem;
+}
+
+.invitation-couple-row--bride .invitation-couple-copy {
+    translate: -8rem 0;
+}
+
+.invitation-couple-row--groom .invitation-couple-copy {
+    translate: 8rem 0;
+}
+
+.invitation-couple-copy > .invitation-couple-role {
+    translate: 0 -5rem;
+}
+
+.invitation-couple-copy > h2 {
+    translate: 0 5rem;
+}
+
+.invitation-couple-copy > p:first-of-type {
+    translate: -5rem 0;
+}
+
+.invitation-couple-copy > p:last-of-type {
+    translate: 5rem 0;
+}
+
+.invitation-event-card:nth-child(1) {
+    translate: -8rem 0;
+}
+
+.invitation-event-card:nth-child(2) {
+    translate: 8rem 0;
+}
+
+.invitation-event-card > h3 {
+    translate: 0 -4rem;
+}
+
+.invitation-event-card > p {
+    translate: 4rem 0;
+}
+
+.invitation-event-card > a {
+    translate: 0 4rem;
+}
+
+.invitation-countdown-section > .invitation-section-label,
+.invitation-rsvp-section > .invitation-section-kicker,
+.invitation-gifts-section > .invitation-section-kicker,
+.invitation-gallery-section > .invitation-section-kicker,
+.invitation-story-section > h2 {
+    translate: 0 -6rem;
+}
+
+.invitation-countdown-section > .invitation-countdown-board,
+.invitation-rsvp-section > .invitation-rsvp-form,
+.invitation-gifts-section > .invitation-gift-list,
+.invitation-gallery-section > .invitation-gallery-grid,
+.invitation-story-section > .invitation-story-list {
+    translate: 0 8rem;
+}
+
+.invitation-rsvp-section > h2,
+.invitation-gifts-section > h2 {
+    translate: -7rem 0;
+}
+
+.invitation-rsvp-section > .invitation-rsvp-intro,
+.invitation-gifts-section > .invitation-gifts-intro,
+.invitation-gallery-section > h2 {
+    translate: 7rem 0;
+}
+
+.invitation-rsvp-form > .invitation-form-field:nth-child(odd),
+.invitation-gift-card:nth-child(odd),
+.invitation-gallery-item:nth-child(odd),
+.invitation-story-entry:nth-child(odd) {
+    translate: -6rem 0;
+}
+
+.invitation-rsvp-form > .invitation-form-field:nth-child(even),
+.invitation-gift-card:nth-child(even),
+.invitation-gallery-item:nth-child(even),
+.invitation-story-entry:nth-child(even) {
+    translate: 6rem 0;
+}
+
+.invitation-story-section > .invitation-story-credit {
+    translate: 0 6rem;
+}
+
+.invitation-reveal--visible .invitation-quote-card > p,
+.invitation-reveal--visible .invitation-quote-card > span,
+.invitation-reveal--visible .invitation-couple-copy,
+.invitation-reveal--visible .invitation-couple-copy > *,
+.invitation-reveal--visible .invitation-event-card,
+.invitation-reveal--visible .invitation-event-card > *,
+.invitation-reveal--visible .invitation-countdown-section > *,
+.invitation-reveal--visible .invitation-rsvp-section > *,
+.invitation-reveal--visible .invitation-gifts-section > *,
+.invitation-reveal--visible .invitation-gift-card,
+.invitation-reveal--visible .invitation-gallery-section > *,
+.invitation-reveal--visible .invitation-gallery-item,
+.invitation-reveal--visible .invitation-story-section > *,
+.invitation-reveal--visible .invitation-story-entry,
+.invitation-reveal--visible .invitation-story-credit {
+    translate: 0;
 }
 
 .invitation-quote-card span {
@@ -1308,16 +1418,6 @@ body:has(.invitation-viewport) {
     }
 }
 
-@keyframes invitation-quote-from-top {
-    from {
-        transform: translateY(-5rem);
-    }
-
-    to {
-        transform: translateY(0);
-    }
-}
-
 @media (prefers-reduced-motion: reduce) {
     .invitation-cover-card,
     .invitation-reveal {
@@ -1331,16 +1431,12 @@ body:has(.invitation-viewport) {
         animation: none;
     }
 
-    .invitation-reveal--visible .invitation-quote-card p {
-        animation: none;
-    }
-
     .invitation-reveal {
         transform: none;
     }
 
     .invitation-reveal > * > * {
         transition: none;
-        transform: none;
+        translate: none;
     }
 }
