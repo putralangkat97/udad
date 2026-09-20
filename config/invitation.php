@@ -8,7 +8,7 @@ return [
     'cover' => [
         'eyebrow' => 'We’re Getting Married!',
         'title' => 'SAVE THE DATE',
-        'names' => 'Anggit & Rahmadani',
+        'names' => 'Anggit & Adis',
         'date' => '04.10.2026',
         'guest' => 'Dear, WB',
         'invitation' => 'You’re Invited !',
@@ -26,14 +26,14 @@ return [
             'role' => 'The Bride',
             'name' => 'Rahmadani Adistia',
             'family' => 'Bapak Suwardi & Ibu Erni',
-            'photo' => '/invitation-assets/latif-acii/acicewe2.jpeg',
+            'photo' => '/invitation-assets/anggit-adis/adis.png',
             'frame' => '/invitation-assets/temp/image/cherry/27.png',
         ],
         'groom' => [
             'role' => 'The Groom',
             'name' => 'Anggit Ari Utomo, S.T.',
             'family' => 'Bapak Jumadi & Ibu Neneng Salmiah',
-            'photo' => '/invitation-assets/latif-acii/acicowo2.jpeg',
+            'photo' => '/invitation-assets/anggit-adis/anggit.png',
             'frame' => '/invitation-assets/temp/image/cherry/28.png',
         ],
     ],
@@ -75,20 +75,20 @@ return [
     ],
     'gallery' => [
         [
-            'src' => '/invitation-assets/latif-acii/aci1.jpeg',
-            'alt' => 'Rahmadani and Anggit together',
+            'src' => '/invitation-assets/anggit-adis/gallery1.jpg',
+            'alt' => 'Rahmadani and Anggit together at night',
         ],
         [
-            'src' => '/invitation-assets/latif-acii/aci2.jpeg',
-            'alt' => 'Rahmadani and Anggit celebrating',
+            'src' => '/invitation-assets/anggit-adis/gallery2.jpg',
+            'alt' => 'Rahmadani and Anggit by the lake',
         ],
         [
-            'src' => '/invitation-assets/latif-acii/aci3.jpeg',
-            'alt' => 'Rahmadani and Anggit smiling',
+            'src' => '/invitation-assets/anggit-adis/gallery3.jpeg',
+            'alt' => 'Rahmadani smiling with Anggit',
         ],
         [
-            'src' => '/invitation-assets/latif-acii/aci4.jpeg',
-            'alt' => 'Rahmadani and Anggit sharing a moment',
+            'src' => '/invitation-assets/anggit-adis/gallery4.jpeg',
+            'alt' => 'Rahmadani and Anggit with flowers',
         ],
     ],
     'story' => [
