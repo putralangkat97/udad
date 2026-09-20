@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&family=Sacramento&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sacramento&display=swap');
 
 @import 'tailwindcss';
 
@@ -416,7 +416,7 @@ body:has(.invitation-viewport) {
 
 .invitation-loading {
     position: absolute;
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
     font-size: 0.78rem;
 }
 
@@ -443,7 +443,7 @@ body:has(.invitation-viewport) {
 .invitation-eyebrow,
 .invitation-date,
 .invitation-invitation {
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
 }
 
 .invitation-eyebrow {
@@ -452,7 +452,7 @@ body:has(.invitation-viewport) {
 
 .invitation-cover-title {
     margin-top: -0.35rem;
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
     font-size: clamp(1.7rem, 9vw, 2.4rem);
     line-height: 1;
 }
@@ -502,13 +502,13 @@ body:has(.invitation-viewport) {
 
 .invitation-guest {
     margin-top: 1rem;
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
     font-size: 1.05rem;
     line-height: 1;
 }
 
 .invitation-guest span {
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
 }
 
 .invitation-invitation {
@@ -602,7 +602,7 @@ body:has(.invitation-viewport) {
 }
 
 .invitation-opening-kicker {
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
     font-size: 0.95rem;
 }
 
@@ -616,7 +616,7 @@ body:has(.invitation-viewport) {
 
 .invitation-opening-card p:not(.invitation-opening-kicker) {
     max-width: 18rem;
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
     font-size: 1rem;
 }
 
@@ -650,7 +650,7 @@ body:has(.invitation-viewport) {
 
 .invitation-quote-card p {
     margin: 0;
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
     font-size: 0.85rem;
     line-height: 1.55;
 }
@@ -787,7 +787,7 @@ body:has(.invitation-viewport) {
 .invitation-quote-card span {
     display: block;
     margin-top: 0.75rem;
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
     font-size: 0.75rem;
 }
 
@@ -824,7 +824,7 @@ body:has(.invitation-viewport) {
 
 .invitation-couple-role,
 .invitation-section-kicker {
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
     font-size: 0.82rem;
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -841,13 +841,13 @@ body:has(.invitation-viewport) {
 .invitation-couple-copy p {
     margin: 0.15rem auto;
     max-width: 11rem;
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
     font-size: 0.78rem;
     line-height: 1.35;
 }
 
 .invitation-couple-copy p:first-of-type {
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
     font-size: 0.65rem;
 }
 
@@ -913,7 +913,7 @@ body:has(.invitation-viewport) {
 }
 
 .invitation-event-card {
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
     font-size: 0.86rem;
     line-height: 1.35;
 }
@@ -941,7 +941,7 @@ body:has(.invitation-viewport) {
     padding: 0.55rem 1.4rem;
     background: var(--invitation-terracotta);
     color: var(--invitation-paper);
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
     font-size: 0.68rem;
     text-decoration: none;
 }
@@ -954,7 +954,7 @@ body:has(.invitation-viewport) {
 
 .invitation-section-label {
     margin: 0 0 0.75rem;
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
     font-size: 0.82rem;
 }
 
@@ -1016,7 +1016,7 @@ body:has(.invitation-viewport) {
 
 .invitation-countdown-item span {
     margin-top: 0.2rem;
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
     font-size: 0.55rem;
     text-transform: uppercase;
 }
@@ -1039,7 +1039,7 @@ body:has(.invitation-viewport) {
 .invitation-rsvp-intro {
     margin: 0 auto 1.25rem;
     max-width: 18rem;
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
     font-size: 0.84rem;
     line-height: 1.45;
 }
@@ -1053,7 +1053,7 @@ body:has(.invitation-viewport) {
 .invitation-form-field {
     display: grid;
     gap: 0.45rem;
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
     font-size: 0.9rem;
 }
 
@@ -1068,7 +1068,7 @@ body:has(.invitation-viewport) {
     background: color-mix(in srgb, var(--invitation-paper) 35%, transparent);
     color: var(--invitation-ink);
     font: inherit;
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
     font-size: 0.86rem;
 }
 
@@ -1084,14 +1084,14 @@ body:has(.invitation-viewport) {
 }
 
 .invitation-form-field em {
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
     font-size: 0.65rem;
     font-style: normal;
 }
 
 .invitation-form-error {
     color: var(--invitation-error);
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
     font-size: 0.68rem;
 }
 
@@ -1102,7 +1102,7 @@ body:has(.invitation-viewport) {
     padding: 0.65rem 0.75rem;
     background: color-mix(in srgb, var(--invitation-paper) 70%, transparent);
     color: var(--invitation-maroon);
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
     font-size: 0.78rem;
     text-align: center;
 }
@@ -1110,7 +1110,7 @@ body:has(.invitation-viewport) {
 .invitation-form-copy-error {
     margin: 0;
     color: var(--invitation-error);
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
     font-size: 0.72rem;
     text-align: center;
 }
@@ -1124,7 +1124,7 @@ body:has(.invitation-viewport) {
     padding: 0.7rem 1.3rem;
     background: var(--invitation-terracotta);
     color: var(--invitation-paper);
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
     font-size: 0.78rem;
 }
 
@@ -1152,7 +1152,7 @@ body:has(.invitation-viewport) {
 .invitation-gifts-intro {
     margin: 0 auto 1.25rem;
     max-width: 18rem;
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
     font-size: 0.78rem;
     line-height: 1.45;
 }
@@ -1175,12 +1175,12 @@ body:has(.invitation-viewport) {
 
 .invitation-gift-card span,
 .invitation-gift-card small {
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
     font-size: 0.68rem;
 }
 
 .invitation-gift-card strong {
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
     font-size: 1rem;
     letter-spacing: 0.08em;
 }
@@ -1194,7 +1194,7 @@ body:has(.invitation-viewport) {
     padding: 0.55rem 1.5rem;
     background: var(--invitation-terracotta);
     color: var(--invitation-paper);
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
     font-size: 0.68rem;
 }
 
@@ -1294,7 +1294,7 @@ body:has(.invitation-viewport) {
 }
 
 .invitation-story-section h2 span {
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
     font-size: 0.6em;
 }
 
@@ -1322,14 +1322,14 @@ body:has(.invitation-viewport) {
 
 .invitation-story-entry p {
     margin: 0;
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
     font-size: 0.82rem;
     line-height: 1.55;
 }
 
 .invitation-story-period {
     margin-bottom: 0.7rem !important;
-    font-family: 'Rubik', Georgia, serif !important;
+    font-family: 'Invitation MoreSugar', Georgia, serif !important;
     font-size: 1rem !important;
     font-weight: 700;
     line-height: 1.2 !important;
@@ -1354,7 +1354,7 @@ body:has(.invitation-viewport) {
 
 .invitation-footer p {
     margin: 0.75rem 0 0;
-    font-family: 'Rubik', Georgia, serif;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
     font-size: 0.82rem;
 }
 
