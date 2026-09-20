@@ -725,7 +725,7 @@ export default function Welcome({ invitation }: WelcomeProps) {
                                 <button
                                     ref={musicControlRef}
                                     type="button"
-                                    className="invitation-music-control"
+                                    className={`invitation-music-control ${isPlaying ? "invitation-music-control--playing" : ""}`}
                                     aria-label={
                                         audioUnavailable
                                             ? "Music unavailable"
@@ -739,19 +739,11 @@ export default function Welcome({ invitation }: WelcomeProps) {
                                     disabled={audioUnavailable}
                                     onClick={toggleMusic}
                                 >
-                                    {!audioUnavailable &&
-                                        !audioPlaybackFailed && (
-                                            <span aria-hidden="true">
-                                                {isPlaying ? "♫" : "♪"}
-                                            </span>
-                                        )}
-                                    {audioUnavailable
-                                        ? "Music unavailable"
-                                        : audioPlaybackFailed
-                                          ? "Try music again"
-                                          : isPlaying
-                                            ? "Music on"
-                                            : "Play music"}
+                                    <img
+                                        src="/invitation-assets/temp/image/piringanHitam.png"
+                                        alt=""
+                                        aria-hidden="true"
+                                    />
                                 </button>
                             </div>
 

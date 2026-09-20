@@ -556,24 +556,35 @@ body:has(.invitation-viewport) {
     opacity: 1;
 }
 
-.invitation-music-control {
-    display: inline-flex;
-    min-height: 2.25rem;
-    cursor: pointer;
-    align-items: center;
-    gap: 0.4rem;
-    border: 1px solid var(--invitation-terracotta);
-    border-radius: 999px;
-    padding: 0.3rem 0.8rem;
-    background: var(--invitation-cream);
-    color: var(--invitation-terracotta);
-    font-family: 'Rubik', Georgia, serif;
-    font-size: 0.75rem;
+.invitation-music-bar {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 4;
+    display: flex;
+    justify-content: flex-end;
 }
 
-.invitation-music-control span {
-    font-size: 1.1rem;
-    line-height: 1;
+.invitation-music-control {
+    display: block;
+    width: 3.75rem;
+    height: 3.75rem;
+    cursor: pointer;
+    border: 0;
+    padding: 0;
+    background: transparent;
+}
+
+.invitation-music-control img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    animation: invitation-record-spin 4s linear infinite;
+    animation-play-state: paused;
+}
+
+.invitation-music-control--playing img {
+    animation-play-state: running;
 }
 
 .invitation-music-control:disabled {
@@ -616,15 +627,6 @@ body:has(.invitation-viewport) {
 
 .invitation-content {
     padding-top: 0;
-}
-
-.invitation-music-bar {
-    position: sticky;
-    top: 0.8rem;
-    z-index: 1;
-    display: flex;
-    min-height: 2.25rem;
-    justify-content: flex-end;
 }
 
 .invitation-reveal {
@@ -1287,6 +1289,12 @@ body:has(.invitation-viewport) {
     }
 }
 
+@keyframes invitation-record-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 @keyframes invitation-quote-from-top {
     from {
         opacity: 0;
@@ -1306,6 +1314,7 @@ body:has(.invitation-viewport) {
     }
 
     .invitation-open-button img,
+    .invitation-music-control img,
     .invitation-confetti span,
     .invitation-footer img {
         animation: none;
