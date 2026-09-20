@@ -655,186 +655,30 @@ body:has(.invitation-viewport) {
     line-height: 1.55;
 }
 
-.invitation-quote-card > p,
-.invitation-quote-card > span,
-.invitation-couple-copy,
-.invitation-couple-copy > *,
-.invitation-event-card,
-.invitation-event-card > *,
-.invitation-countdown-section > *,
-.invitation-countdown-item,
-.invitation-rsvp-section > *,
-.invitation-gifts-section > *,
-.invitation-gift-card,
-.invitation-gallery-section > *,
-.invitation-gallery-item,
-.invitation-story-section > *,
-.invitation-story-entry,
-.invitation-story-credit {
-    transition: transform 1300ms cubic-bezier(0.22, 1, 0.36, 1);
+.invitation-reveal--visible .invitation-quote-card p {
+    animation: invitation-quote-from-top 1800ms cubic-bezier(0.22, 1, 0.36, 1)
+        both;
 }
 
-.invitation-quote-card > p {
-    transform: translateY(-6rem);
-}
-
-.invitation-quote-card > span {
-    transform: translateY(6rem);
-}
-
-.invitation-couple-row--bride .invitation-couple-copy {
-    transform: translateX(-8rem);
-}
-
-.invitation-couple-row--groom .invitation-couple-copy {
-    transform: translateX(8rem);
-}
-
-.invitation-couple-copy > .invitation-couple-role {
-    transform: translateY(-5rem);
-}
-
-.invitation-couple-copy > h2 {
+.invitation-reveal > * > * {
     transform: translateY(5rem);
+    transition: transform 1200ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.invitation-couple-copy > p:first-of-type {
-    transform: translateX(-5rem);
+.invitation-reveal--visible > * > * {
+    transform: translateY(0);
 }
 
-.invitation-couple-copy > p:last-of-type {
-    transform: translateX(5rem);
+.invitation-reveal--visible > * > :nth-child(2) {
+    transition-delay: 120ms;
 }
 
-.invitation-event-card:nth-child(1) {
-    transform: translateX(-8rem);
+.invitation-reveal--visible > * > :nth-child(3) {
+    transition-delay: 240ms;
 }
 
-.invitation-event-card:nth-child(2) {
-    transform: translateX(8rem) rotate(1deg);
-}
-
-.invitation-event-card > h3 {
-    transform: translateY(-4rem);
-}
-
-.invitation-event-card > p {
-    transform: translateX(4rem);
-}
-
-.invitation-event-card > a {
-    transform: translateY(4rem);
-}
-
-.invitation-countdown-item:nth-child(1) {
-    transform: translateY(-5rem) rotate(20deg);
-}
-
-.invitation-countdown-item:nth-child(2) {
-    transform: translateX(-5rem) rotate(10deg);
-}
-
-.invitation-countdown-item:nth-child(3) {
-    transform: translateX(5rem) rotate(-12deg);
-}
-
-.invitation-countdown-item:nth-child(4) {
-    transform: translateY(5rem) rotate(-13deg);
-}
-
-.invitation-countdown-section > .invitation-section-label,
-.invitation-rsvp-section > .invitation-section-kicker,
-.invitation-gifts-section > .invitation-section-kicker,
-.invitation-gallery-section > .invitation-section-kicker,
-.invitation-story-section > h2 {
-    transform: translateY(-6rem);
-}
-
-.invitation-countdown-section > .invitation-countdown-board,
-.invitation-rsvp-section > .invitation-rsvp-form,
-.invitation-gifts-section > .invitation-gift-list,
-.invitation-gallery-section > .invitation-gallery-grid,
-.invitation-story-section > .invitation-story-list {
-    transform: translateY(8rem);
-}
-
-.invitation-rsvp-section > h2,
-.invitation-gifts-section > h2 {
-    transform: translateX(-7rem);
-}
-
-.invitation-rsvp-section > .invitation-rsvp-intro,
-.invitation-gifts-section > .invitation-gifts-intro,
-.invitation-gallery-section > h2 {
-    transform: translateX(7rem);
-}
-
-.invitation-rsvp-form > .invitation-form-field:nth-child(odd),
-.invitation-gift-card:nth-child(odd),
-.invitation-gallery-item:nth-child(odd),
-.invitation-story-entry:nth-child(odd) {
-    transform: translateX(-6rem);
-}
-
-.invitation-rsvp-form > .invitation-form-field:nth-child(even),
-.invitation-gift-card:nth-child(even),
-.invitation-gallery-item:nth-child(even),
-.invitation-story-entry:nth-child(even) {
-    transform: translateX(6rem);
-}
-
-.invitation-story-section > .invitation-story-credit {
-    transform: translateY(6rem);
-}
-
-.invitation-reveal--visible .invitation-quote-card > p,
-.invitation-reveal--visible .invitation-quote-card > span,
-.invitation-reveal--visible .invitation-couple-copy,
-.invitation-reveal--visible .invitation-couple-copy > *,
-.invitation-reveal--visible .invitation-event-card,
-.invitation-reveal--visible .invitation-event-card > *,
-.invitation-reveal--visible .invitation-countdown-section > *,
-.invitation-reveal--visible .invitation-countdown-item,
-.invitation-reveal--visible .invitation-rsvp-section > *,
-.invitation-reveal--visible .invitation-gifts-section > *,
-.invitation-reveal--visible .invitation-gift-card,
-.invitation-reveal--visible .invitation-gallery-section > *,
-.invitation-reveal--visible .invitation-gallery-item,
-.invitation-reveal--visible .invitation-story-section > *,
-.invitation-reveal--visible .invitation-story-entry,
-.invitation-reveal--visible .invitation-story-credit {
-    transform: translate(0);
-}
-
-.invitation-reveal--visible .invitation-event-card:nth-child(2) {
-    transform: rotate(1deg);
-}
-
-.invitation-reveal--visible .invitation-countdown-item:nth-child(1),
-.invitation-reveal--visible .invitation-countdown-item:nth-child(2),
-.invitation-reveal--visible .invitation-countdown-item:nth-child(3),
-.invitation-reveal--visible .invitation-countdown-item:nth-child(4) {
-    transform: rotate(var(--countdown-rotation, 0deg));
-}
-
-.invitation-countdown-item:nth-child(1) {
-    --countdown-rotation: 20deg;
-}
-
-.invitation-countdown-item:nth-child(2) {
-    --countdown-rotation: 10deg;
-}
-
-.invitation-countdown-item:nth-child(3) {
-    --countdown-rotation: -12deg;
-}
-
-.invitation-countdown-item:nth-child(4) {
-    --countdown-rotation: -13deg;
-}
-
-.invitation-reveal--visible .invitation-gallery-item:nth-child(even) {
-    transform: none;
+.invitation-reveal--visible > * > :nth-child(4) {
+    transition-delay: 360ms;
 }
 
 .invitation-quote-card span {
@@ -1464,6 +1308,16 @@ body:has(.invitation-viewport) {
     }
 }
 
+@keyframes invitation-quote-from-top {
+    from {
+        transform: translateY(-5rem);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .invitation-cover-card,
     .invitation-reveal {
@@ -1477,27 +1331,15 @@ body:has(.invitation-viewport) {
         animation: none;
     }
 
+    .invitation-reveal--visible .invitation-quote-card p {
+        animation: none;
+    }
+
     .invitation-reveal {
         transform: none;
     }
 
-    .invitation-reveal > * > *,
-    .invitation-reveal .invitation-quote-card > p,
-    .invitation-reveal .invitation-quote-card > span,
-    .invitation-reveal .invitation-couple-copy,
-    .invitation-reveal .invitation-couple-copy > *,
-    .invitation-reveal .invitation-event-card,
-    .invitation-reveal .invitation-event-card > *,
-    .invitation-reveal .invitation-countdown-section > *,
-    .invitation-reveal .invitation-countdown-item,
-    .invitation-reveal .invitation-rsvp-section > *,
-    .invitation-reveal .invitation-gifts-section > *,
-    .invitation-reveal .invitation-gift-card,
-    .invitation-reveal .invitation-gallery-section > *,
-    .invitation-reveal .invitation-gallery-item,
-    .invitation-reveal .invitation-story-section > *,
-    .invitation-reveal .invitation-story-entry,
-    .invitation-reveal .invitation-story-credit {
+    .invitation-reveal > * > * {
         transition: none;
         transform: none;
     }
