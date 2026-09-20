@@ -186,8 +186,37 @@ function Countdown({ target, timezone }: { target: string; timezone: string }) {
 
 function TypingText({ text }: { text: string }) {
     const [typedText, setTypedText] = useState('');
+    const [hasEnteredViewport, setHasEnteredViewport] = useState(false);
+    const textRef = useRef<HTMLSpanElement>(null);
 
     useEffect(() => {
+        const element = textRef.current;
+
+        if (!element || !('IntersectionObserver' in window)) {
+            setHasEnteredViewport(true);
+            return;
+        }
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry?.isIntersecting) {
+                    setHasEnteredViewport(true);
+                    observer.disconnect();
+                }
+            },
+            { threshold: 0.35 },
+        );
+
+        observer.observe(element);
+
+        return () => observer.disconnect();
+    }, []);
+
+    useEffect(() => {
+        if (!hasEnteredViewport) {
+            return;
+        }
+
         let characterIndex = 0;
         setTypedText('');
 
@@ -201,17 +230,17 @@ function TypingText({ text }: { text: string }) {
         }, 28);
 
         return () => window.clearInterval(timer);
-    }, [text]);
+    }, [hasEnteredViewport, text]);
 
     return (
-        <>
+        <span ref={textRef}>
             {typedText}
-            {typedText.length < text.length && (
+            {hasEnteredViewport && typedText.length < text.length && (
                 <span className="invitation-typing-cursor" aria-hidden="true">
                     |
                 </span>
             )}
-        </>
+        </span>
     );
 }
 
