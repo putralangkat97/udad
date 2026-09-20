@@ -184,66 +184,6 @@ function Countdown({ target, timezone }: { target: string; timezone: string }) {
     );
 }
 
-function TypingText({ text }: { text: string }) {
-    const [typedText, setTypedText] = useState('');
-    const [hasEnteredViewport, setHasEnteredViewport] = useState(false);
-    const textRef = useRef<HTMLSpanElement>(null);
-
-    useEffect(() => {
-        const element = textRef.current;
-
-        if (!element || !('IntersectionObserver' in window)) {
-            setHasEnteredViewport(true);
-            return;
-        }
-
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry?.isIntersecting) {
-                    setHasEnteredViewport(true);
-                    observer.disconnect();
-                }
-            },
-            { threshold: 0.35 },
-        );
-
-        observer.observe(element);
-
-        return () => observer.disconnect();
-    }, []);
-
-    useEffect(() => {
-        if (!hasEnteredViewport) {
-            return;
-        }
-
-        let characterIndex = 0;
-        setTypedText('');
-
-        const timer = window.setInterval(() => {
-            characterIndex += 1;
-            setTypedText(text.slice(0, characterIndex));
-
-            if (characterIndex >= text.length) {
-                window.clearInterval(timer);
-            }
-        }, 28);
-
-        return () => window.clearInterval(timer);
-    }, [hasEnteredViewport, text]);
-
-    return (
-        <span ref={textRef}>
-            {typedText}
-            {hasEnteredViewport && typedText.length < text.length && (
-                <span className="invitation-typing-cursor" aria-hidden="true">
-                    |
-                </span>
-            )}
-        </span>
-    );
-}
-
 function ProfileCard({
     profile,
     side,
@@ -977,11 +917,7 @@ export default function Welcome({ invitation, wishes }: WelcomeProps) {
                                     }}
                                     aria-label="Wedding blessing"
                                 >
-                                    <p>
-                                        <TypingText
-                                            text={invitation.opening.quote}
-                                        />
-                                    </p>
+                                    <p>{invitation.opening.quote}</p>
                                     <span>{invitation.opening.reference}</span>
                                 </section>
                             </Reveal>
