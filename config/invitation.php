@@ -63,13 +63,13 @@ return [
         'accounts' => [
             [
                 'bank' => 'BCA',
-                'number' => '6821612010',
-                'holder' => 'RAHMADANI ADISTIA',
+                'number' => '6331833603',
+                'holder' => 'ANGGIT ARI UTOMO',
             ],
             [
-                'bank' => 'Bank Sinarmas',
-                'number' => '0046671578',
-                'holder' => 'ANGGIT ARI UTOMO, S.T.',
+                'bank' => 'Bank Jago',
+                'number' => '500326403010',
+                'holder' => 'RAHMADANI ADISTIA',
             ],
         ],
     ],
@@ -95,21 +95,27 @@ return [
         'title' => 'Our Love Story',
         'entries' => [
             [
-                'period' => '2023',
-                'title' => 'Berawal dari Tempat Kerja',
-                'copy' => 'Kisah Anggit dan Rahmadani bermula secara sederhana di tengah rutinitas pekerjaan. Berawal dari rekan kerja biasa, kami mulai banyak berinteraksi dan saling mengenal lebih jauh.',
+                'period' => '2020',
+                'title' => 'Berawal dari tempat nongkrong',
+                'copy' => 'Kisah kami bermula dari pertemuan dibangku sebelah kos. Disitu kami berkenalan dan sering bercerita dan membagikan pengalaman masing-masing.',
                 'ornament' => '/invitation-assets/temp/image/cherry/9.png',
             ],
             [
-                'period' => '2024–2025',
-                'title' => 'Saling Melengkapi',
+                'period' => 'Akhir 2020',
+                'title' => 'Memutuskan untuk berpacanan',
                 'copy' => 'Seiring berjalannya waktu, kami menyadari sebuah kecocokan yang unik. Perbedaan kami justru menjadi kepingan puzzle yang saling mengisi dan mewarnai hari-hari kami.',
                 'ornament' => '/invitation-assets/temp/image/cherry/8.png',
             ],
             [
+                'period' => '2022-2023',
+                'title' => 'Sempat berpisah & Kembali lagi',
+                'copy' => 'Setelah melewati banyak waktu bersama, ego mengalahkan semuanya, kami memutuskan untuk tidak bersama untuk waktu yang lumayan lama. Kami yakin bahwa kami adalah rumah bagi satu sama lain. Tahun 2023, kami memutuskan untuk kembali lagi dan menjalani nya dengan lebih serius.',
+                'ornament' => '/invitation-assets/temp/image/cherry/14.png',
+            ],
+            [
                 'period' => '2026',
-                'title' => 'Memulai Lembaran Baru',
-                'copy' => 'Setelah melewati banyak cerita bersama, kami yakin bahwa kami adalah rumah bagi satu sama lain. Tahun ini, kami memutuskan untuk mengikat janji suci dan melangkah bersama menuju pernikahan.',
+                'title' => 'Hari Bahagia',
+                'copy' => 'Seiring berjalannya waktu kami memutuskan untuk menjalani hubungan ini kejenjang yang lebih serius. Awal 2026 kami memutuskan untuk bertunangan dan Oktober 2026 kami memutuskan untuk melangsungkan pernikahan.',
                 'ornament' => '/invitation-assets/temp/image/cherry/7.png',
             ],
         ],
