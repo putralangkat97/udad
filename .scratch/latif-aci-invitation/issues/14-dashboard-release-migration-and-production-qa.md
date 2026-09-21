@@ -23,8 +23,16 @@ admin workflows, and preparing production rollout with recovery steps.
       media reference protection in staging.
 - [ ] Verify public invitation behavior after migration, including cover,
       audio, countdown, RSVP, gallery, gifts, and story.
-- [ ] Verify the public root never displays an incomplete draft.
+- [x] Verify the public root never displays an incomplete draft.
 - [ ] Confirm production environment configuration, storage permissions, HTTPS,
       and asset delivery.
-- [ ] Record release notes and a clear fallback plan for the configuration
+- [x] Record release notes and a clear fallback plan for the configuration
       source during rollout.
+
+## Agent verification
+
+The local migration status, config parity test, automated QA suite, typecheck,
+formatter, and production build have passed. Staging and production execution
+remain pending because this workspace has no access to those environments; use
+the release runbook in `docs/releases/14-dashboard-release-and-production-qa.md`
+to complete and record those checks.

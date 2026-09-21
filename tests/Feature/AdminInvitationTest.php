@@ -39,6 +39,11 @@ test('config import is idempotent and preserves managed content', function () {
         ->toBe('Managed title');
 });
 
+test('managed invitation starts with the complete config publication', function () {
+    expect(Invitation::importConfig()->published_content)
+        ->toEqual(config('invitation'));
+});
+
 test('public invitation falls back to config when no managed version exists', function () {
     Invitation::query()->where('key', config('invitation.key'))->delete();
 
