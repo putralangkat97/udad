@@ -15,12 +15,12 @@ draft through the public root URL.
 
 **Status:** ready-for-qa
 
-- [ ] Provide an admin-only preview entry point for the current draft.
-- [ ] Render preview content through the same public invitation composition and
+- [x] Provide an admin-only preview entry point for the current draft.
+- [x] Render preview content through the same public invitation composition and
       data contract.
-- [ ] Keep cover reveal, music, countdown, gallery, RSVP, gifts, story, and
+- [x] Keep cover reveal, music, countdown, gallery, RSVP, gifts, story, and
       responsive behavior usable in preview.
-- [ ] Prevent guests and unprivileged users from opening draft preview.
-- [ ] Make it clear to the admin that the page is a draft preview and is not
+- [x] Prevent guests and unprivileged users from opening draft preview.
+- [x] Make it clear to the admin that the page is a draft preview and is not
       public.
-- [ ] Verify public root rendering still uses only the published version.
+- [x] Verify public root rendering still uses only the published version.

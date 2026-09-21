@@ -15,11 +15,11 @@ content management from existing wishes moderation.
 
 **Status:** ready-for-qa
 
-- [ ] Allow an authorized admin to open the invitation content dashboard.
-- [ ] Deny guests and authenticated users without admin permission from content
+- [x] Allow an authorized admin to open the invitation content dashboard.
+- [x] Deny guests and authenticated users without admin permission from content
       management routes and actions.
-- [ ] Provide navigation for overview/general, couple, events/countdown,
+- [x] Provide navigation for overview/general, couple, events/countdown,
       opening, gifts, gallery, story, media library, and publish.
-- [ ] Show the current draft/published status in the dashboard shell.
-- [ ] Preserve the existing wishes moderation workflow as a separate area.
-- [ ] Cover authorization success and denial at the HTTP boundary.
+- [x] Show the current draft/published status in the dashboard shell.
+- [x] Preserve the existing wishes moderation workflow as a separate area.
+- [x] Cover authorization success and denial at the HTTP boundary.

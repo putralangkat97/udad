@@ -16,14 +16,14 @@ Anggit–Adis content during and after migration.
 
 **Status:** ready-for-qa
 
-- [ ] Persist an Invitation aggregate with draft and published content states.
-- [ ] Import the current configuration idempotently as the initial published
+- [x] Persist an Invitation aggregate with draft and published content states.
+- [x] Import the current configuration idempotently as the initial published
       version.
-- [ ] Keep the public root invitation rendering the current content after the
+- [x] Keep the public root invitation rendering the current content after the
       migration.
-- [ ] Preserve a safe configuration fallback when no managed published version
+- [x] Preserve a safe configuration fallback when no managed published version
       is available.
-- [ ] Keep the published content contract stable for the existing invitation
+- [x] Keep the published content contract stable for the existing invitation
       renderer.
-- [ ] Cover migration, published selection, fallback, and failure behavior with
+- [x] Cover migration, published selection, fallback, and failure behavior with
       server-side tests.

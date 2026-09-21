@@ -18,6 +18,17 @@ class Invitation extends Model
         ];
     }
 
+    public static function importConfig(): self
+    {
+        return static::query()->firstOrCreate(
+            ['key' => config('invitation.key')],
+            [
+                'published_content' => config('invitation'),
+                'published_at' => now(),
+            ],
+        );
+    }
+
     public function mediaAssets(): HasMany
     {
         return $this->hasMany(MediaAsset::class);

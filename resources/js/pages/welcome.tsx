@@ -1,7 +1,7 @@
-import { Form, Head } from "@inertiajs/react";
-import { type ReactNode, useEffect, useRef, useState } from "react";
-import Confetti from "react-confetti";
-import RsvpController from "@/actions/App/Http/Controllers/RsvpController";
+import { Form, Head } from '@inertiajs/react';
+import { type ReactNode, useEffect, useRef, useState } from 'react';
+import Confetti from 'react-confetti';
+import RsvpController from '@/actions/App/Http/Controllers/RsvpController';
 
 type CoupleProfile = {
     role: string;
@@ -81,6 +81,7 @@ type Invitation = {
 
 type WelcomeProps = {
     invitation: Invitation;
+    preview?: boolean;
 };
 
 type RemainingTime = {
@@ -106,7 +107,7 @@ function getRemainingTime(target: string): RemainingTime {
 
 function Reveal({
     children,
-    className = "",
+    className = '',
 }: {
     children: ReactNode;
     className?: string;
@@ -117,7 +118,7 @@ function Reveal({
     useEffect(() => {
         const element = ref.current;
 
-        if (!element || !("IntersectionObserver" in window)) {
+        if (!element || !('IntersectionObserver' in window)) {
             setVisible(true);
             return;
         }
@@ -140,7 +141,7 @@ function Reveal({
     return (
         <div
             ref={ref}
-            className={`invitation-reveal ${visible ? "invitation-reveal--visible" : ""} ${className}`}
+            className={`invitation-reveal ${visible ? 'invitation-reveal--visible' : ''} ${className}`}
         >
             {children}
         </div>
@@ -179,14 +180,14 @@ function ProfileCard({
     side,
 }: {
     profile: CoupleProfile;
-    side: "bride" | "groom";
+    side: 'bride' | 'groom';
 }) {
     return (
         <div className={`invitation-couple-row invitation-couple-row--${side}`}>
             <div className="invitation-couple-copy">
                 <span className="invitation-couple-role">{profile.role}</span>
                 <h2>{profile.name}</h2>
-                <p>{side === "bride" ? "putri dari" : "putra dari"}</p>
+                <p>{side === 'bride' ? 'putri dari' : 'putra dari'}</p>
                 <p>{profile.family}</p>
             </div>
             <div className="invitation-couple-portrait">
@@ -206,7 +207,7 @@ function ProfileCard({
 }
 
 function RsvpSection() {
-    const [attendance, setAttendance] = useState("attending");
+    const [attendance, setAttendance] = useState('attending');
 
     return (
         <Reveal>
@@ -224,7 +225,7 @@ function RsvpSection() {
 
                 <Form
                     {...RsvpController.store.form()}
-                    resetOnSuccess={["name", "guest_count", "message"]}
+                    resetOnSuccess={['name', 'guest_count', 'message']}
                     disableWhileProcessing
                     className="invitation-rsvp-form"
                 >
@@ -254,7 +255,7 @@ function RsvpSection() {
                                     aria-invalid={Boolean(errors.name)}
                                     aria-describedby={
                                         errors.name
-                                            ? "rsvp-name-error"
+                                            ? 'rsvp-name-error'
                                             : undefined
                                     }
                                 />
@@ -284,7 +285,7 @@ function RsvpSection() {
                                     aria-invalid={Boolean(errors.attendance)}
                                     aria-describedby={
                                         errors.attendance
-                                            ? "rsvp-attendance-error"
+                                            ? 'rsvp-attendance-error'
                                             : undefined
                                     }
                                 >
@@ -308,7 +309,7 @@ function RsvpSection() {
                                 )}
                             </label>
 
-                            {attendance === "attending" && (
+                            {attendance === 'attending' && (
                                 <label
                                     className="invitation-form-field"
                                     htmlFor="rsvp-guest-count"
@@ -327,7 +328,7 @@ function RsvpSection() {
                                         )}
                                         aria-describedby={
                                             errors.guest_count
-                                                ? "rsvp-guest-count-error"
+                                                ? 'rsvp-guest-count-error'
                                                 : undefined
                                         }
                                     />
@@ -358,7 +359,7 @@ function RsvpSection() {
                                     aria-invalid={Boolean(errors.message)}
                                     aria-describedby={
                                         errors.message
-                                            ? "rsvp-message-error"
+                                            ? 'rsvp-message-error'
                                             : undefined
                                     }
                                 />
@@ -377,7 +378,7 @@ function RsvpSection() {
                                 className="invitation-rsvp-submit"
                                 disabled={processing}
                             >
-                                {processing ? "Sending..." : "Send RSVP"}
+                                {processing ? 'Sending...' : 'Send RSVP'}
                             </button>
                         </>
                     )}
@@ -387,7 +388,7 @@ function RsvpSection() {
     );
 }
 
-export default function Welcome({ invitation }: WelcomeProps) {
+export default function Welcome({ invitation, preview = false }: WelcomeProps) {
     const [isReady, setIsReady] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [isOpening, setIsOpening] = useState(false);
@@ -456,7 +457,7 @@ export default function Welcome({ invitation }: WelcomeProps) {
 
         const dialog = lightboxRef.current;
         const originalOverflow = document.body.style.overflow;
-        document.body.style.overflow = "hidden";
+        document.body.style.overflow = 'hidden';
 
         dialog?.showModal();
 
@@ -591,35 +592,35 @@ export default function Welcome({ invitation }: WelcomeProps) {
             if (navigator.clipboard?.writeText) {
                 await navigator.clipboard.writeText(number);
             } else {
-                const textarea = document.createElement("textarea");
+                const textarea = document.createElement('textarea');
                 textarea.value = number;
-                textarea.setAttribute("readonly", "");
-                textarea.style.position = "fixed";
-                textarea.style.opacity = "0";
+                textarea.setAttribute('readonly', '');
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
                 document.body.appendChild(textarea);
                 let copied = false;
 
                 try {
                     textarea.select();
-                    copied = document.execCommand("copy");
+                    copied = document.execCommand('copy');
                 } finally {
                     textarea.remove();
                 }
 
                 if (!copied) {
-                    throw new Error("Clipboard copy failed");
+                    throw new Error('Clipboard copy failed');
                 }
             }
 
             setCopiedNumber(number);
-            setCopyFeedback("Account number copied.");
+            setCopyFeedback('Account number copied.');
             setCopyFailed(false);
             window.setTimeout(() => setCopiedNumber(null), 1600);
         } catch {
             setCopiedNumber(null);
             setCopyFailed(true);
             setCopyFeedback(
-                "Copy is unavailable. Please select the account number manually.",
+                'Copy is unavailable. Please select the account number manually.',
             );
         }
     }
@@ -630,9 +631,22 @@ export default function Welcome({ invitation }: WelcomeProps) {
 
     return (
         <>
-            <Head title={invitation.title} />
+            <Head
+                title={
+                    preview
+                        ? `Draft preview · ${invitation.title}`
+                        : invitation.title
+                }
+            />
 
             <div className="invitation-viewport">
+                {preview && (
+                    <div className="invitation-preview-banner" role="status">
+                        <strong>Draft preview</strong>
+                        <span>This invitation is private and not public.</span>
+                        <a href="/admin/invitation">Back to editor</a>
+                    </div>
+                )}
                 {hasOpened && (
                     <Confetti
                         recycle
@@ -641,10 +655,10 @@ export default function Welcome({ invitation }: WelcomeProps) {
                         wind={0.02}
                         friction={0.995}
                         initialVelocityY={{ min: 1, max: 4 }}
-                        colors={["#984a3d", "#c47b58", "#d9a96f", "#fff9ec"]}
+                        colors={['#984a3d', '#c47b58', '#d9a96f', '#fff9ec']}
                         style={{
-                            pointerEvents: "none",
-                            position: "fixed",
+                            pointerEvents: 'none',
+                            position: 'fixed',
                             zIndex: 20,
                         }}
                     />
@@ -663,7 +677,7 @@ export default function Welcome({ invitation }: WelcomeProps) {
                     />
 
                     <div
-                        className={`invitation-cover ${isCoverFading || isOpen ? "invitation-cover--hidden" : ""}`}
+                        className={`invitation-cover ${isCoverFading || isOpen ? 'invitation-cover--hidden' : ''}`}
                         aria-hidden={isOpening || isOpen}
                     >
                         {!isReady && (
@@ -672,7 +686,7 @@ export default function Welcome({ invitation }: WelcomeProps) {
                             </span>
                         )}
                         <span
-                            className={`invitation-cover-card ${isReady ? "invitation-cover-card--ready" : ""}`}
+                            className={`invitation-cover-card ${isReady ? 'invitation-cover-card--ready' : ''}`}
                         >
                             <img
                                 src={cover.image}
@@ -694,8 +708,8 @@ export default function Welcome({ invitation }: WelcomeProps) {
                                     {cover.date}
                                 </span>
                                 <span className="invitation-guest">
-                                    <span>{cover.guest.split(",")[0]},</span>{" "}
-                                    {cover.guest.split(",")[1]}
+                                    <span>{cover.guest.split(',')[0]},</span>{' '}
+                                    {cover.guest.split(',')[1]}
                                 </span>
                                 <span className="invitation-invitation">
                                     {cover.invitation}
@@ -717,7 +731,7 @@ export default function Welcome({ invitation }: WelcomeProps) {
                     {(isOpening || isOpen) && (
                         <main
                             ref={mainRef}
-                            className={`invitation-opening invitation-content ${isContentRevealing ? "invitation-opening--visible" : "invitation-opening--hidden"}`}
+                            className={`invitation-opening invitation-content ${isContentRevealing ? 'invitation-opening--visible' : 'invitation-opening--hidden'}`}
                             aria-label="Wedding invitation"
                             tabIndex={-1}
                         >
@@ -725,15 +739,15 @@ export default function Welcome({ invitation }: WelcomeProps) {
                                 <button
                                     ref={musicControlRef}
                                     type="button"
-                                    className={`invitation-music-control ${isPlaying ? "invitation-music-control--playing" : ""}`}
+                                    className={`invitation-music-control ${isPlaying ? 'invitation-music-control--playing' : ''}`}
                                     aria-label={
                                         audioUnavailable
-                                            ? "Music unavailable"
+                                            ? 'Music unavailable'
                                             : audioPlaybackFailed
-                                              ? "Try music again"
+                                              ? 'Try music again'
                                               : isPlaying
-                                                ? "Pause music"
-                                                : "Play music"
+                                                ? 'Pause music'
+                                                : 'Play music'
                                     }
                                     aria-pressed={isPlaying}
                                     disabled={audioUnavailable}
@@ -818,8 +832,8 @@ export default function Welcome({ invitation }: WelcomeProps) {
                                         id="countdown-heading"
                                         className="invitation-section-label"
                                     >
-                                        <span aria-hidden="true">❧</span>{" "}
-                                        {invitation.countdown.label}{" "}
+                                        <span aria-hidden="true">❧</span>{' '}
+                                        {invitation.countdown.label}{' '}
                                         <span aria-hidden="true">❧</span>
                                     </p>
                                     <div
@@ -880,8 +894,8 @@ export default function Welcome({ invitation }: WelcomeProps) {
                                                     >
                                                         {copiedNumber ===
                                                         account.number
-                                                            ? "Copied"
-                                                            : "Copy"}
+                                                            ? 'Copied'
+                                                            : 'Copy'}
                                                     </button>
                                                 </article>
                                             ),
@@ -891,8 +905,8 @@ export default function Welcome({ invitation }: WelcomeProps) {
                                         <p
                                             className={
                                                 copyFailed
-                                                    ? "invitation-form-copy-error"
-                                                    : "invitation-form-success"
+                                                    ? 'invitation-form-copy-error'
+                                                    : 'invitation-form-success'
                                             }
                                             role="status"
                                         >
@@ -939,8 +953,8 @@ export default function Welcome({ invitation }: WelcomeProps) {
                                     aria-labelledby="story-heading"
                                 >
                                     <h2 id="story-heading">
-                                        <span aria-hidden="true">〰</span>{" "}
-                                        {invitation.story.title}{" "}
+                                        <span aria-hidden="true">〰</span>{' '}
+                                        {invitation.story.title}{' '}
                                         <span aria-hidden="true">〰</span>
                                     </h2>
                                     <div className="invitation-story-list">
@@ -948,7 +962,7 @@ export default function Welcome({ invitation }: WelcomeProps) {
                                             (entry, index) => (
                                                 <article
                                                     key={entry.period}
-                                                    className={`invitation-story-entry invitation-story-entry--${index % 2 === 0 ? "art-first" : "text-first"}`}
+                                                    className={`invitation-story-entry invitation-story-entry--${index % 2 === 0 ? 'art-first' : 'text-first'}`}
                                                 >
                                                     <img
                                                         src={entry.ornament}

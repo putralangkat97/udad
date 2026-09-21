@@ -27,6 +27,27 @@ test('only admins can open invitation content management', function () {
             ->where('hasDraft', false));
 });
 
+test('config import is idempotent and preserves managed content', function () {
+    $invitation = Invitation::importConfig();
+    $invitation->update(['published_content' => ['title' => 'Managed title']]);
+
+    $imported = Invitation::importConfig();
+
+    expect(Invitation::query()->where('key', config('invitation.key'))->count())
+        ->toBe(1)
+        ->and($imported->fresh()->published_content['title'])
+        ->toBe('Managed title');
+});
+
+test('public invitation falls back to config when no managed version exists', function () {
+    Invitation::query()->where('key', config('invitation.key'))->delete();
+
+    $this->get(route('home'))
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->component('welcome')
+            ->where('invitation.title', config('invitation.title')));
+});
+
 test('guests and non-admins cannot preview or publish a draft', function () {
     $this->get(route('admin.invitation.preview'))->assertRedirect(route('login'));
     $this->post(route('admin.invitation.publish'))->assertRedirect(route('login'));
@@ -37,6 +58,22 @@ test('guests and non-admins cannot preview or publish a draft', function () {
 
     $this->actingAs(User::factory()->create())
         ->post(route('admin.invitation.publish'))
+        ->assertForbidden();
+});
+
+test('non-admins cannot save or upload managed invitation content', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->post(route('admin.invitation.draft'), [
+            'content' => json_encode(config('invitation')),
+        ])
+        ->assertForbidden();
+
+    $this->actingAs($user)
+        ->post(route('admin.invitation.media.upload'), [
+            'file' => UploadedFile::fake()->image('ornament.png'),
+        ])
         ->assertForbidden();
 });
 
@@ -58,6 +95,81 @@ test('admins can save a draft without changing the public invitation', function 
         ->toBe(config('invitation.title'));
 });
 
+test('admins can edit general couple event and opening content as an isolated draft', function () {
+    $admin = adminUser();
+    $invitation = Invitation::query()->where('key', config('invitation.key'))->firstOrFail();
+    $content = $invitation->published_content;
+
+    data_set($content, 'title', 'Draft title');
+    data_set($content, 'timezone', 'Asia/Jakarta');
+    data_set($content, 'couple.bride.name', 'Draft bride');
+    data_set($content, 'couple.groom.name', 'Draft groom');
+    data_set($content, 'events', [
+        [
+            'name' => 'Ceremony',
+            'date' => 'Monday, 5 October 2026',
+            'time' => '08.00 WIB',
+            'venue' => 'Draft venue',
+            'maps' => 'https://maps.example.test/ceremony',
+        ],
+    ]);
+    data_set($content, 'opening.quote', 'Draft quote');
+    data_set($content, 'opening.reference', 'Draft reference');
+
+    $this->actingAs($admin)
+        ->post(route('admin.invitation.draft'), ['content' => json_encode($content)])
+        ->assertRedirect(route('admin.invitation.edit'));
+
+    $draft = Invitation::findOrFail($invitation->id)->draft_content;
+
+    expect($draft['title'])->toBe('Draft title')
+        ->and($draft['couple']['bride']['name'])->toBe('Draft bride')
+        ->and($draft['events'][0]['venue'])->toBe('Draft venue')
+        ->and($draft['opening']['quote'])->toBe('Draft quote')
+        ->and($invitation->fresh()->published_content['title'])
+        ->toBe(config('invitation.title'));
+});
+
+test('draft content must be a JSON object while incomplete objects remain saveable', function () {
+    $admin = adminUser();
+
+    $this->actingAs($admin)
+        ->post(route('admin.invitation.draft'), ['content' => json_encode(['title' => ''])])
+        ->assertRedirect(route('admin.invitation.edit'));
+
+    $this->actingAs($admin)
+        ->post(route('admin.invitation.draft'), ['content' => json_encode('not an object')])
+        ->assertSessionHasErrors('content');
+});
+
+test('admins can save gifts gallery story and audio changes as one draft', function () {
+    $admin = adminUser();
+    $invitation = Invitation::query()->where('key', config('invitation.key'))->firstOrFail();
+    $content = $invitation->published_content;
+
+    data_set($content, 'audio', '/storage/invitation-media/reception.mp3');
+    data_set($content, 'gifts.intro', 'Draft gift instructions');
+    data_set($content, 'gifts.accounts', [
+        ['bank' => 'BCA', 'number' => '1234567890', 'holder' => 'DRAFT HOLDER'],
+    ]);
+    data_set($content, 'gallery', []);
+    data_set($content, 'story.entries', []);
+
+    $this->actingAs($admin)
+        ->post(route('admin.invitation.draft'), ['content' => json_encode($content)])
+        ->assertRedirect(route('admin.invitation.edit'));
+
+    $draft = Invitation::findOrFail($invitation->id)->draft_content;
+
+    expect($draft['audio'])->toBe('/storage/invitation-media/reception.mp3')
+        ->and($draft['gifts']['intro'])->toBe('Draft gift instructions')
+        ->and($draft['gifts']['accounts'][0]['number'])->toBe('1234567890')
+        ->and($draft['gallery'])->toBe([])
+        ->and($draft['story']['entries'])->toBe([])
+        ->and($invitation->fresh()->published_content['gifts']['intro'])
+        ->toBe(config('invitation.gifts.intro'));
+});
+
 test('admins can preview the draft through the invitation renderer', function () {
     $admin = adminUser();
     $invitation = Invitation::query()->where('key', config('invitation.key'))->firstOrFail();
@@ -72,7 +184,13 @@ test('admins can preview the draft through the invitation renderer', function ()
         ->get(route('admin.invitation.preview'))
         ->assertInertia(fn (AssertableInertia $page) => $page
             ->component('welcome')
+            ->where('preview', true)
             ->where('invitation.title', 'Preview Invitation Title'));
+
+    $this->get(route('home'))
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->where('invitation.title', config('invitation.title'))
+            ->missing('preview'));
 });
 
 test('publishing makes the complete draft public atomically', function () {
@@ -114,6 +232,23 @@ test('publish validation preserves the previous public version', function () {
         ->toBe(config('invitation.couple.groom.name'));
 });
 
+test('publish validation rejects malformed gift account numbers', function () {
+    $admin = adminUser();
+    $invitation = Invitation::query()->where('key', config('invitation.key'))->firstOrFail();
+    $content = $invitation->published_content;
+    data_set($content, 'gifts.accounts', [
+        ['bank' => 'BCA', 'number' => '123-INVALID', 'holder' => 'Holder'],
+    ]);
+
+    $this->actingAs($admin)->post(route('admin.invitation.draft'), [
+        'content' => json_encode($content),
+    ]);
+
+    $this->actingAs($admin)
+        ->post(route('admin.invitation.publish'))
+        ->assertSessionHasErrors('gifts.accounts.0.number');
+});
+
 test('admins can archive and delete an unreferenced media asset', function () {
     Storage::fake('public');
     $admin = adminUser();
@@ -132,4 +267,53 @@ test('admins can archive and delete an unreferenced media asset', function () {
         ->assertRedirect(route('admin.invitation.edit'));
 
     expect($asset->fresh())->toBeNull();
+});
+
+test('media library exposes metadata and protects referenced assets', function () {
+    Storage::fake('public');
+    $admin = adminUser();
+
+    $this->actingAs($admin)->post(route('admin.invitation.media.upload'), [
+        'file' => UploadedFile::fake()->image('frame.png', 120, 80),
+    ])->assertRedirect(route('admin.invitation.edit'));
+
+    $asset = MediaAsset::query()->latest()->firstOrFail();
+    $invitation = Invitation::query()->where('key', config('invitation.key'))->firstOrFail();
+    $content = $invitation->published_content;
+    data_set($content, 'opening.frame', $asset->path);
+
+    $this->actingAs($admin)->post(route('admin.invitation.draft'), [
+        'content' => json_encode($content),
+    ]);
+
+    expect(Invitation::findOrFail($invitation->id)->draft_content['opening']['frame'])
+        ->toBe($asset->path);
+
+    $this->actingAs($admin)
+        ->get(route('admin.invitation.edit'))
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->where('media.0.name', 'frame.png')
+            ->where('media.0.mimeType', 'image/png')
+            ->where('media.0.size', $asset->size)
+            ->where('media.0.archived', false));
+
+    $this->actingAs($admin)
+        ->delete(route('admin.invitation.media.delete', $asset))
+        ->assertSessionHasErrors('media');
+
+    expect($asset->fresh())->not->toBeNull();
+});
+
+test('media upload rejects unsupported files and non-admins', function () {
+    $this->actingAs(User::factory()->create())
+        ->post(route('admin.invitation.media.upload'), [
+            'file' => UploadedFile::fake()->create('script.php', 1, 'text/x-php'),
+        ])
+        ->assertForbidden();
+
+    $this->actingAs(adminUser())
+        ->post(route('admin.invitation.media.upload'), [
+            'file' => UploadedFile::fake()->create('script.php', 1, 'text/x-php'),
+        ])
+        ->assertSessionHasErrors('file');
 });

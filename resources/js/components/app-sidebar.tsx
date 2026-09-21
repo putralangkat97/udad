@@ -1,5 +1,11 @@
-import { Link } from '@inertiajs/react';
-import { BookOpen, FolderGit2, LayoutGrid } from 'lucide-react';
+import { Link, usePage } from '@inertiajs/react';
+import {
+    BookOpen,
+    FilePenLine,
+    FolderGit2,
+    LayoutGrid,
+    MessageSquare,
+} from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -24,6 +30,22 @@ const mainNavItems: NavItem[] = [
     },
 ];
 
+const invitationNavItems: NavItem[] = [
+    {
+        title: 'Invitation content',
+        href: '/admin/invitation',
+        icon: FilePenLine,
+    },
+];
+
+const moderationNavItems: NavItem[] = [
+    {
+        title: 'Wish moderation',
+        href: '/moderation/wishes',
+        icon: MessageSquare,
+    },
+];
+
 const footerNavItems: NavItem[] = [
     {
         title: 'Repository',
@@ -38,6 +60,8 @@ const footerNavItems: NavItem[] = [
 ];
 
 export function AppSidebar() {
+    const { isAdmin } = usePage<{ isAdmin: boolean }>().props;
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
@@ -54,6 +78,13 @@ export function AppSidebar() {
 
             <SidebarContent>
                 <NavMain items={mainNavItems} />
+                {isAdmin && (
+                    <NavMain
+                        label="Content management"
+                        items={invitationNavItems}
+                    />
+                )}
+                <NavMain label="Moderation" items={moderationNavItems} />
             </SidebarContent>
 
             <SidebarFooter>

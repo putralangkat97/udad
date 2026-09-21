@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
+use Throwable;
 
 class AdminInvitationController extends Controller
 {
@@ -27,6 +28,8 @@ class AdminInvitationController extends Controller
                 'name' => $asset->original_name,
                 'url' => $asset->url(),
                 'mimeType' => $asset->mime_type,
+                'size' => $asset->size,
+                'uploadedAt' => $asset->created_at?->toIso8601String(),
                 'archived' => $asset->archived_at !== null,
             ]),
         ]);
@@ -36,6 +39,14 @@ class AdminInvitationController extends Controller
     {
         $validated = $request->validate(['content' => ['required', 'json']]);
         $content = json_decode($validated['content'], true, 512, JSON_THROW_ON_ERROR);
+        $contentObject = json_decode($validated['content'], false, 512, JSON_THROW_ON_ERROR);
+
+        if (! is_array($content) || ! is_object($contentObject)) {
+            throw ValidationException::withMessages([
+                'content' => 'Invitation draft content must be a JSON object.',
+            ]);
+        }
+
         $invitation = $this->invitation();
         $invitation->update([
             'draft_content' => $content,
@@ -81,7 +92,20 @@ class AdminInvitationController extends Controller
         ]);
         $invitation = $this->invitation();
         $file = $validated['file'];
-        $path = $file->store('invitation-media', 'public');
+
+        try {
+            $path = $file->store('invitation-media', 'public');
+        } catch (Throwable) {
+            throw ValidationException::withMessages([
+                'file' => 'The media file could not be stored.',
+            ]);
+        }
+
+        if (! is_string($path) || $path === '') {
+            throw ValidationException::withMessages([
+                'file' => 'The media file could not be stored.',
+            ]);
+        }
 
         $invitation->mediaAssets()->create([
             'uploaded_by' => $request->user()->id,
@@ -98,6 +122,13 @@ class AdminInvitationController extends Controller
     public function archiveMedia(MediaAsset $mediaAsset): RedirectResponse
     {
         abort_unless($mediaAsset->invitation_id === $this->invitation()->id, 404);
+
+        if ($this->contentReferences($mediaAsset)) {
+            throw ValidationException::withMessages([
+                'media' => 'Referenced media must be removed from invitation content before archiving.',
+            ]);
+        }
+
         $mediaAsset->update(['archived_at' => now()]);
 
         return to_route('admin.invitation.edit')->with('success', 'Media archived.');
@@ -113,7 +144,18 @@ class AdminInvitationController extends Controller
             ]);
         }
 
-        Storage::disk($mediaAsset->disk)->delete($mediaAsset->path);
+        try {
+            $deleted = Storage::disk($mediaAsset->disk)->delete($mediaAsset->path);
+        } catch (Throwable) {
+            $deleted = false;
+        }
+
+        if (! $deleted) {
+            throw ValidationException::withMessages([
+                'media' => 'The media file could not be deleted from storage.',
+            ]);
+        }
+
         $mediaAsset->delete();
 
         return to_route('admin.invitation.edit')->with('success', 'Media deleted.');
@@ -121,10 +163,7 @@ class AdminInvitationController extends Controller
 
     private function invitation(): Invitation
     {
-        return Invitation::query()->firstOrCreate(
-            ['key' => config('invitation.key')],
-            ['published_content' => config('invitation')],
-        );
+        return Invitation::importConfig();
     }
 
     private function validatePublishable(array $content): void
@@ -167,6 +206,12 @@ class AdminInvitationController extends Controller
                     $errors["gifts.accounts.{$index}.{$field}"] = "Gift account {$index} is missing {$field}.";
                 }
             }
+
+            $accountNumber = data_get($account, 'number');
+
+            if (filled($accountNumber) && preg_match('/^\d+$/', (string) $accountNumber) !== 1) {
+                $errors["gifts.accounts.{$index}.number"] = "Gift account {$index} must contain only digits.";
+            }
         }
 
         if (blank(data_get($content, 'countdown.target'))) {
@@ -183,12 +228,33 @@ class AdminInvitationController extends Controller
         $needle = [$mediaAsset->path, $mediaAsset->url()];
 
         foreach ([$this->invitation()->draft_content, $this->invitation()->published_content] as $content) {
-            $serialized = json_encode($content ?? []);
+            if ($this->containsReference($content, $needle)) {
+                return true;
+            }
+        }
 
-            foreach ($needle as $reference) {
-                if ($reference !== '' && str_contains($serialized, $reference)) {
+        return false;
+    }
+
+    private function containsReference(mixed $value, array $needles): bool
+    {
+        if (is_array($value)) {
+            foreach ($value as $child) {
+                if ($this->containsReference($child, $needles)) {
                     return true;
                 }
+            }
+
+            return false;
+        }
+
+        if (! is_string($value)) {
+            return false;
+        }
+
+        foreach ($needles as $needle) {
+            if ($needle !== '' && str_contains($value, $needle)) {
+                return true;
             }
         }
 

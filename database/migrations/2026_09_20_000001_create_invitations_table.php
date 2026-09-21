@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        DB::table('invitations')->insert([
+        DB::table('invitations')->insertOrIgnore([
             'key' => config('invitation.key'),
             'published_content' => json_encode(config('invitation'), JSON_THROW_ON_ERROR),
             'published_at' => now(),

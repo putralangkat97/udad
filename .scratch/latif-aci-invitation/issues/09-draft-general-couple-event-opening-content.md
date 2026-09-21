@@ -15,13 +15,13 @@ published invitation remains unchanged for guests.
 
 **Status:** ready-for-qa
 
-- [ ] Edit invitation title, timezone, cover copy, guest greeting, invitation
+- [x] Edit invitation title, timezone, cover copy, guest greeting, invitation
       label, and opening quote/reference.
-- [ ] Edit bride and groom names, roles, parents, portraits, and frames.
-- [ ] Add, edit, reorder, and remove event entries with date, time, venue, and
+- [x] Edit bride and groom names, roles, parents, portraits, and frames.
+- [x] Add, edit, reorder, and remove event entries with date, time, venue, and
       map URL.
-- [ ] Edit the countdown target and label.
-- [ ] Save valid and incomplete changes as draft without publishing them.
-- [ ] Return server-side validation errors without losing submitted form data.
-- [ ] Verify that public guests continue seeing the previous published version
+- [x] Edit the countdown target and label.
+- [x] Save valid and incomplete changes as draft without publishing them.
+- [x] Return server-side validation errors without losing submitted form data.
+- [x] Verify that public guests continue seeing the previous published version
       while a draft exists.

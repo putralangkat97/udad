@@ -195,6 +195,28 @@ body:has(.invitation-viewport) {
     background: var(--invitation-cream);
 }
 
+.invitation-preview-banner {
+    position: sticky;
+    z-index: 10;
+    top: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.75rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0.65rem 1rem;
+    background: var(--invitation-maroon);
+    color: var(--invitation-paper);
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.invitation-preview-banner a {
+    color: inherit;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
 .invitation-canvas {
     position: relative;
     width: min(100%, 440px);
@@ -432,7 +454,8 @@ body:has(.invitation-viewport) {
     width: min(78%, 20rem);
     flex-direction: column;
     align-items: center;
-    border: 1px solid color-mix(in srgb, var(--invitation-maroon) 25%, transparent);
+    border: 1px solid
+        color-mix(in srgb, var(--invitation-maroon) 25%, transparent);
     border-radius: 1rem;
     padding: 1.5rem 1rem 1.75rem;
     background: color-mix(in srgb, var(--invitation-paper) 76%, transparent);
@@ -474,7 +497,8 @@ body:has(.invitation-viewport) {
     top: 12%;
     width: 23%;
     border: 3px solid var(--invitation-paper);
-    box-shadow: 0 4px 10px color-mix(in srgb, var(--invitation-dark-ink) 20%, transparent);
+    box-shadow: 0 4px 10px
+        color-mix(in srgb, var(--invitation-dark-ink) 20%, transparent);
 }
 
 .invitation-cover-photo--bride {
@@ -542,7 +566,7 @@ body:has(.invitation-viewport) {
 
 .invitation-opening {
     min-height: 100svh;
-    padding: 0 1.35rem 4rem;
+    padding: 0 0.75rem 5rem;
     background: var(--invitation-cream);
     opacity: 1;
     transition: opacity 2200ms ease;
@@ -640,11 +664,11 @@ body:has(.invitation-viewport) {
 
 .invitation-quote-card {
     margin: 0 -0.5rem;
-    padding: 3.5rem 2.5rem 2.2rem;
+    padding: 3.5rem 3.5rem 2.2rem;
     background-position: center;
     background-repeat: no-repeat;
     background-size: 100% 100%;
-    color: var(--invitation-ink);
+    color: var(--invitation-maroon);
     text-align: center;
 }
 
@@ -795,7 +819,7 @@ body:has(.invitation-viewport) {
     display: flex;
     flex-direction: column;
     gap: 3.25rem;
-    padding: 5rem 0 3rem;
+    padding: 6rem 0 4rem;
     background-image: url('/invitation-assets/temp/image/cherry/10.png');
     background-position: center 5%;
     background-repeat: no-repeat;
@@ -947,7 +971,7 @@ body:has(.invitation-viewport) {
 }
 
 .invitation-countdown-section {
-    padding: 4rem 0 2.5rem;
+    padding: 5rem 0 3.5rem;
     color: var(--invitation-terracotta);
     text-align: center;
 }
@@ -1023,7 +1047,7 @@ body:has(.invitation-viewport) {
 
 .invitation-rsvp-section {
     position: relative;
-    padding: 4.5rem 0 2.5rem;
+    padding: 5.5rem 0 3.5rem;
     color: var(--invitation-terracotta);
     text-align: center;
 }
@@ -1097,7 +1121,8 @@ body:has(.invitation-viewport) {
 
 .invitation-form-success {
     margin: 0;
-    border: 1px solid color-mix(in srgb, var(--invitation-maroon) 35%, transparent);
+    border: 1px solid
+        color-mix(in srgb, var(--invitation-maroon) 35%, transparent);
     border-radius: 0.35rem;
     padding: 0.65rem 0.75rem;
     background: color-mix(in srgb, var(--invitation-paper) 70%, transparent);
@@ -1135,7 +1160,7 @@ body:has(.invitation-viewport) {
 
 .invitation-gifts-section,
 .invitation-gallery-section {
-    padding: 4rem 0 3rem;
+    padding: 5rem 0 4rem;
     color: var(--invitation-terracotta);
     text-align: center;
 }
@@ -1280,7 +1305,7 @@ body:has(.invitation-viewport) {
 }
 
 .invitation-story-section {
-    padding: 4.5rem 0 2rem;
+    padding: 5.5rem 0 3rem;
     color: var(--invitation-terracotta);
     text-align: center;
 }
@@ -1342,7 +1367,7 @@ body:has(.invitation-viewport) {
 }
 
 .invitation-footer {
-    padding: 3.5rem 0 1rem;
+    padding: 4.5rem 0 1.5rem;
     color: var(--invitation-terracotta);
     text-align: center;
 }

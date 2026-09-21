@@ -15,16 +15,16 @@ or published invitation from losing a referenced asset.
 
 **Status:** ready-for-qa
 
-- [ ] Upload supported image, audio, and decorative media through the admin
+- [x] Upload supported image, audio, and decorative media through the admin
       dashboard.
-- [ ] List available media with enough metadata to select the correct asset.
-- [ ] Reuse one media asset across multiple invitation content fields.
-- [ ] Select managed assets from general, couple, opening, gallery, story, and
+- [x] List available media with enough metadata to select the correct asset.
+- [x] Reuse one media asset across multiple invitation content fields.
+- [x] Select managed assets from general, couple, opening, gallery, story, and
       audio forms.
-- [ ] Archive unused assets without breaking existing content.
-- [ ] Prevent hard deletion while an asset is referenced by draft or published
+- [x] Archive unused assets without breaking existing content.
+- [x] Prevent hard deletion while an asset is referenced by draft or published
       content.
-- [ ] Allow permanent deletion only after reference checks confirm the asset is
+- [x] Allow permanent deletion only after reference checks confirm the asset is
       unused.
-- [ ] Validate file type, size, storage failure, and authorization at the server
+- [x] Validate file type, size, storage failure, and authorization at the server
       boundary.
