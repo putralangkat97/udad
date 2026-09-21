@@ -30,6 +30,7 @@ class Invitation extends Model
         );
     }
 
+    /** @return HasMany<MediaAsset, $this> */
     public function mediaAssets(): HasMany
     {
         return $this->hasMany(MediaAsset::class);

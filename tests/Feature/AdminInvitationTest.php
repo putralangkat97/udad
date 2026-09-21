@@ -12,6 +12,65 @@ function adminUser(): User
     return User::factory()->admin()->create();
 }
 
+test('uploaded photos are optimized and can be saved in invitation image fields', function (string $field) {
+    Storage::fake('public');
+    $admin = adminUser();
+    $invitation = Invitation::importConfig();
+    $published = $invitation->published_content;
+
+    $response = $this->actingAs($admin)->postJson(route('admin.invitation.media.upload'), [
+        'kind' => 'image',
+        'file' => UploadedFile::fake()->image('wedding.png', 3000, 1500),
+    ]);
+
+    $response->assertCreated()->assertJsonPath('mimeType', 'image/webp')->assertJsonPath('name', 'wedding.png');
+    $asset = MediaAsset::findOrFail($response->json('id'));
+    Storage::disk('public')->assertExists($asset->path);
+    $image = getimagesizefromstring(Storage::disk('public')->get($asset->path));
+    expect($image[0])->toBe(2400);
+    expect($image[1])->toBe(1200);
+    expect($image['mime'])->toBe('image/webp');
+    expect($asset->size)->toBe(Storage::disk('public')->size($asset->path));
+
+    $content = $published;
+    data_set($content, $field, $response->json('url'));
+    $this->post(route('admin.invitation.draft'), ['content' => json_encode($content)])
+        ->assertRedirect(route('admin.invitation.edit'));
+
+    expect(data_get($invitation->fresh()->draft_content, $field))->toBe($asset->url());
+    expect($invitation->fresh()->published_content)->toBe($published);
+})->with(['cover.image', 'couple.bride.photo', 'couple.groom.photo', 'gallery.0.src']);
+
+test('image fields reject invalid or oversized uploads without creating media', function (string $invalid) {
+    Storage::fake('public');
+    $file = match ($invalid) {
+        'audio' => UploadedFile::fake()->create('song.mp3', 10, 'audio/mpeg'),
+        'size' => UploadedFile::fake()->image('large.jpg')->size(10241),
+        'dimensions' => UploadedFile::fake()->image('wide.png', 8001, 1),
+    };
+
+    $this->actingAs(adminUser())->postJson(route('admin.invitation.media.upload'), [
+        'kind' => 'image',
+        'file' => $file,
+    ])->assertUnprocessable()->assertJsonValidationErrors('file');
+
+    $this->assertDatabaseCount('media_assets', 0);
+    expect(Storage::disk('public')->allFiles())->toBe([]);
+})->with(['audio', 'size', 'dimensions']);
+
+test('small uploaded photos retain their dimensions', function () {
+    Storage::fake('public');
+
+    $response = $this->actingAs(adminUser())->postJson(route('admin.invitation.media.upload'), [
+        'kind' => 'image',
+        'file' => UploadedFile::fake()->image('portrait.jpg', 120, 180),
+    ])->assertCreated();
+
+    $asset = MediaAsset::findOrFail($response->json('id'));
+    $image = getimagesizefromstring(Storage::disk('public')->get($asset->path));
+    expect([$image[0], $image[1]])->toBe([120, 180]);
+});
+
 test('only admins can open invitation content management', function () {
     $this->get(route('admin.invitation.edit'))->assertRedirect(route('login'));
 

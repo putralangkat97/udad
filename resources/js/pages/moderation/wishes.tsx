@@ -1,5 +1,14 @@
 import { Form, Head, Link } from '@inertiajs/react';
 import WishModerationController from '@/actions/App/Http/Controllers/WishModerationController';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import { home } from '@/routes';
 
 type PendingWish = {
@@ -16,85 +25,84 @@ export default function Wishes({ wishes }: { wishes: PendingWish[] }) {
 
             <div className="space-y-6">
                 <div className="flex items-start justify-between gap-4">
-                    <div>
-                        <h1 className="text-xl font-semibold">
-                            Wish moderation
-                        </h1>
+                    <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                            <h1 className="text-xl font-semibold">
+                                Wish moderation
+                            </h1>
+                            <Badge variant="secondary">Pending review</Badge>
+                        </div>
                         <p className="text-muted-foreground text-sm">
                             Review guest messages before they appear publicly.
                         </p>
                     </div>
-                    <Link
-                        href={home()}
-                        className="text-sm underline underline-offset-4"
-                    >
-                        View invitation
-                    </Link>
+                    <Button asChild variant="outline">
+                        <Link href={home()}>View invitation</Link>
+                    </Button>
                 </div>
 
                 {wishes.length === 0 ? (
-                    <p className="text-muted-foreground rounded-lg border p-6 text-center text-sm">
-                        There are no pending wishes.
-                    </p>
+                    <Card>
+                        <CardContent className="text-muted-foreground p-6 text-center text-sm">
+                            There are no pending wishes.
+                        </CardContent>
+                    </Card>
                 ) : (
                     <div className="space-y-4">
                         {wishes.map((wish) => (
-                            <article
-                                key={wish.id}
-                                className="rounded-lg border p-5"
-                            >
-                                <div className="space-y-2">
-                                    <h2 className="font-medium">{wish.name}</h2>
+                            <Card key={wish.id}>
+                                <CardHeader>
+                                    <CardTitle>{wish.name}</CardTitle>
+                                    <CardDescription>
+                                        <time dateTime={wish.created_at}>
+                                            {new Date(
+                                                wish.created_at,
+                                            ).toLocaleString()}
+                                        </time>
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent>
                                     <p className="text-muted-foreground text-sm whitespace-pre-wrap">
                                         {wish.message}
                                     </p>
-                                    <time
-                                        className="text-muted-foreground block text-xs"
-                                        dateTime={wish.created_at}
-                                    >
-                                        {new Date(
-                                            wish.created_at,
-                                        ).toLocaleString()}
-                                    </time>
-                                </div>
 
-                                <div className="mt-4 flex gap-2">
-                                    <Form
-                                        {...WishModerationController.publish.form(
-                                            wish,
-                                        )}
-                                    >
-                                        {({ processing }) => (
-                                            <button
-                                                type="submit"
-                                                className="bg-primary text-primary-foreground rounded-md px-3 py-2 text-sm"
-                                                disabled={processing}
-                                            >
-                                                {processing
-                                                    ? 'Publishing...'
-                                                    : 'Publish'}
-                                            </button>
-                                        )}
-                                    </Form>
-                                    <Form
-                                        {...WishModerationController.reject.form(
-                                            wish,
-                                        )}
-                                    >
-                                        {({ processing }) => (
-                                            <button
-                                                type="submit"
-                                                className="rounded-md border px-3 py-2 text-sm"
-                                                disabled={processing}
-                                            >
-                                                {processing
-                                                    ? 'Rejecting...'
-                                                    : 'Reject'}
-                                            </button>
-                                        )}
-                                    </Form>
-                                </div>
-                            </article>
+                                    <div className="mt-4 flex gap-2">
+                                        <Form
+                                            {...WishModerationController.publish.form(
+                                                wish,
+                                            )}
+                                        >
+                                            {({ processing }) => (
+                                                <Button
+                                                    type="submit"
+                                                    disabled={processing}
+                                                >
+                                                    {processing
+                                                        ? 'Publishing...'
+                                                        : 'Publish'}
+                                                </Button>
+                                            )}
+                                        </Form>
+                                        <Form
+                                            {...WishModerationController.reject.form(
+                                                wish,
+                                            )}
+                                        >
+                                            {({ processing }) => (
+                                                <Button
+                                                    type="submit"
+                                                    variant="outline"
+                                                    disabled={processing}
+                                                >
+                                                    {processing
+                                                        ? 'Rejecting...'
+                                                        : 'Reject'}
+                                                </Button>
+                                            )}
+                                        </Form>
+                                    </div>
+                                </CardContent>
+                            </Card>
                         ))}
                     </div>
                 )}

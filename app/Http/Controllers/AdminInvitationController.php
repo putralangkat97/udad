@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Invitation;
 use App\Models\MediaAsset;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -86,16 +87,23 @@ class AdminInvitationController extends Controller
         return to_route('admin.invitation.edit')->with('success', 'Invitation published.');
     }
 
-    public function uploadMedia(Request $request): RedirectResponse
+    public function uploadMedia(Request $request): RedirectResponse|JsonResponse
     {
+        $isImage = $request->input('kind') === 'image';
         $validated = $request->validate([
-            'file' => ['required', 'file', 'max:10240', 'mimes:jpg,jpeg,png,webp,mp3,wav,ogg'],
+            'kind' => ['sometimes', 'in:image'],
+            'file' => $isImage
+                ? ['required', 'image', 'max:10240', 'mimes:jpg,jpeg,png,webp', 'dimensions:max_width=8000,max_height=8000']
+                : ['required', 'file', 'max:10240', 'mimes:jpg,jpeg,png,webp,mp3,wav,ogg'],
         ]);
         $invitation = $this->invitation();
         $file = $validated['file'];
 
         try {
-            $path = $file->store('invitation-media', 'public');
+            $path = $isImage
+                ? $request->image('file')->orient()->scale(2400, 2400)->toWebp()->quality(85)
+                    ->storePublicly('invitation-media', 'public')
+                : $file->store('invitation-media', 'public');
         } catch (Throwable) {
             throw ValidationException::withMessages([
                 'file' => 'The media file could not be stored.',
@@ -108,14 +116,25 @@ class AdminInvitationController extends Controller
             ]);
         }
 
-        $invitation->mediaAssets()->create([
+        $asset = $invitation->mediaAssets()->create([
             'uploaded_by' => $request->user()->id,
             'disk' => 'public',
             'path' => $path,
             'original_name' => $file->getClientOriginalName(),
-            'mime_type' => $file->getMimeType() ?: 'application/octet-stream',
-            'size' => $file->getSize(),
+            'mime_type' => $isImage ? 'image/webp' : ($file->getMimeType() ?: 'application/octet-stream'),
+            'size' => Storage::disk('public')->size($path),
         ]);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'id' => $asset->id,
+                'name' => $asset->original_name,
+                'url' => $asset->url(),
+                'mimeType' => $asset->mime_type,
+                'size' => $asset->size,
+                'archived' => false,
+            ], 201);
+        }
 
         return to_route('admin.invitation.edit')->with('success', 'Media uploaded.');
     }
