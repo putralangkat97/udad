@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -eu
+
+chown app:app /var/www/html/storage/app/public
+
+su-exec app php artisan optimize
+
+exec su-exec app "$@"

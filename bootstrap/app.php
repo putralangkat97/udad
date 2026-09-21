@@ -16,6 +16,14 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->trustProxies(at: '*');
+        $middleware->trustHosts(
+            at: fn (): array => app()->isProduction()
+                ? ['^wedding-adis\\.anggit\\.dev$']
+                : [],
+            subdomains: false,
+        );
+
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
 
         $middleware->alias(['admin' => EnsureAdmin::class]);

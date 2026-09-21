@@ -1,0 +1,58 @@
+services:
+  app:
+    build:
+      context: .
+      target: app
+    env_file: /opt/wedding/.env.production
+    restart: unless-stopped
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    networks:
+      - application
+      - shared
+    volumes:
+      - invitation-media:/var/www/html/storage/app/public
+    tmpfs:
+      - /tmp
+      - /var/www/html/bootstrap/cache
+      - /var/www/html/storage/framework
+
+  web:
+    build:
+      context: .
+      target: web
+    depends_on:
+      - app
+    restart: unless-stopped
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    ports:
+      - 127.0.0.1:8112:8080
+    networks:
+      - application
+    volumes:
+      - invitation-media:/var/www/html/storage/app/public:ro
+    tmpfs:
+      - /tmp
+    healthcheck:
+      test: [CMD-SHELL, "curl --fail --silent --show-error --header 'Host: wedding-adis.anggit.dev' http://127.0.0.1:8080/up || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+networks:
+  application:
+    internal: true
+  shared:
+    name: docker_default
+    external: true
+
+volumes:
+  invitation-media:
