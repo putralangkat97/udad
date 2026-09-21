@@ -22,6 +22,7 @@ class AdminInvitationController extends Controller
         return Inertia::render('admin/invitation', [
             'content' => $invitation->contentForEditing(),
             'hasDraft' => $invitation->draft_content !== null,
+            'publishedBy' => $invitation->publisher?->name,
             'publishedAt' => $invitation->published_at?->toIso8601String(),
             'media' => $invitation->mediaAssets()->latest()->get()->map(fn (MediaAsset $asset): array => [
                 'id' => $asset->id,
@@ -170,8 +171,21 @@ class AdminInvitationController extends Controller
     {
         $errors = [];
 
-        if (blank(data_get($content, 'cover.image'))) {
-            $errors['cover.image'] = 'A cover image is required.';
+        foreach ([
+            'audio' => 'Invitation audio is required.',
+            'cover.image' => 'A cover image is required.',
+            'cover.footerOrnament' => 'A cover footer ornament is required.',
+            'opening.frame' => 'An opening frame is required.',
+            'eventsFrame' => 'An events frame is required.',
+            'couple.bride.photo' => 'The bride photo is required.',
+            'couple.bride.frame' => 'The bride frame is required.',
+            'couple.groom.photo' => 'The groom photo is required.',
+            'couple.groom.frame' => 'The groom frame is required.',
+            'countdown.frame' => 'A countdown frame is required.',
+        ] as $path => $message) {
+            if (blank(data_get($content, $path))) {
+                $errors[$path] = $message;
+            }
         }
 
         if (blank(data_get($content, 'couple.bride.name')) || blank(data_get($content, 'couple.groom.name'))) {
@@ -195,6 +209,26 @@ class AdminInvitationController extends Controller
 
             if (filled($mapUrl) && filter_var($mapUrl, FILTER_VALIDATE_URL) === false) {
                 $errors["events.{$index}.map"] = "Event {$index} has an invalid map URL.";
+            }
+        }
+
+        $gallery = data_get($content, 'gallery', []);
+
+        foreach (is_array($gallery) ? $gallery : [] as $index => $image) {
+            if (blank(data_get($image, 'src'))) {
+                $errors["gallery.{$index}.src"] = "Gallery image {$index} is missing its source.";
+            }
+
+            if (blank(data_get($image, 'alt'))) {
+                $errors["gallery.{$index}.alt"] = "Gallery image {$index} is missing alt text.";
+            }
+        }
+
+        $storyEntries = data_get($content, 'story.entries', []);
+
+        foreach (is_array($storyEntries) ? $storyEntries : [] as $index => $entry) {
+            if (blank(data_get($entry, 'ornament'))) {
+                $errors["story.entries.{$index}.ornament"] = "Story entry {$index} is missing its ornament.";
             }
         }
 

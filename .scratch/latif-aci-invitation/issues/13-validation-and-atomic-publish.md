@@ -15,13 +15,13 @@ version whenever validation fails.
 
 **Status:** ready-for-qa
 
-- [ ] Require valid couple data, cover content, a primary event, countdown
+- [x] Require valid couple data, cover content, a primary event, countdown
       target, and required media references before publish.
-- [ ] Allow optional gallery and story collections to remain empty.
-- [ ] Show a complete, actionable validation error list when publish is blocked.
-- [ ] Publish all invitation sections as one consistent version.
-- [ ] Keep the previous published version active if publishing fails.
-- [ ] Show publisher identity and publish timestamp for the active version.
-- [ ] Make the public root route read the newly published version after success.
-- [ ] Prevent direct or unauthorized publish requests at the server boundary.
-- [ ] Verify that no draft-only values leak to guests.
+- [x] Allow optional gallery and story collections to remain empty.
+- [x] Show a complete, actionable validation error list when publish is blocked.
+- [x] Publish all invitation sections as one consistent version.
+- [x] Keep the previous published version active if publishing fails.
+- [x] Show publisher identity and publish timestamp for the active version.
+- [x] Make the public root route read the newly published version after success.
+- [x] Prevent direct or unauthorized publish requests at the server boundary.
+- [x] Verify that no draft-only values leak to guests.

@@ -213,6 +213,24 @@ test('publishing makes the complete draft public atomically', function () {
     expect(Invitation::find($invitation->id)->draft_content)->toBeNull();
 });
 
+test('published version exposes publisher identity and timestamp to admins', function () {
+    $admin = adminUser();
+    $invitation = Invitation::query()->where('key', config('invitation.key'))->firstOrFail();
+
+    $this->actingAs($admin)->post(route('admin.invitation.draft'), [
+        'content' => json_encode($invitation->published_content),
+    ]);
+    $this->actingAs($admin)
+        ->post(route('admin.invitation.publish'))
+        ->assertRedirect(route('admin.invitation.edit'));
+
+    $this->actingAs($admin)
+        ->get(route('admin.invitation.edit'))
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->where('publishedBy', $admin->name)
+            ->has('publishedAt'));
+});
+
 test('publish validation preserves the previous public version', function () {
     $admin = adminUser();
     $invitation = Invitation::query()->where('key', config('invitation.key'))->firstOrFail();
@@ -232,6 +250,22 @@ test('publish validation preserves the previous public version', function () {
         ->toBe(config('invitation.couple.groom.name'));
 });
 
+test('an incomplete draft cannot publish the previous public version', function () {
+    $admin = adminUser();
+    $invitation = Invitation::query()->where('key', config('invitation.key'))->firstOrFail();
+
+    $this->actingAs($admin)->post(route('admin.invitation.draft'), [
+        'content' => json_encode((object) []),
+    ])->assertRedirect(route('admin.invitation.edit'));
+
+    $this->actingAs($admin)
+        ->post(route('admin.invitation.publish'))
+        ->assertSessionHasErrors(['cover.image', 'couple', 'events', 'countdown.target']);
+
+    expect(Invitation::findOrFail($invitation->id)->published_content['title'])
+        ->toBe(config('invitation.title'));
+});
+
 test('publish validation rejects malformed gift account numbers', function () {
     $admin = adminUser();
     $invitation = Invitation::query()->where('key', config('invitation.key'))->firstOrFail();
@@ -247,6 +281,29 @@ test('publish validation rejects malformed gift account numbers', function () {
     $this->actingAs($admin)
         ->post(route('admin.invitation.publish'))
         ->assertSessionHasErrors('gifts.accounts.0.number');
+});
+
+test('publish validation rejects missing required media references', function () {
+    $admin = adminUser();
+    $invitation = Invitation::query()->where('key', config('invitation.key'))->firstOrFail();
+    $content = $invitation->published_content;
+    data_set($content, 'audio', '');
+    data_set($content, 'cover.image', '');
+    data_set($content, 'couple.bride.photo', '');
+    data_set($content, 'countdown.frame', '');
+
+    $this->actingAs($admin)->post(route('admin.invitation.draft'), [
+        'content' => json_encode($content),
+    ]);
+
+    $this->actingAs($admin)
+        ->post(route('admin.invitation.publish'))
+        ->assertSessionHasErrors([
+            'audio',
+            'cover.image',
+            'couple.bride.photo',
+            'countdown.frame',
+        ]);
 });
 
 test('admins can archive and delete an unreferenced media asset', function () {

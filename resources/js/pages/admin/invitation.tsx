@@ -16,6 +16,7 @@ type MediaAsset = {
 type Props = {
     content: JsonMap;
     hasDraft: boolean;
+    publishedBy?: string;
     publishedAt?: string;
     media: MediaAsset[];
 };
@@ -140,11 +141,13 @@ function AssetField({
 export default function InvitationAdmin({
     content,
     hasDraft,
+    publishedBy,
     publishedAt,
     media,
 }: Props) {
     const [draft, setDraft] = useState<JsonMap>(() => cloneContent(content));
     const [serverError, setServerError] = useState<string | null>(null);
+    const [validationErrors, setValidationErrors] = useState<string[]>([]);
     const [uploading, setUploading] = useState(false);
 
     const mediaCount = useMemo(
@@ -358,7 +361,12 @@ export default function InvitationAdmin({
     }
 
     function publish(): void {
-        router.post('/admin/invitation/publish');
+        router.post('/admin/invitation/publish', undefined, {
+            onError: (errors) => {
+                setValidationErrors(Object.values(errors));
+            },
+            onSuccess: () => setValidationErrors([]),
+        });
     }
 
     function upload(event: React.FormEvent<HTMLFormElement>): void {
@@ -425,13 +433,27 @@ export default function InvitationAdmin({
                     </strong>
                     <span className="text-muted-foreground ml-2">
                         {publishedAt
-                            ? `Last published ${new Date(publishedAt).toLocaleString()}`
+                            ? `Last published${publishedBy ? ` by ${publishedBy}` : ''} ${new Date(publishedAt).toLocaleString()}`
                             : 'Not published yet'}
                     </span>
                 </div>
 
                 {serverError && (
                     <p className="text-destructive text-sm">{serverError}</p>
+                )}
+
+                {validationErrors.length > 0 && (
+                    <div
+                        className="text-destructive rounded-lg border p-4 text-sm"
+                        role="alert"
+                    >
+                        <strong>Publish is blocked. Fix these fields:</strong>
+                        <ul className="mt-2 list-disc space-y-1 pl-5">
+                            {validationErrors.map((error, index) => (
+                                <li key={`${error}-${index}`}>{error}</li>
+                            ))}
+                        </ul>
+                    </div>
                 )}
 
                 <div className="space-y-6">

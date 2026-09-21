@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable(['key', 'draft_content', 'published_content', 'draft_updated_by', 'published_by', 'published_at'])]
@@ -34,6 +35,11 @@ class Invitation extends Model
         return $this->hasMany(MediaAsset::class);
     }
 
+    public function publisher(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'published_by');
+    }
+
     public function contentForGuests(): array
     {
         return $this->published_content ?: config('invitation');
@@ -41,6 +47,8 @@ class Invitation extends Model
 
     public function contentForEditing(): array
     {
-        return $this->draft_content ?: $this->contentForGuests();
+        return $this->draft_content !== null
+            ? $this->draft_content
+            : $this->contentForGuests();
     }
 }
