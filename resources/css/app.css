@@ -948,8 +948,12 @@ body:has(.invitation-viewport) {
     line-height: 1.35;
 }
 
-.invitation-event-card:nth-of-type(2) {
+.invitation-event-card:nth-of-type(1) {
     transform: rotate(1deg);
+}
+
+.invitation-event-card:nth-of-type(2) {
+    transform: rotate(-1deg);
 }
 
 .invitation-event-card h3 {
