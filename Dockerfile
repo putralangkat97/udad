@@ -59,7 +59,7 @@ COPY docker/php/entrypoint /usr/local/bin/app-entrypoint
 
 RUN rm -f bootstrap/cache/packages.php bootstrap/cache/services.php \
     && php artisan package:discover --ansi \
-    && mkdir -p storage/app/public storage/database storage/framework/cache/data storage/framework/sessions storage/framework/views \
+    && mkdir -p storage/app/public storage/database storage/logs storage/framework/cache/data storage/framework/sessions storage/framework/views \
     && php artisan storage:link \
     && chmod +x /usr/local/bin/app-entrypoint \
     && chown -R app:app bootstrap/cache storage

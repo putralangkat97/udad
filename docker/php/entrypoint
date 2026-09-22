@@ -2,8 +2,18 @@
 
 set -eu
 
-mkdir -p /var/www/html/storage/app/public /var/www/html/storage/database
-chown -R app:app /var/www/html/storage/app/public /var/www/html/storage/database
+mkdir -p \
+    /var/www/html/bootstrap/cache \
+    /var/www/html/storage/app/public \
+    /var/www/html/storage/database \
+    /var/www/html/storage/framework/cache/data \
+    /var/www/html/storage/framework/sessions \
+    /var/www/html/storage/framework/views
+chown -R app:app \
+    /var/www/html/bootstrap/cache \
+    /var/www/html/storage/app/public \
+    /var/www/html/storage/database \
+    /var/www/html/storage/framework
 
 su-exec app php artisan optimize
 
