@@ -904,34 +904,6 @@ export default function Welcome({
                                 </section>
                             </Reveal>
 
-                            {wishes.length > 0 && (
-                                <Reveal>
-                                    <section
-                                        className="invitation-wishes-section"
-                                        aria-labelledby="wishes-heading"
-                                    >
-                                        <p className="invitation-section-kicker">
-                                            From our loved ones
-                                        </p>
-                                        <h2 id="wishes-heading">Wishes</h2>
-                                        <p className="invitation-wishes-intro">
-                                            Hope and prayers from our guests.
-                                        </p>
-                                        <div className="invitation-wish-list">
-                                            {wishes.map((wish, index) => (
-                                                <article
-                                                    key={`${wish.name}-${index}`}
-                                                    className="invitation-wish-card"
-                                                >
-                                                    <h3>{wish.name}</h3>
-                                                    <p>{wish.message}</p>
-                                                </article>
-                                            ))}
-                                        </div>
-                                    </section>
-                                </Reveal>
-                            )}
-
                             <Reveal>
                                 <section
                                     className="invitation-gallery-section"
@@ -1028,6 +1000,34 @@ export default function Welcome({
                             </Reveal>
 
                             <RsvpSection rsvpAction={rsvpAction} />
+
+                            {wishes.length > 0 && (
+                                <Reveal>
+                                    <section
+                                        className="invitation-wishes-section"
+                                        aria-labelledby="wishes-heading"
+                                    >
+                                        <p className="invitation-section-kicker">
+                                            From our loved ones
+                                        </p>
+                                        <h2 id="wishes-heading">Wishes</h2>
+                                        <p className="invitation-wishes-intro">
+                                            Hope and prayers from our guests.
+                                        </p>
+                                        <div className="invitation-wish-list">
+                                            {wishes.map((wish, index) => (
+                                                <article
+                                                    key={`${wish.name}-${index}`}
+                                                    className="invitation-wish-card"
+                                                >
+                                                    <h3>{wish.name}</h3>
+                                                    <p>{wish.message}</p>
+                                                </article>
+                                            ))}
+                                        </div>
+                                    </section>
+                                </Reveal>
+                            )}
 
                             <footer className="invitation-footer">
                                 <p>Thank you for celebrating with us.</p>
