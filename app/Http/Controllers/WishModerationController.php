@@ -14,8 +14,24 @@ class WishModerationController extends Controller
         $wishes = Wish::query()
             ->where('invitation_key', config('invitation.key'))
             ->pending()
+            ->where(function ($query) {
+                $query
+                    ->whereNull('rsvp_id')
+                    ->orWhereHas('rsvp', fn ($rsvpQuery) => $rsvpQuery
+                        ->where('invitation_key', config('invitation.key')));
+            })
+            ->with('rsvp:id,attendance,guest_count')
             ->latest()
-            ->get(['id', 'name', 'message', 'created_at']);
+            ->get(['id', 'rsvp_id', 'name', 'message', 'created_at'])
+            ->map(fn (Wish $wish): array => [
+                'id' => $wish->id,
+                'name' => $wish->name,
+                'message' => $wish->message,
+                'created_at' => $wish->created_at?->toISOString(),
+                'source' => $wish->rsvp_id === null ? 'direct' : 'rsvp',
+                'attendance' => $wish->rsvp?->attendance,
+                'guestCount' => $wish->rsvp?->guest_count,
+            ]);
 
         return Inertia::render('moderation/wishes', [
             'wishes' => $wishes,

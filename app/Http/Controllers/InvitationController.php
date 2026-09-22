@@ -24,11 +24,17 @@ class InvitationController extends Controller
         return $this->render(
             $recipient->archived_at === null ? $recipient->display_name : null,
             $recipient->invitation,
+            $recipient->archived_at === null
+                ? route('invitation.recipient.rsvp', $recipient->token)
+                : null,
         );
     }
 
-    private function render(?string $recipientDisplayName = null, ?Invitation $invitation = null): Response
-    {
+    private function render(
+        ?string $recipientDisplayName = null,
+        ?Invitation $invitation = null,
+        ?string $rsvpAction = null,
+    ): Response {
         $invitation ??= Invitation::query()->where('key', config('invitation.key'))->first();
         $invitationKey = $invitation?->key ?: config('invitation.key');
         $wishes = Wish::query()
@@ -41,6 +47,7 @@ class InvitationController extends Controller
             'invitation' => $invitation?->contentForGuests() ?: config('invitation'),
             'wishes' => $wishes,
             'recipientDisplayName' => $recipientDisplayName,
+            'rsvpAction' => $rsvpAction ?: route('rsvp.store'),
         ]);
     }
 }

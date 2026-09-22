@@ -76,6 +76,23 @@ The managed collection of media assets available for invitation content.
 _Avoid_: Public folder, attachment list
 
 **Moderated wish**:
-A guest message that is reviewed before it can appear publicly in the
-invitation.
+A guest message from a direct wish submission or an RSVP that is reviewed
+before it can appear publicly in the invitation. A published wish exposes its
+author and message, but not its source or RSVP context.
 _Avoid_: Comment, review
+
+**RSVP**:
+A guest's participation record containing their name, attendance choice,
+optional guest count, and optional invitation-recipient provenance.
+_Avoid_: Wish, invitation recipient
+
+**Hope and prayer**:
+The optional RSVP prompt where a guest writes a congratulations, blessing,
+hope, prayer, or other message for the couple. A non-blank response becomes a
+pending moderated wish.
+_Avoid_: RSVP status, private note
+
+**Wish source**:
+The submission context for a wish: either a direct wish submission or a source
+RSVP. Source context is available to moderators but is not shown publicly.
+_Avoid_: Wish author, recipient identity

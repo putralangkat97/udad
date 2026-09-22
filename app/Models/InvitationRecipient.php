@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -26,5 +27,11 @@ class InvitationRecipient extends Model
     public function invitation(): BelongsTo
     {
         return $this->belongsTo(Invitation::class);
+    }
+
+    /** @return HasMany<Rsvp, $this> */
+    public function rsvps(): HasMany
+    {
+        return $this->hasMany(Rsvp::class);
     }
 }

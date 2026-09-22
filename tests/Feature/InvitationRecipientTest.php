@@ -2,6 +2,7 @@
 
 use App\Models\Invitation;
 use App\Models\InvitationRecipient;
+use App\Models\Rsvp;
 use App\Models\User;
 use Inertia\Testing\AssertableInertia;
 
@@ -82,12 +83,19 @@ test('generic, archived, and unknown recipient invitations have distinct fallbac
     $this->get(route('home'))
         ->assertInertia(fn (AssertableInertia $page) => $page
             ->component('welcome')
-            ->where('recipientDisplayName', null));
+            ->where('recipientDisplayName', null)
+            ->where('rsvpAction', route('rsvp.store')));
 
     $this->get(route('invitation.recipient', $recipient->token))
         ->assertInertia(fn (AssertableInertia $page) => $page
             ->component('welcome')
-            ->where('recipientDisplayName', null));
+            ->where('recipientDisplayName', null)
+            ->where('rsvpAction', route('rsvp.store')));
+
+    $this->post(route('invitation.recipient.rsvp', $recipient->token), [
+        'name' => 'Archived Link Author',
+        'attendance' => 'maybe',
+    ])->assertNotFound();
 
     $this->get(route('invitation.recipient', 'does-not-exist'))
         ->assertNotFound();
@@ -206,4 +214,55 @@ test('recipient personalization remains independent from rsvp submissions', func
         'name' => 'RSVP Participant',
     ]);
     expect($recipient->fresh()->display_name)->toBe('RSVP Family');
+});
+
+test('rsvps submitted through a recipient link retain recipient provenance', function () {
+    $invitation = Invitation::importConfig();
+    $recipient = $invitation->recipients()->create([
+        'display_name' => 'Provenance Family',
+        'token' => 'provenancerecipienttoken',
+    ]);
+
+    $this->get(route('invitation.recipient', $recipient->token))
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->where('rsvpAction', route('invitation.recipient.rsvp', $recipient->token)));
+
+    $this->from(route('invitation.recipient', $recipient->token))
+        ->post(route('invitation.recipient.rsvp', $recipient->token), [
+            'name' => 'Actual RSVP Author',
+            'attendance' => 'attending',
+            'guest_count' => 1,
+            'message' => 'A blessing from the recipient link.',
+        ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(route('invitation.recipient', $recipient->token));
+
+    $rsvp = Rsvp::query()->firstOrFail();
+
+    $this->assertDatabaseHas('rsvps', [
+        'id' => $rsvp->id,
+        'recipient_id' => $recipient->id,
+        'name' => 'Actual RSVP Author',
+    ]);
+    $this->assertDatabaseHas('wishes', [
+        'rsvp_id' => $rsvp->id,
+        'name' => 'Actual RSVP Author',
+    ]);
+});
+
+test('recipient rsvp routes cannot use a recipient from another invitation', function () {
+    $otherInvitation = Invitation::create([
+        'key' => 'another-invitation',
+        'published_content' => config('invitation'),
+        'published_at' => now(),
+    ]);
+    $recipient = $otherInvitation->recipients()->create([
+        'display_name' => 'Other Invitation Family',
+        'token' => 'otherinvitationtoken',
+    ]);
+
+    $this->post(route('invitation.recipient.rsvp', $recipient->token), [
+        'name' => 'Cross Invitation Author',
+        'attendance' => 'maybe',
+    ])->assertNotFound();
 });

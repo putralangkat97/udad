@@ -746,6 +746,7 @@ body:has(.invitation-viewport) {
 
 .invitation-countdown-section > .invitation-section-label,
 .invitation-rsvp-section > .invitation-section-kicker,
+.invitation-wishes-section > .invitation-section-kicker,
 .invitation-gifts-section > .invitation-section-kicker,
 .invitation-gallery-section > .invitation-section-kicker,
 .invitation-story-section > h2 {
@@ -754,6 +755,7 @@ body:has(.invitation-viewport) {
 
 .invitation-countdown-section > .invitation-countdown-board,
 .invitation-rsvp-section > .invitation-rsvp-form,
+.invitation-wishes-section > .invitation-wish-list,
 .invitation-gifts-section > .invitation-gift-list,
 .invitation-gallery-section > .invitation-gallery-grid,
 .invitation-story-section > .invitation-story-list {
@@ -761,11 +763,13 @@ body:has(.invitation-viewport) {
 }
 
 .invitation-rsvp-section > h2,
+.invitation-wishes-section > h2,
 .invitation-gifts-section > h2 {
     translate: -7rem 0;
 }
 
 .invitation-rsvp-section > .invitation-rsvp-intro,
+.invitation-wishes-section > .invitation-wishes-intro,
 .invitation-gifts-section > .invitation-gifts-intro,
 .invitation-gallery-section > h2 {
     translate: 7rem 0;
@@ -798,6 +802,8 @@ body:has(.invitation-viewport) {
 .invitation-reveal--visible .invitation-countdown-section > *,
 .invitation-reveal--visible .invitation-rsvp-section > *,
 .invitation-reveal--visible .invitation-rsvp-form > .invitation-form-field,
+.invitation-reveal--visible .invitation-wishes-section > *,
+.invitation-reveal--visible .invitation-wish-card,
 .invitation-reveal--visible .invitation-gifts-section > *,
 .invitation-reveal--visible .invitation-gift-card,
 .invitation-reveal--visible .invitation-gallery-section > *,
@@ -1156,6 +1162,55 @@ body:has(.invitation-viewport) {
 .invitation-rsvp-submit:disabled {
     cursor: wait;
     opacity: 0.6;
+}
+
+.invitation-wishes-section {
+    padding: 5rem 0 4rem;
+    color: var(--invitation-terracotta);
+    text-align: center;
+}
+
+.invitation-wishes-section h2 {
+    margin: 0.25rem 0 0.5rem;
+    font-family: 'Sacramento', cursive;
+    font-size: 2.45rem;
+    font-weight: 400;
+    line-height: 1;
+}
+
+.invitation-wishes-intro {
+    margin: 0 auto 1.25rem;
+    max-width: 18rem;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
+    font-size: 0.78rem;
+    line-height: 1.45;
+}
+
+.invitation-wish-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.invitation-wish-card {
+    border: 1px solid color-mix(in srgb, var(--invitation-terracotta) 35%, transparent);
+    padding: 1rem;
+    background: color-mix(in srgb, var(--invitation-paper) 45%, transparent);
+    text-align: left;
+}
+
+.invitation-wish-card h3 {
+    margin: 0 0 0.45rem;
+    font-family: 'Invitation MoreSugar', Georgia, serif;
+    font-size: 0.9rem;
+}
+
+.invitation-wish-card p {
+    margin: 0;
+    color: var(--invitation-ink);
+    font-family: 'Invitation MoreSugar', Georgia, serif;
+    font-size: 0.78rem;
+    line-height: 1.55;
+    white-space: pre-wrap;
 }
 
 .invitation-gifts-section,

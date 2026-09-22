@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Rsvp;
 use App\Models\User;
 use App\Models\Wish;
 use Inertia\Testing\AssertableInertia;
@@ -46,6 +47,30 @@ test('published wish content is not emitted as executable html', function () {
     $this->get(route('home'))
         ->assertDontSeeHtml('<img src=x onerror=alert(1)>')
         ->assertDontSeeHtml('<script>alert(1)</script>');
+});
+
+test('public wishes hide their rsvp source context', function () {
+    $rsvp = Rsvp::create([
+        'invitation_key' => 'latif-aci',
+        'name' => 'Private Context Author',
+        'attendance' => Rsvp::STATUS_ATTENDING,
+        'guest_count' => 2,
+    ]);
+    Wish::create([
+        'invitation_key' => 'latif-aci',
+        'rsvp_id' => $rsvp->id,
+        'name' => 'Private Context Author',
+        'message' => 'A published blessing.',
+        'status' => Wish::STATUS_PUBLISHED,
+    ]);
+
+    $this->get(route('home'))
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->where('wishes.0.name', 'Private Context Author')
+            ->where('wishes.0.message', 'A published blessing.')
+            ->missing('wishes.0.source')
+            ->missing('wishes.0.attendance')
+            ->missing('wishes.0.guestCount'));
 });
 
 test('pending wish content is not emitted as executable moderation html', function () {
@@ -151,6 +176,51 @@ test('authenticated moderators can view pending wishes only', function () {
             ->has('wishes', 1)
             ->where('wishes.0.name', 'Pending Guest');
     });
+});
+
+test('moderators see the source and attendance context for rsvp wishes', function () {
+    $rsvp = Rsvp::create([
+        'invitation_key' => 'latif-aci',
+        'name' => 'RSVP Author',
+        'attendance' => Rsvp::STATUS_ATTENDING,
+        'guest_count' => 3,
+    ]);
+    Wish::create([
+        'invitation_key' => 'latif-aci',
+        'rsvp_id' => $rsvp->id,
+        'name' => 'RSVP Author',
+        'message' => 'A blessing for the couple.',
+        'status' => Wish::STATUS_PENDING,
+    ]);
+
+    $this
+        ->actingAs(User::factory()->create())
+        ->get(route('moderation.wishes.index'))
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->where('wishes.0.source', 'rsvp')
+            ->where('wishes.0.attendance', Rsvp::STATUS_ATTENDING)
+            ->where('wishes.0.guestCount', 3));
+});
+
+test('moderation excludes wishes linked to another invitation rsvp', function () {
+    $rsvp = Rsvp::create([
+        'invitation_key' => 'another-invitation',
+        'name' => 'Other RSVP Author',
+        'attendance' => Rsvp::STATUS_MAYBE,
+    ]);
+    Wish::create([
+        'invitation_key' => 'latif-aci',
+        'rsvp_id' => $rsvp->id,
+        'name' => 'Other RSVP Author',
+        'message' => 'This should not be reviewed here.',
+        'status' => Wish::STATUS_PENDING,
+    ]);
+
+    $this
+        ->actingAs(User::factory()->create())
+        ->get(route('moderation.wishes.index'))
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->has('wishes', 0));
 });
 
 test('authenticated moderators can publish a pending wish', function () {

@@ -78,10 +78,17 @@ type Invitation = {
     };
 };
 
+type Wish = {
+    name: string;
+    message: string;
+};
+
 type WelcomeProps = {
     invitation: Invitation;
+    wishes?: Wish[];
     preview?: boolean;
     recipientDisplayName?: string | null;
+    rsvpAction?: string;
 };
 
 type RemainingTime = {
@@ -206,7 +213,7 @@ function ProfileCard({
     );
 }
 
-function RsvpSection() {
+function RsvpSection({ rsvpAction }: { rsvpAction: string }) {
     const [attendance, setAttendance] = useState('attending');
 
     return (
@@ -225,6 +232,7 @@ function RsvpSection() {
 
                 <Form
                     {...RsvpController.store.form()}
+                    action={rsvpAction}
                     resetOnSuccess={['name', 'guest_count', 'message']}
                     disableWhileProcessing
                     className="invitation-rsvp-form"
@@ -348,14 +356,14 @@ function RsvpSection() {
                                 htmlFor="rsvp-message"
                             >
                                 <span>
-                                    Message <em>(optional)</em>
+                                    Hope &amp; prayer <em>(optional)</em>
                                 </span>
                                 <textarea
                                     id="rsvp-message"
                                     name="message"
                                     rows={3}
                                     maxLength={2000}
-                                    placeholder="Leave a message for the couple"
+                                    placeholder="Leave a hope, prayer, or message for the couple"
                                     aria-invalid={Boolean(errors.message)}
                                     aria-describedby={
                                         errors.message
@@ -390,8 +398,10 @@ function RsvpSection() {
 
 export default function Welcome({
     invitation,
+    wishes = [],
     preview = false,
     recipientDisplayName = null,
+    rsvpAction = RsvpController.store.form().action,
 }: WelcomeProps) {
     const [isReady, setIsReady] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
@@ -855,7 +865,35 @@ export default function Welcome({
                                 </section>
                             </Reveal>
 
-                            <RsvpSection />
+                            <RsvpSection rsvpAction={rsvpAction} />
+
+                            {wishes.length > 0 && (
+                                <Reveal>
+                                    <section
+                                        className="invitation-wishes-section"
+                                        aria-labelledby="wishes-heading"
+                                    >
+                                        <p className="invitation-section-kicker">
+                                            From our loved ones
+                                        </p>
+                                        <h2 id="wishes-heading">Wishes</h2>
+                                        <p className="invitation-wishes-intro">
+                                            Hope and prayers from our guests.
+                                        </p>
+                                        <div className="invitation-wish-list">
+                                            {wishes.map((wish, index) => (
+                                                <article
+                                                    key={`${wish.name}-${index}`}
+                                                    className="invitation-wish-card"
+                                                >
+                                                    <h3>{wish.name}</h3>
+                                                    <p>{wish.message}</p>
+                                                </article>
+                                            ))}
+                                        </div>
+                                    </section>
+                                </Reveal>
+                            )}
 
                             <Reveal>
                                 <section

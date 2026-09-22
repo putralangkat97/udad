@@ -16,6 +16,9 @@ type PendingWish = {
     name: string;
     message: string;
     created_at: string;
+    source: 'direct' | 'rsvp';
+    attendance?: string | null;
+    guestCount?: number | null;
 };
 
 export default function Wishes({ wishes }: { wishes: PendingWish[] }) {
@@ -54,6 +57,11 @@ export default function Wishes({ wishes }: { wishes: PendingWish[] }) {
                                 <CardHeader>
                                     <CardTitle>{wish.name}</CardTitle>
                                     <CardDescription>
+                                        <span>
+                                            {wish.source === 'rsvp'
+                                                ? `From RSVP${wish.attendance ? ` · ${wish.attendance.replace('_', ' ')}` : ''}${wish.guestCount ? ` · ${wish.guestCount} guest${wish.guestCount === 1 ? '' : 's'}` : ''}`
+                                                : 'Direct wish'}
+                                        </span>{' '}
                                         <time dateTime={wish.created_at}>
                                             {new Date(
                                                 wish.created_at,

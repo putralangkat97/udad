@@ -16,6 +16,10 @@ Route::get('/invite/{token}', [InvitationController::class, 'showRecipient'])
 Route::post('/rsvp', [RsvpController::class, 'store'])
     ->middleware('throttle:rsvp')
     ->name('rsvp.store');
+Route::post('/invite/{token}/rsvp', [RsvpController::class, 'storeRecipient'])
+    ->where('token', '[A-Za-z0-9]+')
+    ->middleware('throttle:rsvp')
+    ->name('invitation.recipient.rsvp');
 
 Route::post('/wishes', [WishController::class, 'store'])
     ->middleware('throttle:wishes')
