@@ -56,6 +56,7 @@ COPY --chown=app:app . .
 COPY --from=vendor --chown=app:app /var/www/html/vendor ./vendor
 COPY --from=frontend --chown=app:app /var/www/html/public/build ./public/build
 COPY docker/php/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+COPY docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
 COPY docker/php/entrypoint /usr/local/bin/app-entrypoint
 
 RUN rm -f bootstrap/cache/packages.php bootstrap/cache/services.php \
