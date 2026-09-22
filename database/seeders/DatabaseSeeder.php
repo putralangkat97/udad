@@ -24,5 +24,14 @@ class DatabaseSeeder extends Seeder
                 'is_admin' => true,
             ],
         );
+        
+        User::query()->updateOrCreate(
+            ['email' => 'rahmadaniadistia16@gmail.com'],
+            [
+                'name' => 'Test User',
+                'password' => Hash::make('12345678'),
+                'is_admin' => true,
+            ],
+        );
     }
 }
