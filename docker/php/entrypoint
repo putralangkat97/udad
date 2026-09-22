@@ -17,4 +17,8 @@ chown -R app:app \
 
 su-exec app php artisan optimize
 
+if [ "${1:-}" = "php-fpm" ]; then
+    exec "$@"
+fi
+
 exec su-exec app "$@"
