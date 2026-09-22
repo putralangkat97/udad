@@ -5,6 +5,7 @@ import {
     FolderGit2,
     LayoutGrid,
     MessageSquare,
+    Users,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
@@ -35,6 +36,11 @@ const invitationNavItems: NavItem[] = [
         title: 'Invitation content',
         href: '/admin/invitation',
         icon: FilePenLine,
+    },
+    {
+        title: 'Invitation recipients',
+        href: '/admin/recipients',
+        icon: Users,
     },
 ];
 

@@ -10,7 +10,6 @@ return [
         'title' => 'SAVE THE DATE',
         'names' => 'Anggit & Adis',
         'date' => '04.10.2026',
-        'guest' => 'Dear, WB',
         'invitation' => 'You’re Invited !',
         'image' => '/invitation-assets/anggit-adis/anggit-adis-cover.png',
         'footerOrnament' => '/invitation-assets/temp/image/cherry/symbolatas.png',

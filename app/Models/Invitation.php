@@ -36,6 +36,12 @@ class Invitation extends Model
         return $this->hasMany(MediaAsset::class);
     }
 
+    /** @return HasMany<InvitationRecipient, $this> */
+    public function recipients(): HasMany
+    {
+        return $this->hasMany(InvitationRecipient::class);
+    }
+
     public function publisher(): BelongsTo
     {
         return $this->belongsTo(User::class, 'published_by');

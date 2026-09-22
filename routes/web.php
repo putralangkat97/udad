@@ -1,27 +1,17 @@
 <?php
 
 use App\Http\Controllers\AdminInvitationController;
+use App\Http\Controllers\AdminInvitationRecipientController;
+use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\RsvpController;
 use App\Http\Controllers\WishController;
 use App\Http\Controllers\WishModerationController;
-use App\Models\Invitation;
-use App\Models\Wish;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-Route::get('/', function () {
-    $invitation = Invitation::query()->where('key', config('invitation.key'))->first();
-    $wishes = Wish::query()
-        ->where('invitation_key', config('invitation.key'))
-        ->published()
-        ->latest()
-        ->get(['name', 'message']);
-
-    return Inertia::render('welcome', [
-        'invitation' => $invitation?->contentForGuests() ?: config('invitation'),
-        'wishes' => $wishes,
-    ]);
-})->name('home');
+Route::get('/', [InvitationController::class, 'show'])->name('home');
+Route::get('/invite/{token}', [InvitationController::class, 'showRecipient'])
+    ->where('token', '[A-Za-z0-9]+')
+    ->name('invitation.recipient');
 
 Route::post('/rsvp', [RsvpController::class, 'store'])
     ->middleware('throttle:rsvp')
@@ -52,6 +42,11 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
     Route::post('/invitation/media', [AdminInvitationController::class, 'uploadMedia'])->name('invitation.media.upload');
     Route::post('/invitation/media/{mediaAsset}/archive', [AdminInvitationController::class, 'archiveMedia'])->name('invitation.media.archive');
     Route::delete('/invitation/media/{mediaAsset}', [AdminInvitationController::class, 'deleteMedia'])->name('invitation.media.delete');
+    Route::get('/recipients', [AdminInvitationRecipientController::class, 'index'])->name('recipients.index');
+    Route::post('/recipients', [AdminInvitationRecipientController::class, 'store'])->name('recipients.store');
+    Route::patch('/recipients/{recipient}', [AdminInvitationRecipientController::class, 'update'])->name('recipients.update');
+    Route::post('/recipients/{recipient}/archive', [AdminInvitationRecipientController::class, 'archive'])->name('recipients.archive');
+    Route::post('/recipients/{recipient}/rotate', [AdminInvitationRecipientController::class, 'rotate'])->name('recipients.rotate');
 });
 
 require __DIR__.'/settings.php';

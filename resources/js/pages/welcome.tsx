@@ -47,7 +47,6 @@ type Invitation = {
         title: string;
         names: string;
         date: string;
-        guest: string;
         invitation: string;
         image: string;
         footerOrnament: string;
@@ -82,6 +81,7 @@ type Invitation = {
 type WelcomeProps = {
     invitation: Invitation;
     preview?: boolean;
+    recipientDisplayName?: string | null;
 };
 
 type RemainingTime = {
@@ -388,7 +388,11 @@ function RsvpSection() {
     );
 }
 
-export default function Welcome({ invitation, preview = false }: WelcomeProps) {
+export default function Welcome({
+    invitation,
+    preview = false,
+    recipientDisplayName = null,
+}: WelcomeProps) {
     const [isReady, setIsReady] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [isOpening, setIsOpening] = useState(false);
@@ -708,8 +712,9 @@ export default function Welcome({ invitation, preview = false }: WelcomeProps) {
                                     {cover.date}
                                 </span>
                                 <span className="invitation-guest">
-                                    <span>{cover.guest.split(',')[0]},</span>{' '}
-                                    {cover.guest.split(',')[1]}
+                                    {recipientDisplayName
+                                        ? `Dear, ${recipientDisplayName}`
+                                        : 'Dear Guest'}
                                 </span>
                                 <span className="invitation-invitation">
                                     {cover.invitation}

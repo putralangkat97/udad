@@ -933,7 +933,6 @@ export default function InvitationAdmin({
                                                     'title',
                                                     'names',
                                                     'date',
-                                                    'guest',
                                                     'invitation',
                                                 ].map((key) => (
                                                     <TextField

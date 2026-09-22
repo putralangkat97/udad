@@ -24,6 +24,21 @@ _Avoid_: Page, form, config file
 A person who views the public invitation or submits an RSVP.
 _Avoid_: User, admin
 
+**Invitation recipient**:
+A person, household, or group represented by one personalized invitation link
+and one display name on the invitation cover.
+_Avoid_: Guest record, RSVP participant
+
+**Recipient link**:
+An opaque shareable URL that resolves one invitation recipient to the published
+invitation.
+_Avoid_: Guest URL, name slug
+
+**Archived recipient**:
+An invitation recipient retained for recordkeeping whose personalized link no
+longer displays the recipient name.
+_Avoid_: Deleted guest, inactive user
+
 **Admin**:
 An authenticated person authorized to manage invitation content or moderation.
 _Avoid_: Guest, ordinary user
