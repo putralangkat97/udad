@@ -13,12 +13,37 @@ services:
     networks:
       - application
       - shared
+    depends_on:
+      redis:
+        condition: service_healthy
     volumes:
       - invitation-media:/var/www/html/storage/app/public
     tmpfs:
       - /tmp
       - /var/www/html/bootstrap/cache
       - /var/www/html/storage/framework
+
+  redis:
+    image: redis:7-alpine
+    env_file: /opt/wedding/.env.production
+    command: [sh, -c, 'exec redis-server --appendonly yes --requirepass "$${REDIS_PASSWORD}"']
+    restart: unless-stopped
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    networks:
+      - application
+    volumes:
+      - redis-data:/data
+    tmpfs:
+      - /tmp
+    healthcheck:
+      test: [CMD-SHELL, 'redis-cli --no-auth-warning -a "$${REDIS_PASSWORD}" ping | grep PONG']
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   web:
     build:
@@ -56,3 +81,4 @@ networks:
 
 volumes:
   invitation-media:
+  redis-data:

@@ -4,7 +4,7 @@ This application runs behind the host Nginx server for `wedding-adis.anggit.dev`
 
 ## First-time host setup
 
-1. Keep PostgreSQL and Redis on the external `docker_default` network. Remove their public port mappings, or bind them to loopback only. Configure Redis with a password.
+1. Ensure the existing PostgreSQL container (`gitea-db`) is attached to the external `docker_default` network. Remove its public port mapping, or bind it to loopback only. Redis is provisioned privately by this Compose project and does not need a host port.
 2. Create `/opt/wedding/.env.production` from `.env.production.example`. Generate `APP_KEY` with `php artisan key:generate --show` and set the PostgreSQL and Redis credentials there. Make the file readable only by the deployment user.
 3. Add `deploy/nginx/wedding-adis.anggit.dev.location.conf` to the existing TLS server block, then validate and reload host Nginx.
 
