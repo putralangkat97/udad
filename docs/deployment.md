@@ -1,11 +1,11 @@
 # Production deployment
 
-This application runs behind the host Nginx server for `wedding-adis.anggit.dev`. Docker publishes the application only on `127.0.0.1:8112`; do not expose PHP-FPM, PostgreSQL, or Redis publicly.
+This application runs behind the host Nginx server for `wedding-adis.anggit.dev`. Docker publishes the application only on `127.0.0.1:8112`; the application and its SQLite database remain private to the Compose network and volumes.
 
 ## First-time host setup
 
-1. Ensure the existing PostgreSQL container (`gitea-db`) is attached to the external `docker_default` network. Remove its public port mapping, or bind it to loopback only. Redis is provisioned privately by this Compose project and does not need a host port.
-2. Create `/opt/wedding/.env.production` from `.env.production.example`. Generate `APP_KEY` with `php artisan key:generate --show` and set the PostgreSQL and Redis credentials there. Make the file readable only by the deployment user.
+1. No external database or cache container is required. SQLite, database cache, database sessions, and database queues are persisted in the Compose-managed SQLite volume.
+2. Create `/opt/wedding/.env.production` from `.env.production.example`. Generate `APP_KEY` with `php artisan key:generate --show`. Make the file readable only by the deployment user.
 3. Add `deploy/nginx/wedding-adis.anggit.dev.location.conf` to the existing TLS server block, then validate and reload host Nginx.
 
 ## Deploy a tagged release
@@ -43,4 +43,4 @@ Check out the previous release tag, rebuild, and start the stack again. Roll bac
 
 ## Backup status
 
-Automated backups are intentionally deferred. PostgreSQL data and the `invitation-media` volume are not protected from host loss until an off-host backup destination is added.
+Automated backups are intentionally deferred. The SQLite volume and `invitation-media` volume are not protected from host loss until an off-host backup destination is added.

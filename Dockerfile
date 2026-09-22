@@ -34,20 +34,18 @@ RUN apk add --no-cache \
         freetype \
         libjpeg-turbo \
         libpng \
-        libpq \
         libwebp \
+        sqlite-libs \
         su-exec \
     && apk add --no-cache --virtual .build-deps \
         $PHPIZE_DEPS \
         freetype-dev \
         libjpeg-turbo-dev \
         libpng-dev \
-        libpq-dev \
         libwebp-dev \
+        sqlite-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
-    && docker-php-ext-install -j"$(nproc)" exif gd opcache pdo_pgsql \
-    && pecl install redis \
-    && docker-php-ext-enable redis \
+    && docker-php-ext-install -j"$(nproc)" exif gd opcache pdo_sqlite \
     && apk del .build-deps \
     && addgroup -S -g 1000 app \
     && adduser -S -D -u 1000 -G app app
@@ -61,7 +59,7 @@ COPY docker/php/entrypoint /usr/local/bin/app-entrypoint
 
 RUN rm -f bootstrap/cache/packages.php bootstrap/cache/services.php \
     && php artisan package:discover --ansi \
-    && mkdir -p storage/app/public storage/framework/cache/data storage/framework/sessions storage/framework/views \
+    && mkdir -p storage/app/public storage/database storage/framework/cache/data storage/framework/sessions storage/framework/views \
     && php artisan storage:link \
     && chmod +x /usr/local/bin/app-entrypoint \
     && chown -R app:app bootstrap/cache storage

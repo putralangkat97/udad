@@ -2,7 +2,8 @@
 
 set -eu
 
-chown app:app /var/www/html/storage/app/public
+mkdir -p /var/www/html/storage/app/public /var/www/html/storage/database
+chown -R app:app /var/www/html/storage/app/public /var/www/html/storage/database
 
 su-exec app php artisan optimize
 
