@@ -40,6 +40,7 @@ services:
       - 127.0.0.1:8112:8080
     networks:
       - application
+      - edge
     volumes:
       - invitation-media:/var/www/html/storage/app/public:ro
     tmpfs:
@@ -54,6 +55,7 @@ services:
 networks:
   application:
     internal: true
+  edge:
 
 volumes:
   invitation-media:
