@@ -862,6 +862,7 @@ body:has(.invitation-viewport) {
 
 .invitation-couple-copy h2 {
     margin: 0.2rem 0 0.35rem;
+    border: 0;
     font-family: 'Sacramento', cursive;
     font-size: clamp(1.7rem, 8vw, 2.25rem);
     font-weight: 400;
