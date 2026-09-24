@@ -17,6 +17,7 @@ type Recipient = {
     id: number;
     displayName: string;
     link: string;
+    message: string;
     archived: boolean;
 };
 
@@ -202,6 +203,21 @@ export default function Recipients({ recipients }: Props) {
                                                     <Copy />
                                                 )}
                                                 {copied === recipient.link ? 'Copied' : 'Copy link'}
+                                            </Button>
+                                            <Button
+                                                type="button"
+                                                size="sm"
+                                                variant="outline"
+                                                onClick={() => void copy(recipient.message)}
+                                            >
+                                                {copied === recipient.message ? (
+                                                    <Check />
+                                                ) : (
+                                                    <Copy />
+                                                )}
+                                                {copied === recipient.message
+                                                    ? 'Copied'
+                                                    : 'Copy message'}
                                             </Button>
                                             <Button asChild type="button" size="sm" variant="ghost">
                                                 <a
