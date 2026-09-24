@@ -826,7 +826,6 @@ body:has(.invitation-viewport) {
     flex-direction: column;
     gap: 3.25rem;
     padding: 6rem 0 4rem;
-    background-image: url('/invitation-assets/temp/image/cherry/10.png');
     background-position: center 5%;
     background-repeat: no-repeat;
     background-size: 125% auto;
