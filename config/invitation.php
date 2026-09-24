@@ -4,7 +4,7 @@ return [
     'key' => 'latif-aci',
     'title' => 'The Wedding of Anggit & Rahmadani',
     'timezone' => 'Asia/Jakarta',
-    'audio' => '/invitation-assets/temp/audio/lee-hi-only.mp3',
+    'audio' => '/invitation-assets/temp/audio/lee-hi-only-piano.mp3',
     'cover' => [
         'eyebrow' => 'We’re Getting Married!',
         'title' => 'SAVE THE DATE',
