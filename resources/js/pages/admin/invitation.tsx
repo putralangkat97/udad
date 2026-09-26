@@ -749,7 +749,7 @@ export default function InvitationAdmin({
                             </p>
                             <nav
                                 aria-label="Invitation content sections"
-                                className="flex flex-col gap-1"
+                                className="bg-card flex flex-col gap-1 rounded-xl border p-2 shadow-sm"
                             >
                                 {navigationSections.map(([key, label]) => {
                                     const Icon = sectionDetails[key].icon;
@@ -761,7 +761,7 @@ export default function InvitationAdmin({
                                                     ? 'secondary'
                                                     : 'ghost'
                                             }
-                                            className="h-11 justify-start gap-3"
+                                            className="h-10 w-full justify-start gap-3"
                                             aria-current={
                                                 activeSection === key
                                                     ? 'page'
@@ -784,38 +784,38 @@ export default function InvitationAdmin({
                                 })}
                             </nav>
                         </div>
-                        <Field className="lg:hidden">
-                            <FieldLabel htmlFor="invitation-section">
-                                Editing section
-                            </FieldLabel>
-                            <Select
-                                value={activeSection}
-                                onValueChange={(value) =>
-                                    setActiveSection(value as SectionKey)
-                                }
+                        <div className="-mx-4 overflow-x-auto px-4 sm:-mx-6 sm:px-6 lg:hidden">
+                            <nav
+                                aria-label="Invitation content sections"
+                                className="flex w-max gap-2 pb-1"
                             >
-                                <SelectTrigger
-                                    id="invitation-section"
-                                    className="w-full"
-                                >
-                                    <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectGroup>
-                                        {navigationSections.map(
-                                            ([key, label]) => (
-                                                <SelectItem
-                                                    key={key}
-                                                    value={key}
-                                                >
-                                                    {label}
-                                                </SelectItem>
-                                            ),
-                                        )}
-                                    </SelectGroup>
-                                </SelectContent>
-                            </Select>
-                        </Field>
+                                {navigationSections.map(([key, label]) => {
+                                    const Icon = sectionDetails[key].icon;
+                                    return (
+                                        <Button
+                                            key={key}
+                                            variant={
+                                                activeSection === key
+                                                    ? 'secondary'
+                                                    : 'outline'
+                                            }
+                                            className="h-9 shrink-0 gap-2"
+                                            aria-current={
+                                                activeSection === key
+                                                    ? 'page'
+                                                    : undefined
+                                            }
+                                            onClick={() =>
+                                                setActiveSection(key)
+                                            }
+                                        >
+                                            <Icon data-icon="inline-start" />
+                                            {label}
+                                        </Button>
+                                    );
+                                })}
+                            </nav>
+                        </div>
                         <p className="text-muted-foreground hidden px-3 text-xs leading-relaxed lg:block">
                             Work at your own pace. Changes only appear on your
                             invitation after you save and publish.

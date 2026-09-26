@@ -1,5 +1,13 @@
 import { Head, Link, router } from '@inertiajs/react';
-import { Archive, Check, Copy, ExternalLink, Pencil, RotateCcw, Users } from 'lucide-react';
+import {
+    Archive,
+    Check,
+    Copy,
+    ExternalLink,
+    Pencil,
+    RotateCcw,
+    Users,
+} from 'lucide-react';
 import { FormEvent, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -72,10 +80,10 @@ export default function Recipients({ recipients }: Props) {
         <>
             <Head title="Invitation recipients" />
 
-            <main className="flex flex-1 flex-col gap-6 p-4 md:p-6">
-                <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-                    <div className="space-y-1">
-                        <div className="flex items-center gap-2">
+            <main className="mx-auto flex w-full max-w-7xl flex-col gap-6 p-4 sm:p-6 lg:p-8">
+                <header className="flex flex-wrap items-center justify-between gap-4">
+                    <div className="flex flex-col gap-2">
+                        <div className="flex flex-wrap items-center gap-3">
                             <h1 className="text-2xl font-semibold tracking-tight">
                                 Invitation recipients
                             </h1>
@@ -84,13 +92,14 @@ export default function Recipients({ recipients }: Props) {
                             </Badge>
                         </div>
                         <p className="text-muted-foreground text-sm">
-                            Create personalized links for the people and groups receiving your invitation.
+                            Create personalized links for the people and groups
+                            receiving your invitation.
                         </p>
                     </div>
                     <Button asChild variant="outline">
                         <Link href="/admin/invitation">Edit invitation</Link>
                     </Button>
-                </div>
+                </header>
 
                 <Card>
                     <CardHeader>
@@ -101,12 +110,14 @@ export default function Recipients({ recipients }: Props) {
                     </CardHeader>
                     <CardContent>
                         <form
-                            className="flex flex-col gap-3 sm:flex-row"
+                            className="flex max-w-2xl flex-col gap-3 sm:flex-row"
                             onSubmit={createRecipient}
                         >
                             <Input
                                 value={newName}
-                                onChange={(event) => setNewName(event.target.value)}
+                                onChange={(event) =>
+                                    setNewName(event.target.value)
+                                }
                                 placeholder="Mr. and Mrs. Smith"
                                 aria-label="Recipient display name"
                                 required
@@ -121,13 +132,16 @@ export default function Recipients({ recipients }: Props) {
                     <Card>
                         <CardContent className="text-muted-foreground flex flex-col items-center gap-3 p-8 text-center text-sm">
                             <Users className="size-8" aria-hidden="true" />
-                            <p>No recipients yet. Add the first personalized link above.</p>
+                            <p>
+                                No recipients yet. Add the first personalized
+                                link above.
+                            </p>
                         </CardContent>
                     </Card>
                 ) : (
-                    <div className="grid gap-4">
+                    <div className="grid gap-4 lg:grid-cols-2">
                         {recipients.map((recipient) => (
-                            <Card key={recipient.id}>
+                            <Card key={recipient.id} className="h-full">
                                 <CardHeader>
                                     <div className="flex flex-wrap items-start justify-between gap-3">
                                         <div className="space-y-1">
@@ -135,33 +149,46 @@ export default function Recipients({ recipients }: Props) {
                                                 <form
                                                     className="flex flex-wrap gap-2"
                                                     onSubmit={(event) =>
-                                                        updateRecipient(event, recipient)
+                                                        updateRecipient(
+                                                            event,
+                                                            recipient,
+                                                        )
                                                     }
                                                 >
                                                     <Input
                                                         value={editingName}
                                                         onChange={(event) =>
-                                                            setEditingName(event.target.value)
+                                                            setEditingName(
+                                                                event.target
+                                                                    .value,
+                                                            )
                                                         }
                                                         aria-label={`Edit ${recipient.displayName}`}
                                                         required
                                                         maxLength={255}
                                                         autoFocus
                                                     />
-                                                    <Button type="submit" size="sm">
+                                                    <Button
+                                                        type="submit"
+                                                        size="sm"
+                                                    >
                                                         Save
                                                     </Button>
                                                     <Button
                                                         type="button"
                                                         size="sm"
                                                         variant="ghost"
-                                                        onClick={() => setEditingId(null)}
+                                                        onClick={() =>
+                                                            setEditingId(null)
+                                                        }
                                                     >
                                                         Cancel
                                                     </Button>
                                                 </form>
                                             ) : (
-                                                <CardTitle>{recipient.displayName}</CardTitle>
+                                                <CardTitle>
+                                                    {recipient.displayName}
+                                                </CardTitle>
                                             )}
                                             <CardDescription>
                                                 {recipient.archived
@@ -176,41 +203,50 @@ export default function Recipients({ recipients }: Props) {
                                                     : 'secondary'
                                             }
                                         >
-                                            {recipient.archived ? 'Archived' : 'Active'}
+                                            {recipient.archived
+                                                ? 'Archived'
+                                                : 'Active'}
                                         </Badge>
                                     </div>
                                 </CardHeader>
-                                <CardContent className="space-y-4">
-                                    <div className="flex flex-col gap-2 rounded-md border bg-muted/30 p-3 sm:flex-row sm:items-center sm:justify-between">
+                                <CardContent className="flex flex-1 flex-col gap-4">
+                                    <div className="bg-muted/30 flex flex-col gap-3 rounded-lg border p-3">
                                         <a
-                                            className="truncate text-sm underline"
+                                            className="text-sm break-all underline"
                                             href={recipient.link}
                                             target="_blank"
                                             rel="noreferrer"
                                         >
                                             {recipient.link}
                                         </a>
-                                        <div className="flex shrink-0 gap-2">
+                                        <div className="flex flex-wrap gap-2">
                                             <Button
                                                 type="button"
                                                 size="sm"
                                                 variant="outline"
-                                                onClick={() => void copy(recipient.link)}
+                                                onClick={() =>
+                                                    void copy(recipient.link)
+                                                }
                                             >
                                                 {copied === recipient.link ? (
                                                     <Check />
                                                 ) : (
                                                     <Copy />
                                                 )}
-                                                {copied === recipient.link ? 'Copied' : 'Copy link'}
+                                                {copied === recipient.link
+                                                    ? 'Copied'
+                                                    : 'Copy link'}
                                             </Button>
                                             <Button
                                                 type="button"
                                                 size="sm"
                                                 variant="outline"
-                                                onClick={() => void copy(recipient.message)}
+                                                onClick={() =>
+                                                    void copy(recipient.message)
+                                                }
                                             >
-                                                {copied === recipient.message ? (
+                                                {copied ===
+                                                recipient.message ? (
                                                     <Check />
                                                 ) : (
                                                     <Copy />
@@ -219,7 +255,12 @@ export default function Recipients({ recipients }: Props) {
                                                     ? 'Copied'
                                                     : 'Copy message'}
                                             </Button>
-                                            <Button asChild type="button" size="sm" variant="ghost">
+                                            <Button
+                                                asChild
+                                                type="button"
+                                                size="sm"
+                                                variant="ghost"
+                                            >
                                                 <a
                                                     href={recipient.link}
                                                     target="_blank"
@@ -227,6 +268,7 @@ export default function Recipients({ recipients }: Props) {
                                                     aria-label={`Open ${recipient.displayName} invitation`}
                                                 >
                                                     <ExternalLink />
+                                                    Open
                                                 </a>
                                             </Button>
                                         </div>
@@ -239,7 +281,9 @@ export default function Recipients({ recipients }: Props) {
                                                     type="button"
                                                     size="sm"
                                                     variant="outline"
-                                                    onClick={() => startEditing(recipient)}
+                                                    onClick={() =>
+                                                        startEditing(recipient)
+                                                    }
                                                 >
                                                     <Pencil />
                                                     Edit name
@@ -252,7 +296,9 @@ export default function Recipients({ recipients }: Props) {
                                                         router.post(
                                                             `/admin/recipients/${recipient.id}/rotate`,
                                                             {},
-                                                            { preserveScroll: true },
+                                                            {
+                                                                preserveScroll: true,
+                                                            },
                                                         )
                                                     }
                                                 >
@@ -267,7 +313,9 @@ export default function Recipients({ recipients }: Props) {
                                                         router.post(
                                                             `/admin/recipients/${recipient.id}/archive`,
                                                             {},
-                                                            { preserveScroll: true },
+                                                            {
+                                                                preserveScroll: true,
+                                                            },
                                                         )
                                                     }
                                                 >
