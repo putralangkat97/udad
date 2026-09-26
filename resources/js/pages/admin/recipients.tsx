@@ -30,6 +30,7 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { Spinner } from '@/components/ui/spinner';
 import {
     InputGroup,
     InputGroupAddon,
@@ -73,6 +74,7 @@ type Props = {
 
 export default function Recipients({ recipients, filters }: Props) {
     const [newName, setNewName] = useState('');
+    const [creating, setCreating] = useState(false);
     const [editingId, setEditingId] = useState<number | null>(null);
     const [editingName, setEditingName] = useState('');
     const [searchTerm, setSearchTerm] = useState(filters.search);
@@ -134,6 +136,7 @@ export default function Recipients({ recipients, filters }: Props) {
 
     function createRecipient(event: FormEvent<HTMLFormElement>): void {
         event.preventDefault();
+        setCreating(true);
 
         router.post(
             storeRecipient.url({ query: queryForPage(1) }),
@@ -141,6 +144,7 @@ export default function Recipients({ recipients, filters }: Props) {
             {
                 preserveScroll: true,
                 onSuccess: () => setNewName(''),
+                onFinish: () => setCreating(false),
             },
         );
     }
@@ -223,12 +227,19 @@ export default function Recipients({ recipients, filters }: Props) {
                             <Button
                                 type="submit"
                                 className="h-9 shrink-0 px-3 sm:px-4"
+                                disabled={creating}
                             >
-                                <Plus data-icon="inline-start" />
+                                {creating ? (
+                                    <Spinner data-icon="inline-start" />
+                                ) : (
+                                    <Plus data-icon="inline-start" />
+                                )}
                                 <span className="hidden sm:inline">
-                                    Add recipient
+                                    {creating ? 'Adding…' : 'Add recipient'}
                                 </span>
-                                <span className="sm:hidden">Add</span>
+                                <span className="sm:hidden">
+                                    {creating ? 'Adding…' : 'Add'}
+                                </span>
                             </Button>
                         </form>
                     </section>
