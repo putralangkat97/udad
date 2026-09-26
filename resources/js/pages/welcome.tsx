@@ -213,7 +213,13 @@ function ProfileCard({
     );
 }
 
-function RsvpSection({ rsvpAction }: { rsvpAction: string }) {
+function RsvpSection({
+    rsvpAction,
+    wishes,
+}: {
+    rsvpAction: string;
+    wishes: Wish[];
+}) {
     const [attendance, setAttendance] = useState('attending');
 
     return (
@@ -391,6 +397,32 @@ function RsvpSection({ rsvpAction }: { rsvpAction: string }) {
                         </>
                     )}
                 </Form>
+
+                {wishes.length > 0 && (
+                    <section
+                        className="invitation-wishes-section"
+                        aria-labelledby="wishes-heading"
+                    >
+                        <p className="invitation-section-kicker">
+                            From our loved ones
+                        </p>
+                        <h2 id="wishes-heading">Wishes</h2>
+                        <p className="invitation-wishes-intro">
+                            Hope and prayers from our guests.
+                        </p>
+                        <div className="invitation-wish-list">
+                            {wishes.map((wish, index) => (
+                                <article
+                                    key={`${wish.name}-${index}`}
+                                    className="invitation-wish-card"
+                                >
+                                    <h3>{wish.name}</h3>
+                                    <p>{wish.message}</p>
+                                </article>
+                            ))}
+                        </div>
+                    </section>
+                )}
             </section>
         </Reveal>
     );
@@ -999,35 +1031,10 @@ export default function Welcome({
                                 </section>
                             </Reveal>
 
-                            <RsvpSection rsvpAction={rsvpAction} />
-
-                            {wishes.length > 0 && (
-                                <Reveal>
-                                    <section
-                                        className="invitation-wishes-section"
-                                        aria-labelledby="wishes-heading"
-                                    >
-                                        <p className="invitation-section-kicker">
-                                            From our loved ones
-                                        </p>
-                                        <h2 id="wishes-heading">Wishes</h2>
-                                        <p className="invitation-wishes-intro">
-                                            Hope and prayers from our guests.
-                                        </p>
-                                        <div className="invitation-wish-list">
-                                            {wishes.map((wish, index) => (
-                                                <article
-                                                    key={`${wish.name}-${index}`}
-                                                    className="invitation-wish-card"
-                                                >
-                                                    <h3>{wish.name}</h3>
-                                                    <p>{wish.message}</p>
-                                                </article>
-                                            ))}
-                                        </div>
-                                    </section>
-                                </Reveal>
-                            )}
+                            <RsvpSection
+                                rsvpAction={rsvpAction}
+                                wishes={wishes}
+                            />
 
                             <footer className="invitation-footer">
                                 <p>Thank you for celebrating with us.</p>
