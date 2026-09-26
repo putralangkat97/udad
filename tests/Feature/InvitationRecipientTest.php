@@ -22,7 +22,71 @@ test('only admins can manage invitation recipients', function () {
         ->get(route('admin.recipients.index'))
         ->assertInertia(fn (AssertableInertia $page) => $page
             ->component('admin/recipients')
-            ->has('recipients'));
+            ->has('recipients.data')
+            ->where('filters.search', '')
+            ->where('filters.status', 'all'));
+});
+
+test('admins can search recipients by display name', function () {
+    $admin = recipientAdmin();
+    $invitation = Invitation::importConfig();
+    $invitation->recipients()->createMany([
+        ['display_name' => 'Alice and Bob', 'token' => 'alicebobtoken'],
+        ['display_name' => 'Charlie Family', 'token' => 'charliefamilytoken'],
+    ]);
+
+    $this->actingAs($admin)
+        ->get(route('admin.recipients.index', ['search' => 'alice']))
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->where('filters.search', 'alice')
+            ->where('recipients.total', 1)
+            ->where('recipients.data.0.displayName', 'Alice and Bob'));
+});
+
+test('admins can filter recipients by status', function () {
+    $admin = recipientAdmin();
+    $invitation = Invitation::importConfig();
+    $invitation->recipients()->createMany([
+        ['display_name' => 'Active Family', 'token' => 'activefamilytoken'],
+        [
+            'display_name' => 'Archived Family',
+            'token' => 'archivedfamilytoken',
+            'archived_at' => now(),
+        ],
+    ]);
+
+    $this->actingAs($admin)
+        ->get(route('admin.recipients.index', ['status' => 'archived']))
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->where('filters.status', 'archived')
+            ->where('recipients.total', 1)
+            ->where('recipients.data.0.displayName', 'Archived Family'));
+});
+
+test('admins receive paginated recipients with filter query strings preserved', function () {
+    $admin = recipientAdmin();
+    $invitation = Invitation::importConfig();
+
+    foreach (range(1, 13) as $number) {
+        $invitation->recipients()->create([
+            'display_name' => "Family {$number}",
+            'token' => "family{$number}token",
+        ]);
+    }
+
+    $this->actingAs($admin)
+        ->get(route('admin.recipients.index', [
+            'search' => 'Family',
+            'status' => 'active',
+            'page' => 2,
+        ]))
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->where('recipients.current_page', 2)
+            ->where('recipients.last_page', 2)
+            ->where('recipients.total', 13)
+            ->has('recipients.data', 1)
+            ->where('recipients.next_page_url', null)
+            ->where('recipients.prev_page_url', fn (?string $url): bool => str_contains($url ?? '', 'search=Family')));
 });
 
 test('admins can create a recipient and open its personalized invitation', function () {
@@ -43,9 +107,9 @@ test('admins can create a recipient and open its personalized invitation', funct
     $this->actingAs($admin)
         ->get(route('admin.recipients.index'))
         ->assertInertia(fn (AssertableInertia $page) => $page
-            ->where('recipients.0.displayName', 'Mr. and Mrs. Smith')
-            ->where('recipients.0.link', route('invitation.recipient', $recipient->token))
-            ->where('recipients.0.archived', false));
+            ->where('recipients.data.0.displayName', 'Mr. and Mrs. Smith')
+            ->where('recipients.data.0.link', route('invitation.recipient', $recipient->token))
+            ->where('recipients.data.0.archived', false));
 
     $this->get(route('invitation.recipient', $recipient->token))
         ->assertInertia(fn (AssertableInertia $page) => $page

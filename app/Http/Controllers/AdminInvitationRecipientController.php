@@ -7,27 +7,49 @@ use App\Models\InvitationRecipient;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class AdminInvitationRecipientController extends Controller
 {
-    public function index(): Response
+    public function index(Request $request): Response
     {
         $invitation = $this->invitation();
         $content = $invitation->contentForGuests();
-        /** @var list<InvitationRecipient> $recipients */
-        $recipients = $invitation->recipients()->latest()->get()->all();
-
-        return Inertia::render('admin/recipients', [
-            'recipients' => array_map(fn (InvitationRecipient $recipient): array => [
+        $validated = $request->validate([
+            'search' => ['nullable', 'string', 'max:255'],
+            'status' => ['nullable', Rule::in(['all', 'active', 'archived'])],
+        ]);
+        $search = trim($validated['search'] ?? '');
+        $status = $validated['status'] ?? 'all';
+        $recipients = $invitation->recipients()
+            ->select(['id', 'display_name', 'token', 'archived_at'])
+            ->when($search !== '', fn ($query) => $query->where(
+                'display_name',
+                'like',
+                "%{$search}%",
+            ))
+            ->when($status === 'active', fn ($query) => $query->whereNull('archived_at'))
+            ->when($status === 'archived', fn ($query) => $query->whereNotNull('archived_at'))
+            ->latest()
+            ->paginate(12)
+            ->withQueryString()
+            ->through(fn (InvitationRecipient $recipient): array => [
                 'id' => $recipient->id,
                 'displayName' => $recipient->display_name,
                 'link' => route('invitation.recipient', $recipient->token),
                 'message' => $this->invitationMessage($recipient, $content),
                 'archived' => $recipient->archived_at !== null,
-            ], $recipients),
+            ]);
+
+        return Inertia::render('admin/recipients', [
+            'recipients' => $recipients,
+            'filters' => [
+                'search' => $search,
+                'status' => $status,
+            ],
         ]);
     }
 
@@ -42,7 +64,8 @@ class AdminInvitationRecipientController extends Controller
             'token' => $this->newToken(),
         ]);
 
-        return to_route('admin.recipients.index')->with('success', 'Recipient created.');
+        return to_route('admin.recipients.index', $this->recipientIndexQuery($request))
+            ->with('success', 'Recipient created.');
     }
 
     public function update(Request $request, InvitationRecipient $recipient): RedirectResponse
@@ -55,18 +78,20 @@ class AdminInvitationRecipientController extends Controller
 
         $recipient->update(['display_name' => $validated['display_name']]);
 
-        return to_route('admin.recipients.index')->with('success', 'Recipient updated.');
+        return to_route('admin.recipients.index', $this->recipientIndexQuery($request))
+            ->with('success', 'Recipient updated.');
     }
 
-    public function archive(InvitationRecipient $recipient): RedirectResponse
+    public function archive(Request $request, InvitationRecipient $recipient): RedirectResponse
     {
         $this->assertRecipientBelongsToInvitation($recipient);
         $recipient->update(['archived_at' => now()]);
 
-        return to_route('admin.recipients.index')->with('success', 'Recipient archived.');
+        return to_route('admin.recipients.index', $this->recipientIndexQuery($request))
+            ->with('success', 'Recipient archived.');
     }
 
-    public function rotate(InvitationRecipient $recipient): RedirectResponse
+    public function rotate(Request $request, InvitationRecipient $recipient): RedirectResponse
     {
         $this->assertRecipientBelongsToInvitation($recipient);
 
@@ -78,7 +103,8 @@ class AdminInvitationRecipientController extends Controller
 
         $recipient->update(['token' => $this->newToken()]);
 
-        return to_route('admin.recipients.index')->with('success', 'Recipient link rotated.');
+        return to_route('admin.recipients.index', $this->recipientIndexQuery($request))
+            ->with('success', 'Recipient link rotated.');
     }
 
     private function invitation(): Invitation
@@ -98,6 +124,15 @@ class AdminInvitationRecipientController extends Controller
         } while (InvitationRecipient::query()->where('token', $token)->exists());
 
         return $token;
+    }
+
+    /** @return array{search?: string, status?: string} */
+    private function recipientIndexQuery(Request $request): array
+    {
+        return array_filter([
+            'search' => trim($request->string('search')->toString()),
+            'status' => $request->input('status'),
+        ], static fn (mixed $value): bool => $value !== null && $value !== '');
     }
 
     /** @param array<string, mixed> $content */
